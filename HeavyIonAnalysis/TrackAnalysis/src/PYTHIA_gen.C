@@ -103,7 +103,7 @@ using TMath::Exp;
 
 
 void MyClass::Loop(int job, std::string fList){
-
+cout << "TEST 1" << endl;
     TH1::SetDefaultSumw2(kTRUE);
     TH2::SetDefaultSumw2(kTRUE);
 
