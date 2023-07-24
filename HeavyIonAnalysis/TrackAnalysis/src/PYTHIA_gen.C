@@ -158,7 +158,7 @@ cout << "TEST 1" << endl;
     TH1D* hBinDist_reco[trackbin];
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_gen[wtrk-1]    = new TH1D(Form("hBinDist_gen_%d",wtrk),Form("hBinDist_gen_%d",wtrk), bin360, bin0, bin120);
-        hBinDist_reco[wtrk-1]    = new TH1D(Form("hBinDist_reco_%d",wtrk),Form("hBinDist_reco_%d",wtrk), bin360, bin0, bin120);
+        hBinDist_reco[wtrk-1]    =  TH1D(Form("hBinDist_reco_%d",wtrk),Form("hBinewnDist_reco_%d",wtrk), bin360, bin0, bin120);
         for(int wppt = 1; wppt<ptbin+1; wppt++){
             for(int wpPU = 1; wpPU<PUbin+1; wpPU++){
 
@@ -201,7 +201,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                   Long64_t jevent = LoadTree(ievent);
                   nb = fChain->GetEntry(ievent);   nbytes += nb;
 
-
+//what is the def of genDau_pt, genJetPt
                   if(genJetPt->size()==0) continue;
                   if(genJetChargedMultiplicity->size()==0) continue;
 
@@ -224,12 +224,13 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 int Gjet = kjet;
                 long int NNtrk = (genDau_pt->at(ijet)).size();
 
-
+//defining how many particles are in the jet, set observable based on jet multiplicity
+//for example, what is the shape of jet(5,10,100 particles in jet)
                 if( fabs((*genJetEta)[ijet]) > jetEtaCut ) continue;
                 if( (*genJetPt)[ijet] < jetPtCut_Jet   ) continue;
 
-                // filling distrivutions within track bins
-                // ALSO VERY IMPORTANLTY changing the tkBool to 1 for this particular jet. This will be usefull later wen I create conditons for filling other historgams.
+                // filling distributions within track bins
+                // ALSO VERY IMPORTANTLY changing the tkBool to 1 for this particular jet. This will be useful later when I create conditions for filling other histograms.
                 int tkBool[trackbin] = {0};
 
                 int n_G_ChargeMult_count =0;
@@ -241,7 +242,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 }//G_trk end
 
                 hBinDist_gen_single            ->Fill(n_G_ChargeMult_count);
-
+// what is hBinDist_gen and hBinDist_gen_single here
+// category the gen_jet by the multiplicity and record in tkBool, hJet_Pass, the ith hBinDist_gen records the charge mul
+// we could calculate
                 for(int i = 0; i < trackbin; i++){
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
                     if(n_G_ChargeMult_count >= trackbinbounds[i] && n_G_ChargeMult_count < trackbinboundsUpper[i]){
@@ -251,6 +254,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     }
                 }
 
+//
+
                 int Ntrig[trackbin][ptbin] = {0};
                 int NtrigM[trackbin][ptbin] = {0};
                 int NtrigP[trackbin][ptbin] = {0};
@@ -258,8 +263,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                 // VERY IMPORTANT calculating daughter pt wrt to jet axis.
                 // So this needs to be 2d vector, for pt bin and for daughter index.
-                // In each case I create a true falsse for that daughter falling in to the specific pt bin.
-                // Note this is NOT jet x daughter. It's pt bin x daughtr
+                // In each case I create a true false for that daughter falling in to the specific pt bin.
+                // Note this is NOT jet x daughter. It's pt bin x daughter
 
                 //for(int f = 0; f<fileList.size(); f++){
                 //for (Long64_t ievent=0; ievent <nentries; ievent ++){
@@ -270,20 +275,19 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 //building the histograms
                 //opening the events (pp)
                 //loading each jet in the event
-                //defining jet multiplicty
+                //defining jet multiplicity
                 //for each particle in the jet,we build the DeltaX DeltaY to every other particle
-                //instead of X and Y we use Phi and Eta, pseudorapidity
+                //instead of X and Y we use Phi and Eta, pseudo rapidity
 
 
 
-
-
+                // first particle loop
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*genDau_chg)[ijet][A_trk] == 0) continue;
                     if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
                     if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
 
-
+                //         daughter pt wrt the jet axis                pt wrt jet
                     double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
 
                     //excluding outside outermost limits.
@@ -331,7 +335,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
                     double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
 
-                    if(jet_dau_pt >3.0) continue;
+                    if(jet_dau_pt >3.0) continue;// why we drop this
                     //if(jet_dau_pt <0.5) continue;
 
 
@@ -346,7 +350,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     for(int i = 0; i < trackbin; i++){
                         for(int j = 0; j < ptbin; j++){
                             if(tkBool[i] + A_ptBool[A_trk][j] == 2){
-                                int k_PU=0;
+                                int k_PU=0; // why k_PU here
 
                                 hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, 1.0/( Ntrig[i][j] ));
                             }
@@ -376,12 +380,13 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         double T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
                         if(T_jet_dau_eta > track_eta_lim) continue;
 
-
+                        //correlation function
                         //for every A track, we do this with each T track, so roughly n^2
                                             //A_trk        T_trk
                         double deltaEta = (jet_dau_eta - T_jet_dau_eta);
                                                                     //A_trk        T_trk
                         double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
+
 
 
 
