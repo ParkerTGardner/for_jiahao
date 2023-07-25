@@ -335,7 +335,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
                     double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
 
+<<<<<<< HEAD
+                    //if(jet_dau_pt >3.0) continue;
+=======
                     if(jet_dau_pt >3.0) continue;// why we drop this
+>>>>>>> 8db22d7e64236e122b91a2227ad91ec6e4e26177
                     //if(jet_dau_pt <0.5) continue;
 
 
@@ -373,7 +377,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         double T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
 
-                    if(T_jet_dau_pt >3.0) continue;
+                    //if(T_jet_dau_pt >3.0) continue;
                     //if(T_jet_dau_pt <0.5) continue;
 
                         double T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);

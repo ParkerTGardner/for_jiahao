@@ -1,2 +1,3 @@
+split -l10 -d -a 3 ../fileLists/test.txt        ./pythia_lists/list_cor_
 split -l20 -d -a 3 ../fileLists/pythia.txt        ./pythia_lists/list_cor_
 split -l20 -d -a 3 ../fileLists/sherpa.txt        ./sherpa_lists/list_cor_

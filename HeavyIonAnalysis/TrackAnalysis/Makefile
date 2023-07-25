@@ -7,7 +7,7 @@ endif
 
 MKDIR_BIN=mkdir -p $(PWD)/bin
 
-all: mkdirBin  bin/PYTHIA_gen.exe bin/SHERPA_gen.exe 
+all: mkdirBin  bin/PYTHIA_gen.exe bin/SHERPA_gen.exe bin/PYTHIA_gen_2.exe 
 
 mkdirBin:
 	$(MKDIR_BIN)
@@ -16,6 +16,8 @@ bin/PYTHIA_gen.exe: src/PYTHIA_gen.C
 	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/PYTHIA_gen.exe src/PYTHIA_gen.C
 bin/SHERPA_gen.exe: src/SHERPA_gen.C
 	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/SHERPA_gen.exe src/SHERPA_gen.C
+bin/PYTHIA_gen_2.exe: src/PYTHIA_gen_2.C
+	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/PYTHIA_gen_2.exe src/PYTHIA_gen_2.C
 
 
 clean:

@@ -14,7 +14,7 @@ Error      = pythia_batch_output/err/submit_v0.$(Process).err
 Queue
 '''
 
-with open('../fileLists/pythia.txt') as fs:
+with open('../fileLists/test.txt') as fs:
     line_count = 0
     for line in fs:
         line_count += 1
