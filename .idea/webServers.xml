@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="7a3b54ce-6b09-4013-8561-89194a6e1fee" name="cernroot">
+        <fileTransfer rootFolder="/afs/cern.ch/user/j/jiahaoy/CMSSW_10_6_4_patch1/src/for_jiahao" accessType="SFTP" host="lxplus.cern.ch" port="22" sshConfigId="6f4ad483-aa30-4bf6-bb98-6687540a567e" sshConfig="jiahaoy@lxplus.cern.ch:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
