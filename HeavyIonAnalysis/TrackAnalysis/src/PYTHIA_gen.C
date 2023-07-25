@@ -149,7 +149,7 @@ cout << "TEST 1" << endl;
 
     //2D Corr histograms
 
-    TH2D* hEPDraw[trackbin][ptbin][PUbin];
+    TH3D* hEPDraw[trackbin][ptbin][PUbin];
     TH2D* hSignalShifted[trackbin][ptbin][PUbin];
     TH2D* hBckrndShifted[trackbin][ptbin][PUbin];
 
@@ -164,9 +164,9 @@ cout << "TEST 1" << endl;
 
                 //these are the main histograms
 
-                hBckrndShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
-                hSignalShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
-                hEPDraw[wtrk-1][wppt-1][wpPU-1]             = new TH2D(Form( "hEPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hEPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
+                hBckrndShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hjtw_BckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_BckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
+                hSignalShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hjtw_SignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_SignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
+                hEPDraw[wtrk-1][wppt-1][wpPU-1]             = new TH3D(Form( "hjtw_EPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hjtw_EPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi,    2*ptbin, -ptbin, ptbin);
 
 
             }
@@ -335,11 +335,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
                     double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
 
-<<<<<<< HEAD
+
                     //if(jet_dau_pt >3.0) continue;
-=======
+
                     if(jet_dau_pt >3.0) continue;// why we drop this
->>>>>>> 8db22d7e64236e122b91a2227ad91ec6e4e26177
+
                     //if(jet_dau_pt <0.5) continue;
 
 
@@ -356,7 +356,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                 int k_PU=0; // why k_PU here
 
-                                hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, 1.0/( Ntrig[i][j] ));
+                                hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, abs(jet_dau_pt), 1.0/( Ntrig[i][j] ));
                             }
                         }
                     }
@@ -403,12 +403,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][j] == 3){
                                           hPairs->Fill(i,j);
                                           int k_PU=0;
-                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ( 1./Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ( 1./Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ( 1./Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ( 1./Ntrig[i][j])); 
-                                          hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ( 1./Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ( 1./Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ( abs(jet_dau_pt*T_jet_dau_eta)*1.0./Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ( abs(jet_dau_pt*T_jet_dau_eta)*1.0./Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ( abs(jet_dau_pt*T_jet_dau_eta)*1.0./Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ( abs(jet_dau_pt*T_jet_dau_eta)*1.0./Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ( abs(jet_dau_pt*T_jet_dau_eta)*1.0./Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ( abs(jet_dau_pt*T_jet_dau_eta)*1.0./Ntrig[i][j]));
 
                                       //}}}
                                     // This is the mixed charge signal. Each duaghter will serve as a trigger so regular Ntrig suffices.
@@ -447,10 +447,11 @@ std::cout<< "made 4" << endl;
 
                                       for(int x = 0; x<XENT; x++){
                                           gRandom->SetSeed(0);
-                                          double WEta1, WPhi1;//making the pseudoparticles
-                                          hEPDraw[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEta1, WPhi1);
+                                          double WEta1, WPhi1, WJt1;//making the pseudoparticles
+                                          hEPDraw[wtrk-1][wppt-1][wpPU-1]->GetRandom3(WEta1, WPhi1,WJt1);
                                           A_ETA[x] = WEta1;
                                           A_PHI[x] = WPhi1;
+                                          A_Jt[x]  = WJt1;
                                       }
                                       for(long int i = 0; i < (XENT-1); i++){
                                           for(long int j = (i+1); j < XENT; j++){
@@ -458,12 +459,12 @@ std::cout<< "made 4" << endl;
                                               double WdeltaEta = (A_ETA[i]-A_ETA[j]);
                                               double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-A_PHI[j])));
 
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, -WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//./XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, -WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, -WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
 
                                           }
                                       }
