@@ -241,7 +241,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 int Ntrig[trackbin][ptbin] = {0};
                 int NtrigM[trackbin][ptbin] = {0};
                 int NtrigP[trackbin][ptbin] = {0};
-                int A_ptBool[NNtrk][ptbin] = {0};
+                int A_ptBool[1000][ptbin] = {0};
 
                 // VERY IMPORTANT calculating daughter pt wrt to jet axis.
                 // So this needs to be 2d vector, for pt bin and for daughter index.
@@ -386,8 +386,8 @@ std::cout<< "made 4" << endl;
 
                                       long int NENT =  hPairs->GetBinContent(wtrk, wppt);
                                       long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
-                                      float A_ETA[XENT] = {0};
-                                      float A_PHI[XENT] = {0};
+                                      float A_ETA[100000] = {0};
+                                      float A_PHI[100000] = {0};
 
 
                                       for(int x = 0; x<XENT; x++){

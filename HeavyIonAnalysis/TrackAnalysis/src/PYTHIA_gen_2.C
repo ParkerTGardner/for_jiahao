@@ -23,6 +23,7 @@
 #include <TStyle.h>
 #include "TH1D.h"
 #include "TH2D.h"
+#include "TH3D.h"
 #include "TF1.h"
 #include "TCanvas.h"
 #include "TPad.h"
@@ -158,7 +159,7 @@ cout << "TEST 1" << endl;
     TH1D* hBinDist_reco[trackbin];
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_gen[wtrk-1]    = new TH1D(Form("hBinDist_gen_%d",wtrk),Form("hBinDist_gen_%d",wtrk), bin360, bin0, bin120);
-        hBinDist_reco[wtrk-1]    =  TH1D(Form("hBinDist_reco_%d",wtrk),Form("hBinewnDist_reco_%d",wtrk), bin360, bin0, bin120);
+        hBinDist_reco[wtrk-1]   = new TH1D(Form("hBinDist_reco_%d",wtrk),Form("hBinewnDist_reco_%d",wtrk), bin360, bin0, bin120);
         for(int wppt = 1; wppt<ptbin+1; wppt++){
             for(int wpPU = 1; wpPU<PUbin+1; wpPU++){
 
@@ -259,7 +260,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 int Ntrig[trackbin][ptbin] = {0};
                 int NtrigM[trackbin][ptbin] = {0};
                 int NtrigP[trackbin][ptbin] = {0};
-                int A_ptBool[NNtrk][ptbin] = {0};
+                int A_ptBool[1000][ptbin] = {0};//NNtrk,ptbin
 
                 // VERY IMPORTANT calculating daughter pt wrt to jet axis.
                 // So this needs to be 2d vector, for pt bin and for daughter index.
@@ -282,6 +283,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                 // first particle loop
+                double jt_nor_factor = 0.0 ;
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*genDau_chg)[ijet][A_trk] == 0) continue;
                     if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
@@ -289,7 +291,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                 //         daughter pt wrt the jet axis                pt wrt jet
                     double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
-
+		    for (int  T_trk=0; T_trk < NNtrk; T_trk++ )
+			{ jt_nor_factor += fabs((*genDau_pt)[ijet][A_trk])*fabs((*genDau_pt)[ijet][T_trk]);}
                     //excluding outside outermost limits.
                     //if( jet_dau_pt < ptbinmin || jet_dau_pt > ptbinmax) continue;
                     //loop through pt bins and fill the boolean array
@@ -351,13 +354,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     double jet_dau_theta = 2*ATan(Exp(-(jet_dau_eta)));
                     if(jet_dau_eta > track_eta_lim) continue;
-
                     for(int i = 0; i < trackbin; i++){
                         for(int j = 0; j < ptbin; j++){
                             if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                 int k_PU=0; // why k_PU here
 
-                                hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, abs(jet_dau_pt), 1.0/( Ntrig[i][j] ));
+                                hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, fabs(jet_dau_pt), 1.0/ ( jt_nor_factor*Ntrig[i][j] ));
                             }
                         }
                     }
@@ -378,7 +380,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         double T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
 
-                    //if(T_jet_dau_pt >3.0) continue;
+                      if(T_jet_dau_pt >3.0) continue;
                     //if(T_jet_dau_pt <0.5) continue;
 
                         double T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
@@ -404,12 +406,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][j] == 3){
                                           hPairs->Fill(i,j);
                                           int k_PU=0;
-                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ( abs(jet_dau_pt*T_jet_dau_eta)*1.0./Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ( abs(jet_dau_pt*T_jet_dau_eta)*1.0./Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ( abs(jet_dau_pt*T_jet_dau_eta)*1.0./Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ( abs(jet_dau_pt*T_jet_dau_eta)*1.0./Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ( abs(jet_dau_pt*T_jet_dau_eta)*1.0./Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ( abs(jet_dau_pt*T_jet_dau_eta)*1.0./Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
+                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
+                                          hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
 
                                       //}}}
                                     // This is the mixed charge signal. Each duaghter will serve as a trigger so regular Ntrig suffices.
@@ -442,9 +444,9 @@ std::cout<< "made 4" << endl;
 
                                       long int NENT =  hPairs->GetBinContent(wtrk, wppt);
                                       long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
-                                      float A_ETA[XENT] = {0};
-                                      float A_PHI[XENT] = {0};
-
+                                      float A_ETA[100000] = {0};
+                                      float A_PHI[100000] = {0};
+				      float A_Jt[100000]  = {0};
 
                                       for(int x = 0; x<XENT; x++){
                                           gRandom->SetSeed(0);
