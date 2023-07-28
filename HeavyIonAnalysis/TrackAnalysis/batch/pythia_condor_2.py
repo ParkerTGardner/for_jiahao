@@ -1,15 +1,15 @@
 import math
 import subprocess
-name = "pythia_batch_output.jdl"
+name = "pythia_batch_output_2.jdl"
 f = open(name, "w")
 
 command_lines = '''Universe   = vanilla
 GetEnv     = True
-Executable = pythia_batch_output/pythia_sub.sh
+Executable = pythia_batch_output/pythia_sub_2.sh
 Arguments  = 000
-Log        = pythia_batch_output/log/submit_v0.$(Process).log
-Output     = pythia_batch_output/out/submit_v0.$(Process).out
-Error      = pythia_batch_output/err/submit_v0.$(Process).err
+Log        = pythia_batch_output/log_2/submit_v0.$(Process).log
+Output     = pythia_batch_output/out_2/submit_v0.$(Process).out
+Error      = pythia_batch_output/err_2/submit_v0.$(Process).err
 +MaxRuntime =10000
 Queue
 '''

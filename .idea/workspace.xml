@@ -9,10 +9,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9958ee46-ff59-456c-8473-7ae190bcd0f2" name="Changes" comment="just try to connect lxcern with github">
+    <list default="true" id="9958ee46-ff59-456c-8473-7ae190bcd0f2" name="Changes" comment="Fourier_coefficients_for_nor_jt">
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HeavyIonAnalysis/TrackAnalysis/src/PYTHIA_gen.C" beforeDir="false" afterPath="$PROJECT_DIR$/HeavyIonAnalysis/TrackAnalysis/src/PYTHIA_gen.C" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HeavyIonAnalysis/TrackAnalysis/src/PYTHIA_gen_2.C" beforeDir="false" afterPath="$PROJECT_DIR$/HeavyIonAnalysis/TrackAnalysis/src/PYTHIA_gen_2.C" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +59,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
-    "WebServerToolWindowFactoryState": "true",
+    "WebServerToolWindowFactoryState": "false",
     "WebServerToolWindowPanel.toolwindow.highlight.mappings": "true",
     "WebServerToolWindowPanel.toolwindow.highlight.symlinks": "true",
     "WebServerToolWindowPanel.toolwindow.show.date": "false",
@@ -68,7 +67,7 @@
     "WebServerToolWindowPanel.toolwindow.show.size": "false",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "last_opened_file_path": "/Users/yanjiahao/first_week1/HeavyIonAnalysis/TrackAnalysis/src",
+    "last_opened_file_path": "/Users/yanjiahao/for_jiahao",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -93,6 +92,7 @@
       <updated>1689902105431</updated>
       <workItem from="1689902106979" duration="64362000" />
       <workItem from="1690257589633" duration="17300000" />
+      <workItem from="1690579621320" duration="955000" />
     </task>
     <task id="LOCAL-00001" summary="try the Clion">
       <option name="closed" value="true" />
@@ -134,7 +134,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690258418331</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fourier_coefficients_for_nor_jt">
+      <option name="closed" value="true" />
+      <created>1690579738696</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1690579738696</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -151,7 +159,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="jt_weight_byjiahao" />
+                        <option value="main" />
                       </list>
                     </value>
                   </entry>
@@ -167,7 +175,8 @@
     <MESSAGE value="try the Clion" />
     <MESSAGE value="try the branch" />
     <MESSAGE value="just try to connect lxcern with github" />
-    <option name="LAST_COMMIT_MESSAGE" value="just try to connect lxcern with github" />
+    <MESSAGE value="Fourier_coefficients_for_nor_jt" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fourier_coefficients_for_nor_jt" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

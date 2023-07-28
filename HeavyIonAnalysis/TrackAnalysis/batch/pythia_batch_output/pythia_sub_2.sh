@@ -10,4 +10,4 @@ cd ~/CMSSW_10_6_4_patch1/src
 eval `scramv1 runtime -sh`
 cd ~/try/for_jiahao_local/HeavyIonAnalysis/TrackAnalysis/batch/
 echo PWD: $PWD
-../bin/PYTHIA_gen.exe  ./pythia_lists/list_cor_$1 0 1
+../bin/PYTHIA_gen_2.exe  ./pythia_lists/list_cor_$1 0 1
