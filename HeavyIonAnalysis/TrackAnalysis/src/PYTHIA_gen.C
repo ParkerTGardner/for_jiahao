@@ -173,6 +173,8 @@ cout << "TEST 1" << endl;
             }
         }
     }
+        // Fourier coeffients
+    double v[4][trackbin][ptbin*PUbin];
 
 
     std::cout << "Starting event loop" << std::endl;

@@ -8,6 +8,9 @@ Error      = pythia_batch_output/err/submit_v0.$(Process).err
 +MaxRuntime =10000
 Queue
 
+Arguments  = 000
+Queue
+
 Arguments  = 001
 Queue
    

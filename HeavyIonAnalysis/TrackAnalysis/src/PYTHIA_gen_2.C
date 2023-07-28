@@ -2,7 +2,7 @@
 // touch
 
 
-
+#include "include/Fourier_Analysis.h"
 #include "include/TrimPythia.h"
 //below allows for rotation into jet frame
 #include "include/coordinateTools.h"
@@ -174,6 +174,12 @@ cout << "TEST 1" << endl;
         }
     }
 
+    // Fourier coeffients
+    double v[4][trackbin][ptbin*PUbin];
+    
+    
+
+
 
     std::cout << "Starting event loop" << std::endl;
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
@@ -260,7 +266,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 int Ntrig[trackbin][ptbin] = {0};
                 int NtrigM[trackbin][ptbin] = {0};
                 int NtrigP[trackbin][ptbin] = {0};
-                int A_ptBool[1000][ptbin] = {0};//NNtrk,ptbin
+                int A_ptBool[trackbin][ptbin] = {0};//NNtrk,ptbin
 
                 // VERY IMPORTANT calculating daughter pt wrt to jet axis.
                 // So this needs to be 2d vector, for pt bin and for daughter index.
@@ -444,9 +450,9 @@ std::cout<< "made 4" << endl;
 
                                       long int NENT =  hPairs->GetBinContent(wtrk, wppt);
                                       long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
-                                      float A_ETA[100000] = {0};
-                                      float A_PHI[100000] = {0};
-				      float A_Jt[100000]  = {0};
+                                      float A_ETA[XENT] = {0};
+                                      float A_PHI[XENT] = {0};
+				                      float A_Jt[XENT]  = {0};
 
                                       for(int x = 0; x<XENT; x++){
                                           gRandom->SetSeed(0);
@@ -481,18 +487,37 @@ std::cout<< "made 4" << endl;
 
                     string subList = fList.substr(fList.size() - 3);
 
-                    TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out/job_%s.root",subList.c_str()), "recreate");
+                    TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_2/job_%s.root",subList.c_str()), "recreate");
                     for(int wtrk =1; wtrk <trackbin+1; wtrk++){
                         hBinDist_gen[wtrk-1]         ->Write();
                         for(int wppt =1; wppt <ptbin+1; wppt++){
                             for(int wpPU =1; wpPU<PUbin+1; wpPU++){
-
+                                FitHarmonic(hSignalShifted[wtrk-1][wppt-1][wpPU-1], hBckrndShifted[wtrk-1][wppt-1][wpPU-1], v, wtrk, wppt, wpPU);
                                 hSignalShifted             [wtrk-1][wppt-1][wpPU-1]->Write(Form("hSigS_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU    ));
                                 hBckrndShifted             [wtrk-1][wppt-1][wpPU-1]->Write(Form("hBckS_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU    ));
                                 hEPDraw                    [wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPD_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU     ));
                             }
                         }
                     }
+                    for (int fourier_index=1; fourier_index<4; fourier_index++){
+                        for(int wppt =1; wppt <ptbin*PUbin+1; wppt++){
+                            double temp_array[trackbin];
+                            TString Branchname = Form("v%d_for_pt:%2f_to_%2f",fourier_index, ptbinbounds_lo[wppt-1], ptbinbounds_hi[wppt-1]);
+                            TTree* tree = new TTree(Fourier_coefficents,Branchname);
+                            tree->Branch("trackbin", trackbinbounds, "trackbin/D");
+                            tree->Branch(Branchname, temp_array, Branchname + "/F");
+                            for (int wtrk =1; wtrk <trackbin+1; wtrk++){
+                                temp_array[trackbin-1] = v[fourier_index][trackbin-1][wppt-1];
+                                tree->Fill();
+                            }
+                            tree->Write();
+                            // tree->Fill();  
+                        }
+                    }    
+                    
+                    
+
+
 
                     hBinDist_gen_single->Write();
                     hEvent_Pass   ->Write();
