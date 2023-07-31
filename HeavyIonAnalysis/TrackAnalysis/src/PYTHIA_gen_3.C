@@ -283,7 +283,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                 // first particle loop
-                double jt_nor_factor = 0.0 ;
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*genDau_chg)[ijet][A_trk] == 0) continue;
                     if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
@@ -291,8 +290,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                 //         daughter pt wrt the jet axis                pt wrt jet
                     double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
-		    for (int  T_trk=0; T_trk < NNtrk; T_trk++ )
-			{ jt_nor_factor += fabs((*genDau_pt)[ijet][A_trk])*fabs((*genDau_pt)[ijet][T_trk]);}
+
                     //excluding outside outermost limits.
                     //if( jet_dau_pt < ptbinmin || jet_dau_pt > ptbinmax) continue;
                     //loop through pt bins and fill the boolean array
@@ -359,7 +357,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                 int k_PU=0; // why k_PU here
 
-                                hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, fabs(jet_dau_pt), 1.0/ ( jt_nor_factor*Ntrig[i][j] ));
+                                hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, fabs(jet_dau_pt), 1.0/( Ntrig[i][j] ));
                             }
                         }
                     }
@@ -406,12 +404,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][j] == 3){
                                           hPairs->Fill(i,j);
                                           int k_PU=0;
-                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
-                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
-                                          hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
+                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ( 1/Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ( 1/Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ( 1/Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ( 1/Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ( 1/Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ( 1/Ntrig[i][j]));
 
                                       //}}}
                                     // This is the mixed charge signal. Each duaghter will serve as a trigger so regular Ntrig suffices.
@@ -444,9 +442,9 @@ std::cout<< "made 4" << endl;
 
                                       long int NENT =  hPairs->GetBinContent(wtrk, wppt);
                                       long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
-                                      float A_ETA[100000] = {0};
-                                      float A_PHI[100000] = {0};
-				      float A_Jt[100000]  = {0};
+                                      float A_ETA[XENT] = {0};
+                                      float A_PHI[XENT] = {0};
+				      float A_Jt[XENT]  = {0};
 
                                       for(int x = 0; x<XENT; x++){
                                           gRandom->SetSeed(0);
@@ -462,12 +460,12 @@ std::cout<< "made 4" << endl;
                                               double WdeltaEta = (A_ETA[i]-A_ETA[j]);
                                               double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-A_PHI[j])));
 
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//./XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, -WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, -WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
 
                                           }
                                       }
@@ -481,7 +479,7 @@ std::cout<< "made 4" << endl;
 
                     string subList = fList.substr(fList.size() - 3);
 
-                    TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_2/job_%s.root",subList.c_str()), "recreate");
+                    TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out/job_%s.root",subList.c_str()), "recreate");
                     for(int wtrk =1; wtrk <trackbin+1; wtrk++){
                         hBinDist_gen[wtrk-1]         ->Write();
                         for(int wppt =1; wppt <ptbin+1; wppt++){

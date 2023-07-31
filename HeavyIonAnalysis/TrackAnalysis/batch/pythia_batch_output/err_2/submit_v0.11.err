@@ -24,3 +24,6 @@ Error in <TH3D::ComputeIntegral>: Integral = zero
 Error in <TH3D::ComputeIntegral>: Integral = zero
 Error in <TH3D::ComputeIntegral>: Integral = zero
 Error in <TH3D::ComputeIntegral>: Integral = zero
+
+ *** Break *** segmentation violation
+condor_exec.exe: line 13:   108 Segmentation fault      (core dumped) ../bin/PYTHIA_gen_2.exe ./pythia_lists/list_cor_$1 0 1
