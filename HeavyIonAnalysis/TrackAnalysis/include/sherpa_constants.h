@@ -1,10 +1,10 @@
-const int   trackbin                    =25 ;
-const int ptbin =5;
-const float ptbinbounds_lo[ptbin] = {0,0.3,0.5,1.5,2.0};
+const int   trackbin                    =10 ;
+const int ptbin =3;
+const float ptbinbounds_lo[ptbin] = {0,0.3,0.5};
 const float ptbinbounds_hi[ptbin] = {3.0,3.0,3.0};
 const int mm = 1000;
-const int   trackbinbounds[trackbin]         = { 0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120};
-const int   trackbinboundsUpper[trackbin]    = {5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100,105,110,115,120,mm};
+const int   trackbinbounds[trackbin]         = {0 ,0 ,20,30,40,50,60,72,82,95};
+const int   trackbinboundsUpper[trackbin]    = {mm,20,30,40,50,60,72,82,95,mm};
 const double        PI = 3.14159265359;
 const float         EtaBW = 0.3;
 const float         PhiBW = TMath::Pi()/16;

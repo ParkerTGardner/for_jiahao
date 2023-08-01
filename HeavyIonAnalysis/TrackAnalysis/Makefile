@@ -19,7 +19,7 @@ bin/SHERPA_gen.exe: src/SHERPA_gen.C
 bin/PYTHIA_gen_2.exe: src/PYTHIA_gen_2.C
 	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/PYTHIA_gen_2.exe src/PYTHIA_gen_2.C
 bin/PYTHIA_gen_3.exe: src/PYTHIA_gen_3.C
-        $(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/PYTHIA_gen_3.exe src/PYTHIA_gen_3.C
+	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/PYTHIA_gen_3.exe src/PYTHIA_gen_3.C
 
 clean:
 	rm -f $(PWD)/include/*~
