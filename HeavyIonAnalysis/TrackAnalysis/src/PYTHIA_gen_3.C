@@ -1,12 +1,7 @@
 #define MyClass_cxx
 // touch
-
-
-
 #include "include/TrimPythia.h"
-//below allows for rotation into jet frame
 #include "include/coordinateTools.h"
-//defines constants
 #include "include/sherpa_constants.h"
 
 #include <iostream>
@@ -23,7 +18,6 @@
 #include <TStyle.h>
 #include "TH1D.h"
 #include "TH2D.h"
-#include "TH3D.h"
 #include "TF1.h"
 #include "TCanvas.h"
 #include "TPad.h"
@@ -98,13 +92,9 @@ using TMath::Exp;
     }
   //}}}
 
-// THIS IS WHERE THE MAIN CODE BEGINS
-
-
-
 
 void MyClass::Loop(int job, std::string fList){
-cout << "TEST 1" << endl;
+
     TH1::SetDefaultSumw2(kTRUE);
     TH2::SetDefaultSumw2(kTRUE);
 
@@ -150,7 +140,7 @@ cout << "TEST 1" << endl;
 
     //2D Corr histograms
 
-    TH3D* hEPDraw[trackbin][ptbin][PUbin];
+    TH2D* hEPDraw[trackbin][ptbin][PUbin];
     TH2D* hSignalShifted[trackbin][ptbin][PUbin];
     TH2D* hBckrndShifted[trackbin][ptbin][PUbin];
 
@@ -159,15 +149,12 @@ cout << "TEST 1" << endl;
     TH1D* hBinDist_reco[trackbin];
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_gen[wtrk-1]    = new TH1D(Form("hBinDist_gen_%d",wtrk),Form("hBinDist_gen_%d",wtrk), bin360, bin0, bin120);
-        hBinDist_reco[wtrk-1]   = new TH1D(Form("hBinDist_reco_%d",wtrk),Form("hBinewnDist_reco_%d",wtrk), bin360, bin0, bin120);
+        hBinDist_reco[wtrk-1]    = new TH1D(Form("hBinDist_reco_%d",wtrk),Form("hBinDist_reco_%d",wtrk), bin360, bin0, bin120);
         for(int wppt = 1; wppt<ptbin+1; wppt++){
             for(int wpPU = 1; wpPU<PUbin+1; wpPU++){
-
-                //these are the main histograms
-
-                hBckrndShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hjtw_BckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_BckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
-                hSignalShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hjtw_SignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_SignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
-                hEPDraw[wtrk-1][wppt-1][wpPU-1]             = new TH3D(Form( "hjtw_EPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hjtw_EPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi,    2*ptbin, -ptbin, ptbin);
+                hBckrndShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
+                hSignalShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
+                hEPDraw[wtrk-1][wppt-1][wpPU-1]             = new TH2D(Form( "hEPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hEPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
 
 
             }
@@ -177,11 +164,7 @@ cout << "TEST 1" << endl;
 
     std::cout << "Starting event loop" << std::endl;
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
-
-
-//main loops
     for(int f = 0; f<fileList.size(); f++){
-//processing data from CMS
         fFile = TFile::Open(fileList.at(f).c_str(),"read");
         TTree *tree = (TTree*)fFile->Get("trackTree");
         Init(tree);
@@ -192,17 +175,13 @@ cout << "TEST 1" << endl;
         cout<<"Total Entries is:"<<endl;
         cout<< nentries <<endl;
 std::cout << "File is " << fileList.at(f).c_str() << endl;
-
-
         // ENTERING EVENT LOOP
         //for(int f = 0; f<fileList.size(); f++){
-
-
         for (Long64_t ievent=0; ievent <nentries; ievent ++){
                   Long64_t jevent = LoadTree(ievent);
                   nb = fChain->GetEntry(ievent);   nbytes += nb;
 
-//what is the def of genDau_pt, genJetPt
+
                   if(genJetPt->size()==0) continue;
                   if(genJetChargedMultiplicity->size()==0) continue;
 
@@ -212,9 +191,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                   }
                   int gjN = genJetPhi->size();
 
+////if(made_bo) std::cout<< "made 3.4" << endl;
 
             hEvent_Pass->Fill(1);
 
+////if(made_bo) std::cout<< "made 3.6" << endl;
             //ENTERING JET LOOP
 
             //for(int f = 0; f<fileList.size(); f++){
@@ -225,13 +206,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 int Gjet = kjet;
                 long int NNtrk = (genDau_pt->at(ijet)).size();
 
-//defining how many particles are in the jet, set observable based on jet multiplicity
-//for example, what is the shape of jet(5,10,100 particles in jet)
+
                 if( fabs((*genJetEta)[ijet]) > jetEtaCut ) continue;
                 if( (*genJetPt)[ijet] < jetPtCut_Jet   ) continue;
 
-                // filling distributions within track bins
-                // ALSO VERY IMPORTANTLY changing the tkBool to 1 for this particular jet. This will be useful later when I create conditions for filling other histograms.
+                // filling distrivutions within track bins
+                // ALSO VERY IMPORTANLTY changing the tkBool to 1 for this particular jet. This will be usefull later wen I create conditons for filling other historgams.
                 int tkBool[trackbin] = {0};
 
                 int n_G_ChargeMult_count =0;
@@ -243,9 +223,29 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 }//G_trk end
 
                 hBinDist_gen_single            ->Fill(n_G_ChargeMult_count);
-// what is hBinDist_gen and hBinDist_gen_single here
-// category the gen_jet by the multiplicity and record in tkBool, hJet_Pass, the ith hBinDist_gen records the charge mul
-// we could calculate
+
+                //****** REMOVE REMOVE REMOVE REMOVE REMOVE ****
+                //****** REMOVE REMOVE REMOVE REMOVE REMOVE ****
+                //****** REMOVE REMOVE REMOVE REMOVE REMOVE ****
+
+                //****** REMOVE REMOVE REMOVE REMOVE REMOVE ****
+                //****** REMOVE REMOVE REMOVE REMOVE REMOVE ****
+                //****** REMOVE REMOVE REMOVE REMOVE REMOVE ****
+
+                //continue;
+
+                //****** REMOVE REMOVE REMOVE REMOVE REMOVE ****
+                //****** REMOVE REMOVE REMOVE REMOVE REMOVE ****
+                //****** REMOVE REMOVE REMOVE REMOVE REMOVE ****
+
+                //****** REMOVE REMOVE REMOVE REMOVE REMOVE ****
+                //****** REMOVE REMOVE REMOVE REMOVE REMOVE ****
+                //****** REMOVE REMOVE REMOVE REMOVE REMOVE ****
+
+
+
+
+
                 for(int i = 0; i < trackbin; i++){
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
                     if(n_G_ChargeMult_count >= trackbinbounds[i] && n_G_ChargeMult_count < trackbinboundsUpper[i]){
@@ -255,40 +255,24 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     }
                 }
 
-//
-
                 int Ntrig[trackbin][ptbin] = {0};
                 int NtrigM[trackbin][ptbin] = {0};
                 int NtrigP[trackbin][ptbin] = {0};
-                int A_ptBool[1000][ptbin] = {0};//NNtrk,ptbin
+                int A_ptBool[NNtrk][ptbin] = {0};
 
                 // VERY IMPORTANT calculating daughter pt wrt to jet axis.
                 // So this needs to be 2d vector, for pt bin and for daughter index.
-                // In each case I create a true false for that daughter falling in to the specific pt bin.
-                // Note this is NOT jet x daughter. It's pt bin x daughter
+                // In each case I create a true falsse for that daughter falling in to the specific pt bin.
+                // Note this is NOT jet x daughter. It's pt bin x daughtr
 
                 //for(int f = 0; f<fileList.size(); f++){
                 //for (Long64_t ievent=0; ievent <nentries; ievent ++){
                 //for(int ijet=0; ijet < jetCounter; ijet++){
-
-                //opening each file
-                //opening the tree
-                //building the histograms
-                //opening the events (pp)
-                //loading each jet in the event
-                //defining jet multiplicity
-                //for each particle in the jet,we build the DeltaX DeltaY to every other particle
-                //instead of X and Y we use Phi and Eta, pseudo rapidity
-
-
-
-                // first particle loop
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*genDau_chg)[ijet][A_trk] == 0) continue;
                     if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
                     if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
 
-                //         daughter pt wrt the jet axis                pt wrt jet
                     double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
 
                     //excluding outside outermost limits.
@@ -324,30 +308,20 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     }
                 }
 
-
-                // first particle loop
-
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
                     if((*genDau_chg)[ijet][A_trk] == 0) continue;
                     if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
                     if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
 
-                //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
                     double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
 
-
-                    //if(jet_dau_pt >3.0) continue;
-
-                    if(jet_dau_pt >3.0) continue;// why we drop this
-
+                    if(jet_dau_pt >3.0) continue;
                     //if(jet_dau_pt <0.5) continue;
 
 
 
-                //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
                     double jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
-                //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
                     double jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
 
                     double jet_dau_theta = 2*ATan(Exp(-(jet_dau_eta)));
@@ -355,20 +329,15 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     for(int i = 0; i < trackbin; i++){
                         for(int j = 0; j < ptbin; j++){
                             if(tkBool[i] + A_ptBool[A_trk][j] == 2){
-                                int k_PU=0; // why k_PU here
+                                int k_PU=0;
 
-                                hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, fabs(jet_dau_pt), 1.0/( Ntrig[i][j] ));
+                                hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, 1.0/( Ntrig[i][j] ));
                             }
                         }
                     }
 
                     if(A_trk == NNtrk - 1) continue;
 
-                    //A_trk is the first track from the first loop
-                    //T_trk is the second loop
-
-
-                    //n^2 complexity, second loop through all the particles
                     for(long int T_trk=A_trk+1; T_trk< NNtrk; T_trk++ ){
 
                         if((*genDau_chg)[ijet][T_trk] == 0) continue;
@@ -378,23 +347,14 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         double T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
 
-                      if(T_jet_dau_pt >3.0) continue;
+                    if(T_jet_dau_pt >3.0) continue;
                     //if(T_jet_dau_pt <0.5) continue;
 
                         double T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
                         double T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
                         if(T_jet_dau_eta > track_eta_lim) continue;
-
-                        //correlation function
-                        //for every A track, we do this with each T track, so roughly n^2
-                                            //A_trk        T_trk
                         double deltaEta = (jet_dau_eta - T_jet_dau_eta);
-                                                                    //A_trk        T_trk
                         double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
-
-
-
-
 
                         for(        int i = 0; i < trackbin; i++){
                             for(    int j = 0; j < ptbin;    j++){ 
@@ -404,12 +364,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][j] == 3){
                                           hPairs->Fill(i,j);
                                           int k_PU=0;
-                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ( 1/Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ( 1/Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ( 1/Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ( 1/Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ( 1/Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ( 1/Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ( 1./Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ( 1./Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ( 1./Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ( 1./Ntrig[i][j])); 
+                                          hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ( 1./Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ( 1./Ntrig[i][j]));
 
                                       //}}}
                                     // This is the mixed charge signal. Each duaghter will serve as a trigger so regular Ntrig suffices.
@@ -444,15 +404,14 @@ std::cout<< "made 4" << endl;
                                       long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
                                       float A_ETA[XENT] = {0};
                                       float A_PHI[XENT] = {0};
-				      float A_Jt[XENT]  = {0};
+
 
                                       for(int x = 0; x<XENT; x++){
                                           gRandom->SetSeed(0);
-                                          double WEta1, WPhi1, WJt1;//making the pseudoparticles
-                                          hEPDraw[wtrk-1][wppt-1][wpPU-1]->GetRandom3(WEta1, WPhi1,WJt1);
+                                          double WEta1, WPhi1;//making the pseudoparticles
+                                          hEPDraw[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEta1, WPhi1);
                                           A_ETA[x] = WEta1;
                                           A_PHI[x] = WPhi1;
-                                          A_Jt[x]  = WJt1;
                                       }
                                       for(long int i = 0; i < (XENT-1); i++){
                                           for(long int j = (i+1); j < XENT; j++){
@@ -545,4 +504,3 @@ std::cout<< "made 4" << endl;
 
                         return 0;
                     }
-
