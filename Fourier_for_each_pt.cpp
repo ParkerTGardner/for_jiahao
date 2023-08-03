@@ -27,22 +27,6 @@ void processRootFile() {
 
     
    
-    // std::cout << "Opened file: job_morebins_all.root" << std::endl;
-    // TIter next(file->GetListOfKeys());
-    // TKey *key;
-    // while ((key = (TKey*)next())) {
-    // // Loop over ptbin and trackbin
-    //     TClass *cl = gROOT->GetClass(key->GetClassName());
-    //     // if (!cl->InheritsFrom("TH2D")) continue;
-    //     // if (cl->InheritsFrom("TH2D")) {
-    //     // std::cout << "Histogram: " << key->GetName() << std::endl;}
-    //     TH2D* h = (TH2D*)key->ReadObj();
-         
-    //     // Check if the histogram name matches the pattern
-    //     std::string name = h->GetName();
-    //     // std::cout << "Histogram Name: " << name << std::endl;
-    //     if (name.find("hjtw_SignalS") != 0) continue;
-        // std::cout << "hjtw_SignalS" << std::endl;
         for (int wppt = 1; wppt < ptbin+1; wppt++) {
             
             TString v_for_pt = Form("v_for_pt:%.2f_to_%.2f",ptbinbounds_lo[wppt-1], ptbinbounds_hi[wppt-1]);
