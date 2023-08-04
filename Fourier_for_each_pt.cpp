@@ -24,6 +24,9 @@
 #include "TGraphErrors.h" 
 void processRootFile() {
    
+    TFile* file = new TFile("jobs_more_all.root");
+                    TFile* file2 = new TFile("jobs_more_all_2.root");
+                                    TFile* file3 = new TFile("jobs_more_all_3.root");
 
     
    
@@ -34,23 +37,25 @@ void processRootFile() {
             TCanvas* c1 = new TCanvas("c1", v_for_pt, 800, 600);
 
             // Create a graph for each array
-            TGraphErrors* g1 = new TGraphErrors(trackbin);
-            TGraphErrors* g2 = new TGraphErrors(trackbin);
-            TGraphErrors* g3 = new TGraphErrors(trackbin);
-            TGraphErrors* g1_2 = new TGraphErrors(trackbin);
-            TGraphErrors* g2_2 = new TGraphErrors(trackbin);
-            TGraphErrors* g3_2 = new TGraphErrors(trackbin);
-            TGraphErrors* g1_3 = new TGraphErrors(trackbin);
-            TGraphErrors* g2_3 = new TGraphErrors(trackbin);
-            TGraphErrors* g3_3 = new TGraphErrors(trackbin);
+            TGraphErrors* g1 = new TGraphErrors(trackbin-1);
+            TGraphErrors* g2 = new TGraphErrors(trackbin-1);
+            TGraphErrors* g3 = new TGraphErrors(trackbin-1);
+            TGraphErrors* g1_2 = new TGraphErrors(trackbin-1);
+            TGraphErrors* g2_2 = new TGraphErrors(trackbin-1);
+            TGraphErrors* g3_2 = new TGraphErrors(trackbin-1);
+            TGraphErrors* g1_3 = new TGraphErrors(trackbin-1);
+            TGraphErrors* g2_3 = new TGraphErrors(trackbin-1);
+            TGraphErrors* g3_3 = new TGraphErrors(trackbin-1);
             int point = 0;
             int point_2 = 0;
             int point_3 = 0;
-            for (int wtrk = 1; wtrk < trackbin+1; wtrk++) {
-                TFile* file = new TFile("jobs_more_all.root");
+            for (int wtrk = 2; wtrk < trackbin+1; wtrk++) {
+
                 // // // Get the histogram
                 TH2D* hSig = (TH2D*)file->Get(Form("hSigS_%d_to_%d_and_%d_to_%d_w_PU_1", trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt-1]), (int)(10*ptbinbounds_hi[wppt-1])));
                 TH2D* hBack = (TH2D*)file->Get(Form("hBckS_%d_to_%d_and_%d_to_%d_w_PU_1", trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt-1]), (int)(10*ptbinbounds_hi[wppt-1])));
+                TH1D* hBin = (TH1D*)file->Get(Form("hBinDist_gen_%d",wtrk));
+                // std::cout<< Form("hSigS_%d_to_%d_and_%d_to_%d_w_PU_1", trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt-1]), (int)(10*ptbinbounds_hi[wppt-1])) << std::endl;
                 hSig->SetDefaultSumw2(kTRUE);
                 hBack->SetDefaultSumw2(kTRUE);
 
@@ -90,18 +95,18 @@ void processRootFile() {
                 // // h1D->Fit(func, "NQ");
                 // // std::cout << "fit" << std::endl;
                 // // Get the parameters
-                g1->SetPoint(point, trackbinbounds[wtrk-1], func->GetParameter(1));
+                g1->SetPoint(point, hBin->GetMean(1), func->GetParameter(1));
                 g1->SetPointError(point, 0, func->GetParError(1));
                 
-                g2->SetPoint(point, trackbinbounds[wtrk-1], func->GetParameter(2));
+                g2->SetPoint(point, hBin->GetMean(1), func->GetParameter(2));
                 g2->SetPointError(point, 0, func->GetParError(2));
-                g3->SetPoint(point, trackbinbounds[wtrk-1], func->GetParameter(3));
+                g3->SetPoint(point, hBin->GetMean(1), func->GetParameter(3));
                 g3->SetPointError(point, 0, func->GetParError(3));
                 point++;
                     // std::cout << "draw" << std::endl;
-                file->Close();
+                // file->Close();
             
-                TFile* file2 = new TFile("jobs_more_all_2.root");
+
                 // // std::cout << "Opened file: job_morebins_all_2.root" << std::endl;
                 
                 
@@ -110,6 +115,7 @@ void processRootFile() {
                 //     // Get the histogram
                 TH2D* hSig2 = (TH2D*)file2->Get(Form("hSigS_%d_to_%d_and_%d_to_%d_w_PU_1", trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt-1]), (int)(10*ptbinbounds_hi[wppt-1])));
                 TH2D* hBack2 = (TH2D*)file2->Get(Form("hBckS_%d_to_%d_and_%d_to_%d_w_PU_1", trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt-1]), (int)(10*ptbinbounds_hi[wppt-1])));
+                TH1D* hBin_2 = (TH1D*)file2->Get(Form("hBinDist_gen_%d",wtrk));
                 hSig2->SetDefaultSumw2(kTRUE);
                 hBack2->SetDefaultSumw2(kTRUE);
 
@@ -137,26 +143,26 @@ void processRootFile() {
                 h1D_2->Fit(func_2, "m q 0");
                 h1D_2->Fit(func_2, "m q E 0");
                 h1D_2->Fit(func_2, "m E q 0");
-                std::cout<< "fit2"<< std::endl;
-                std::cout<< func_2->GetParameter(1)<< std::endl;
+                // std::cout<< "fit2"<< std::endl;
+                // std::cout<< func_2->GetParameter(1)<< std::endl;
                 // // std::cout<< "fit2"<< std::endl;
                 // // func_2->GetParameter(1);
                 // // Get the parameters
-                g1_2->SetPoint(point_2, trackbinbounds[wtrk-1], func_2->GetParameter(1));
+                g1_2->SetPoint(point_2, hBin_2->GetMean(1), func_2->GetParameter(1));
                 g1_2->SetPointError(point_2, 0, func_2->GetParError(1));
-                g2_2->SetPoint(point_2, trackbinbounds[wtrk-1], func_2->GetParameter(2));
+                g2_2->SetPoint(point_2, hBin_2->GetMean(1), func_2->GetParameter(2));
                 g2_2->SetPointError(point_2, 0, func_2->GetParError(2));
-                g3_2->SetPoint(point_2, trackbinbounds[wtrk-1], func_2->GetParameter(3));
+                g3_2->SetPoint(point_2, hBin_2->GetMean(1), func_2->GetParameter(3));
                 g3_2->SetPointError(point_2, 0, func_2->GetParError(3));
                 point_2++;
-                file2->Close();
+                // file2->Close();
 
 
 
 
 
                 
-                TFile* file3 = new TFile("jobs_more_all_3.root");
+
                 // std::cout << "Opened file: job_morebins_all_2.root" << std::endl;
                 
                 
@@ -165,15 +171,14 @@ void processRootFile() {
                     // Get the histogram
                 TH2D* hSig3 = (TH2D*)file3->Get(Form("hSigS_%d_to_%d_and_%d_to_%d_w_PU_1", trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt-1]), (int)(10*ptbinbounds_hi[wppt-1])));
                 TH2D* hBack3 = (TH2D*)file3->Get(Form("hBckS_%d_to_%d_and_%d_to_%d_w_PU_1", trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt-1]), (int)(10*ptbinbounds_hi[wppt-1])));
+                TH1D* hBin_3 = (TH1D*)file3->Get(Form("hBinDist_gen_%d",wtrk));
                 hSig3->SetDefaultSumw2(kTRUE);
                 hBack3->SetDefaultSumw2(kTRUE);
 
                 // double DelEta_lo = 2.0;
                 TH1D *hSig1D_3 = (TH1D*) hSig3->ProjectionY("h1D", hSig3->GetXaxis()->FindBin(DelEta_lo), -1)->Clone();
                 TH1D *hBack1D_3 = (TH1D*) hBack3->ProjectionY("h1D", hBack3->GetXaxis()->FindBin(DelEta_lo), -1)->Clone();
-                if(!hSig1D_3){
-                    std::cout<< "null3"<< std::endl;
-                }
+            
                 hSig1D_3->SetDefaultSumw2(kTRUE);
                 hBack1D_3->SetDefaultSumw2(kTRUE);
                 hSig1D_3->Divide(hBack1D_3);
@@ -189,25 +194,25 @@ void processRootFile() {
                
                 func_3->SetParameter(2, 0.1);
                 func_3->SetParameter(3, 0.1);
-                std::cout<< "fit3 before"<< std::endl;
+                // std::cout<< "fit3 before"<< std::endl;
                 h1D_3->Fit(func_3, "q 0");
                 h1D_3->Fit(func_3, "q 0");
                 h1D_3->Fit(func_3, "m q 0");
                 h1D_3->Fit(func_3, "m q 0");
                 h1D_3->Fit(func_3, "m q E 0");
                 h1D_3->Fit(func_3, "m E q 0");
-                std::cout<< "fit3"<< std::endl;
-                std::cout<< func_3->GetParameter(1)<< std::endl;
+                // std::cout<< "fit3"<< std::endl;
+                // std::cout<< func_3->GetParameter(1)<< std::endl;
                 // func_2->GetParameter(1);
                 // Get the parameters
-                g1_3->SetPoint(point_3, trackbinbounds[wtrk-1], func_3->GetParameter(1));
+                g1_3->SetPoint(point_3, hBin_3->GetMean(1), func_3->GetParameter(1));
                 g1_3->SetPointError(point_3, 0, func_3->GetParError(1));
-                g2_3->SetPoint(point_3, trackbinbounds[wtrk-1], func_3->GetParameter(2));
+                g2_3->SetPoint(point_3, hBin_3->GetMean(1), func_3->GetParameter(2));
                 g2_3->SetPointError(point_3, 0, func_3->GetParError(2));
-                g3_3->SetPoint(point_3, trackbinbounds[wtrk-1], func_3->GetParameter(3));
+                g3_3->SetPoint(point_3, hBin_3->GetMean(1), func_3->GetParameter(3));
                 g3_3->SetPointError(point_3, 0, func_3->GetParError(3));
                 point_3++;
-                file3->Close();
+                // file3->Close();
 
 
                 // std::cout << "draw" << std::endl;
