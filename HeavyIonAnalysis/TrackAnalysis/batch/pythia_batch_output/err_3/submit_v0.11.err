@@ -6,18 +6,18 @@ perl: warning: Please check that your locale settings:
 	LANG = "C"
     are supported and installed on your system.
 perl: warning: Falling back to the standard locale ("C").
-Error in <TH3D::ComputeIntegral>: Integral = zero
-Error in <TH3D::ComputeIntegral>: Integral = zero
-Error in <TH3D::ComputeIntegral>: Integral = zero
-Error in <TH3D::ComputeIntegral>: Integral = zero
-Error in <TH3D::ComputeIntegral>: Integral = zero
-Error in <TH3D::ComputeIntegral>: Integral = zero
-Error in <TH3D::ComputeIntegral>: Integral = zero
-Error in <TH3D::ComputeIntegral>: Integral = zero
-Error in <TH3D::ComputeIntegral>: Integral = zero
-Error in <TH3D::ComputeIntegral>: Integral = zero
-Error in <TH3D::ComputeIntegral>: Integral = zero
-Error in <TH3D::ComputeIntegral>: Integral = zero
-Error in <TH3D::ComputeIntegral>: Integral = zero
-Error in <TH3D::ComputeIntegral>: Integral = zero
-Error in <TH3D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero
+Error in <TH2D::ComputeIntegral>: Integral = zero

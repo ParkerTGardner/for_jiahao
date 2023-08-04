@@ -10,7 +10,7 @@ Arguments  = 000
 Log        = pythia_batch_output/log_3/submit_v0.$(Process).log
 Output     = pythia_batch_output/out_3/submit_v0.$(Process).out
 Error      = pythia_batch_output/err_3/submit_v0.$(Process).err
-+MaxRuntime =10000
++MaxRuntime =20000
 Queue
 '''
 
