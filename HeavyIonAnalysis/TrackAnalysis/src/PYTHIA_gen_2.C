@@ -289,10 +289,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
                     if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
 
-                //         daughter pt wrt the jet axis                pt wrt jet
+                    //     daughter pt wrt the jet axis                pt wrt jet
                     double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
-		    for (int  T_trk=0; T_trk < NNtrk; T_trk++ )
-			{ jt_nor_factor += fabs((*genDau_pt)[ijet][A_trk])*fabs((*genDau_pt)[ijet][T_trk]);}
+		            for (int  T_trk=0; T_trk < NNtrk; T_trk++ )
+			        { jt_nor_factor += fabs((*genDau_pt)[ijet][A_trk])*fabs((*genDau_pt)[ijet][T_trk]);}
                     //excluding outside outermost limits.
                     //if( jet_dau_pt < ptbinmin || jet_dau_pt > ptbinmax) continue;
                     //loop through pt bins and fill the boolean array
@@ -316,7 +316,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         }
                     } 
 
-                }//here ends the boolean array creations.
+                }
+                jt_nor_factor = sqrt(jt_nor_factor);
+                //here ends the boolean array creations.
 
                 //continuation of main loops. Here is where the 2D Corr plots are created using the above booleans and 
 
