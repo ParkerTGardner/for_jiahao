@@ -365,8 +365,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if( fabs((*genJetEta)[jjet]) > jetEtaCut ) continue;
                     if( (*genJetPt)[jjet] < jetPtCut_Jet   ) continue;        
                     double deltaJetPhi = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
-                    double deltaJetEta = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet]);
-                    double deltaJetR   = sqrt( pow((TMath::ACos(TMath::Cos(deltaJetPhi))),2) + pow(deltaJetEta,2));
+                    double deltaJetEta = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
+                    double deltaJetR   = sqrt( pow((deltaJetPhi-M_PI),2) + pow(deltaJetEta,2));
                     
                     if (deltaJetR > 0.4) continue;
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
@@ -498,7 +498,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                             double deltaJetPhi = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
                             double deltaJetEta = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
-                            double deltaJetR   = sqrt( pow((TMath::ACos(TMath::Cos(deltaJetPhi))),2) + pow(deltaJetEta,2));
+                            double deltaJetR   = sqrt( pow((deltaJetPhi-M_PI),2) + pow(deltaJetEta,2));
                         
                             if (deltaJetR > 0.4) continue;
                             
