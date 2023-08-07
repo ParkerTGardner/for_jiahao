@@ -371,7 +371,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // int NtrigP[trackbin][ptbin] = {0};
                     // int A_ptBool[NNtrk][ptbin] = {0};
                     int T_ptBool[NNtrk2][ptbin]     = {0};// This is for the AB
-                    int Ntrig_temp[trackbin][ptbin] = {0}
+                    int Ntrig_temp[trackbin][ptbin] = {0};
                     
                     for(long int T_trk=0; T_trk< NNtrk2; T_trk++ ){
 
@@ -712,7 +712,7 @@ std::cout<< "made 4" << endl;
                     hBinDist_gen_single->Write();
                     hEvent_Pass   ->Write();
                     hJet_Pass     ->Write();
-                    hdeltaR       ->Write()
+                    hdeltaR       ->Write();
                     fS_tempA->Close();
                     }
 
