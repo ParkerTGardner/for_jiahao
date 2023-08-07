@@ -427,6 +427,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         if((*genDau_chg)[jjet][A_trk2] == 0) continue;
                         if(fabs((*genDau_pt)[jjet][A_trk2])  < 0.3) continue;
                         if(fabs((*genDau_eta)[jjet][A_trk2]) > 2.4) continue;
+                        double jet2_dau_pt=0;
 
                         if (deltaPhi <= M_PI){
                             double jet2_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][A_trk2], (double)(*genDau_eta)[jjet][A_trk2], M_PI-(double)(*genDau_phi)[jjet][A_trk2]);
@@ -502,6 +503,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         
                             if (deltaJetR > 0.4) continue;
 
+
+                            double T_jet_dau_pt  = 0;
+                            double T_jet_dau_eta = 0;
+                            double T_jet_dau_phi = 0;
+
+
                             if (deltaJetPhi>M_PI){
                                 double T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]-M_PI);   
                                 if(T_jet_dau_pt >3.0) continue;
@@ -554,7 +561,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                                  
-                                    if(tkBool[i] + A_ptBool[A_trk][j] + T_ptBool[A_trk2][j]== 3){
+                                    if(tkBool[i] + A_ptBool[A_trk][j] + T_ptBool[T_trk][j]== 3){
                                         Ntrig[i][j] += 1;
                                         if((*genDau_chg)[ijet][A_trk] > 0){
                                             NtrigP[i][j] += 1;
