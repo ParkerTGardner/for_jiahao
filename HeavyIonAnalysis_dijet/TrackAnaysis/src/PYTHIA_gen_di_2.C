@@ -198,7 +198,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
         // ENTERING EVENT LOOP
         //for(int f = 0; f<fileList.size(); f++){
 
-
+        double jet_nor_factor=0;
         for (Long64_t ievent=0; ievent <nentries; ievent ++){
                   Long64_t jevent = LoadTree(ievent);
                   nb = fChain->GetEntry(ievent);   nbytes += nb;
@@ -218,7 +218,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
             //ENTERING JET LOOP
 
-            double jet_nor_factor=0
+            
 
             for(int kjet=0; kjet < genJetPt->size(); kjet++){
 
@@ -332,7 +332,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             double T_jet_dau_pt  = 0;
                             double T_jet_dau_eta = 0;
                             double T_jet_dau_phi = 0;
-                            
+
                             if (deltaJetPhi>M_PI){
                                 double T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]-M_PI);   
                                 if(T_jet_dau_pt >3.0) continue;
