@@ -429,7 +429,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         if(fabs((*genDau_eta)[jjet][A_trk2]) > 2.4) continue;
                         double jet2_dau_pt=0;
 
-                        if (deltaPhi <= M_PI){
+                        if (deltaJetPhi <= M_PI){
                             jet2_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][A_trk2], (double)(*genDau_eta)[jjet][A_trk2], M_PI-(double)(*genDau_phi)[jjet][A_trk2]);
                         }
                         else{
