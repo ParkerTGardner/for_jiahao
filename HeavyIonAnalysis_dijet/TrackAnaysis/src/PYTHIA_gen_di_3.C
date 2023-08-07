@@ -430,10 +430,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         double jet2_dau_pt=0;
 
                         if (deltaPhi <= M_PI){
-                            double jet2_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][A_trk2], (double)(*genDau_eta)[jjet][A_trk2], M_PI-(double)(*genDau_phi)[jjet][A_trk2]);
+                            jet2_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][A_trk2], (double)(*genDau_eta)[jjet][A_trk2], M_PI-(double)(*genDau_phi)[jjet][A_trk2]);
                         }
                         else{
-                            double jet2_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][A_trk2], (double)(*genDau_eta)[jjet][A_trk2], (double)(*genDau_phi)[jjet][A_trk2]-M_PI);
+                            jet2_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][A_trk2], (double)(*genDau_eta)[jjet][A_trk2], (double)(*genDau_phi)[jjet][A_trk2]-M_PI);
                         }
 
                         for(int i = 0; i < ptbin; i++){
@@ -510,23 +510,23 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                             if (deltaJetPhi>M_PI){
-                                double T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]-M_PI);   
+                                T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]-M_PI);   
                                 if(T_jet_dau_pt >3.0) continue;
 
                                 //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
-                                double T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]-M_PI);
+                                T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]-M_PI);
                                 //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                                double T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]-M_PI);
+                                T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]-M_PI);
 
                             }
                             else{
-                                double T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], M_PI-(double)(*genDau_phi)[jjet][T_trk]);  
+                                T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], M_PI-(double)(*genDau_phi)[jjet][T_trk]);  
                                 if(T_jet_dau_pt >3.0) continue;
 
                                 //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
-                                double T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], M_PI-(double)(*genDau_phi)[jjet][T_trk]);
+                                T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], M_PI-(double)(*genDau_phi)[jjet][T_trk]);
                                 //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                                double T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], M_PI-(double)(*genDau_phi)[jjet][T_trk]); 
+                                T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], M_PI-(double)(*genDau_phi)[jjet][T_trk]); 
                             }
                             if(T_jet_dau_eta > track_eta_lim) continue;
                             

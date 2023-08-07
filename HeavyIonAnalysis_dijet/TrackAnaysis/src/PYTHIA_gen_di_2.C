@@ -179,7 +179,7 @@ void MyClass::Loop(int job, std::string fList){
     std::cout << "Starting event loop" << std::endl;
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
 
-
+    double jet_nor_factor=0;
 //main loops
     for(int f = 0; f<fileList.size(); f++){
 //processing data from CMS
@@ -198,7 +198,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
         // ENTERING EVENT LOOP
         //for(int f = 0; f<fileList.size(); f++){
 
-        double jet_nor_factor=0;
+ 
         for (Long64_t ievent=0; ievent <nentries; ievent ++){
                   Long64_t jevent = LoadTree(ievent);
                   nb = fChain->GetEntry(ievent);   nbytes += nb;
@@ -476,17 +476,17 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         if(fabs((*genDau_eta)[ijet][T_trk]) > 2.4) continue;
                         if(fabs((*genDau_pt)[ijet][T_trk])  < 0.3)     continue;
                         //if((*highPurity)[ijet][A_trk] == 0) continue;
-                        double T_jet_dau_pt  = 0;
-                        double T_jet_dau_eta = 0;
-                        double T_jet_dau_phi = 0;
+                        double T_jet_dau_pt  = 0.0;
+                        double T_jet_dau_eta = 0.0;
+                        double T_jet_dau_phi = 0.0;
 
-                        double T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
+                        T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
 
                         if(T_jet_dau_pt >3.0) continue;
                         //if(T_jet_dau_pt <0.5) continue;
 
-                        double T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
-                        double T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
+                        T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
+                        T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
                         if(T_jet_dau_eta > track_eta_lim) continue;
 
                         //correlation function
