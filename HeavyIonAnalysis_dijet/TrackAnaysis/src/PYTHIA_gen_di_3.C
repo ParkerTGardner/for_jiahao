@@ -277,7 +277,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     // first particle loop
                     //AA:
-                for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
+                for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
                     //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
                     if((*genDau_chg)[ijet][A_trk] == 0) continue;
                     if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
@@ -457,7 +457,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     // first particle loop
 
-                    for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
+                    for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
                         //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
                         if((*genDau_chg)[ijet][A_trk] == 0) continue;
                         if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
