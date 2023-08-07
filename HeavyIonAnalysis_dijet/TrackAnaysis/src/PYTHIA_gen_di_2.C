@@ -179,7 +179,7 @@ void MyClass::Loop(int job, std::string fList){
     std::cout << "Starting event loop" << std::endl;
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
 
-    double jet_nor_factor=0;
+    double jt_nor_factor=0;
 //main loops
     for(int f = 0; f<fileList.size(); f++){
 //processing data from CMS
