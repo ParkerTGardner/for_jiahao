@@ -361,7 +361,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                 int k_PU=0; // why k_PU here
 
-                                hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, fabs(jet_dau_pt), 1.0/ ( jt_nor_factor*Ntrig[i][j] ));
+                                hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, fabs(jet_dau_pt), 1.0/ Ntrig[i][j] );
                             }
                         }
                     }
@@ -408,12 +408,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][j] == 3){
                                           hPairs->Fill(i,j);
                                           int k_PU=0;
-                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
-                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
-                                          hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ( fabs(jet_dau_pt*T_jet_dau_eta)/(jt_nor_factor*Ntrig[i][j])));
+                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ( fabs(jet_dau_pt*T_jet_dau_pt)/(jt_nor_factor*Ntrig[i][j])));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ( fabs(jet_dau_pt*T_jet_dau_pt)/(jt_nor_factor*Ntrig[i][j])));
+                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ( fabs(jet_dau_pt*T_jet_dau_pt)/(jt_nor_factor*Ntrig[i][j])));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ( fabs(jet_dau_pt*T_jet_dau_pt)/(jt_nor_factor*Ntrig[i][j])));
+                                          hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ( fabs(jet_dau_pt*T_jet_dau_pt)/(jt_nor_factor*Ntrig[i][j])));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ( fabs(jet_dau_pt*T_jet_dau_pt)/(jt_nor_factor*Ntrig[i][j])));
 
                                       //}}}
                                     // This is the mixed charge signal. Each duaghter will serve as a trigger so regular Ntrig suffices.
@@ -464,12 +464,12 @@ std::cout<< "made 4" << endl;
                                               double WdeltaEta = (A_ETA[i]-A_ETA[j]);
                                               double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-A_PHI[j])));
 
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//./XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, -WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, -WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1*A_Jt[i]*A_Jt[j]);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi, 1*A_Jt[i]*A_Jt[j]/jt_nor_factor);//./XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi, 1*A_Jt[i]*A_Jt[j]/jt_nor_factor);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, -WdeltaPhi, 1*A_Jt[i]*A_Jt[j]/jt_nor_factor);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, -WdeltaPhi, 1*A_Jt[i]*A_Jt[j]/jt_nor_factor);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1*A_Jt[i]*A_Jt[j]/jt_nor_factor);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1*A_Jt[i]*A_Jt[j]/jt_nor_factor);//../XENT);
 
                                           }
                                       }

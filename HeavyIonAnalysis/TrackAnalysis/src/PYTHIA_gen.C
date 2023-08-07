@@ -404,12 +404,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][j] == 3){
                                           hPairs->Fill(i,j);
                                           int k_PU=0;
-                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ( fabs(jet_dau_pt*T_jet_dau_eta)/Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ( fabs(jet_dau_pt*T_jet_dau_eta)/Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ( fabs(jet_dau_pt*T_jet_dau_eta)/Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ( fabs(jet_dau_pt*T_jet_dau_eta)/Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ( fabs(jet_dau_pt*T_jet_dau_eta)/Ntrig[i][j]));
-                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ( fabs(jet_dau_pt*T_jet_dau_eta)/Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ( fabs(jet_dau_pt*T_jet_dau_pt)/Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ( fabs(jet_dau_pt*T_jet_dau_pt)/Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ( fabs(jet_dau_pt*T_jet_dau_pt)/Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ( fabs(jet_dau_pt*T_jet_dau_pt)/Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ( fabs(jet_dau_pt*T_jet_dau_pt)/Ntrig[i][j]));
+                                          hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ( fabs(jet_dau_pt*T_jet_dau_pt)/Ntrig[i][j]));
 
                                       //}}}
                                     // This is the mixed charge signal. Each duaghter will serve as a trigger so regular Ntrig suffices.
