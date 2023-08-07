@@ -178,7 +178,7 @@ cout << "TEST 1" << endl;
     std::cout << "Starting event loop" << std::endl;
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
 
-
+    double jt_nor_factor = 0.0 ;
 //main loops
     for(int f = 0; f<fileList.size(); f++){
 //processing data from CMS
@@ -283,7 +283,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                 // first particle loop
-                double jt_nor_factor = 0.0 ;
+
                 for(int  A_trk=0; A_trk < NNtrk; A_trk++ ){
                     if((*genDau_chg)[ijet][A_trk] == 0) continue;
                     if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
