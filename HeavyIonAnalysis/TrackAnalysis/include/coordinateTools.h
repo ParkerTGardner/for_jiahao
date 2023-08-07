@@ -65,6 +65,16 @@ double phiWRTJet(TVector3 jet, TVector3 p){
   else return -phi;
 }
 
+double phiWRTJet( double jetPt, double jetEta, double jetPhi, double trkPt, double trkEta, double trkPhi){
+  TVector3 j = TVector3(0,0,0);
+  j.SetPtEtaPhi( jetPt, jetEta, jetPhi);
+
+  TVector3 trk = TVector3(0,0,0);
+  trk.SetPtEtaPhi( trkPt, trkEta, trkPhi);
+  return phiWRTJet( j, trk);
+}
+
+
 #endif
 
   
