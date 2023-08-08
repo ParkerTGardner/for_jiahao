@@ -233,59 +233,61 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                 // filling distributions within track bins
                 // ALSO VERY IMPORTANTLY changing the tkBool to 1 for this particular jet. This will be useful later when I create conditions for filling other histograms.
-                int tkBool[trackbin] = {0};
-                int Ntrig[trackbin][ptbin] = {0};
-                int NtrigM[trackbin][ptbin] = {0};
-                int NtrigP[trackbin][ptbin] = {0};
-                int A_ptBool[NNtrk1][ptbin] = {0};//NNtrk,ptbin
-
-
-                int n_G_ChargeMult_count  = 0;
-                int n_G_ChargeMult_count1 = 0;
-
-
-
-
-                for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
-                    //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
-                    if((*genDau_chg)[ijet][A_trk] == 0) continue;
-                    if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
-                    if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
-
-                        //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                    double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
-
-                    if(jet_dau_pt >3.0) continue;// why we drop this
-
-
-                    for(int i = 0; i < ptbin; i++){
-                        if(jet_dau_pt >= ptbinbounds_lo[i] && jet_dau_pt < ptbinbounds_hi[i]){
-                            A_ptBool[A_trk][i] = 1;
-                        }
-                    }
-
-                    // for(int i = 0; i < trackbin; i++){
-                    //     for(int j = 0; j < ptbin; j++){
-                    //         if(tkBool[i] + A_ptBool[A_trk][j] == 2){
-                    //             Ntrig[i][j] += 1;
-                    //             if((*genDau_chg)[ijet][A_trk] > 0){
-                    //                 NtrigP[i][j] += 1;
-                    //             }
-                    //             if((*genDau_chg)[ijet][A_trk] < 0){
-                    //                 NtrigM[i][j] += 1;
-                    //             }
-                    //         }
-                    //     }
-                    // }
-
-                    for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
-                        if((*genDau_chg)[Gjet][G_trk] == 0) continue;
-                        if(fabs((*genDau_pt)[Gjet][G_trk])  < 0.3)     continue;
-                        if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
-                        n_G_ChargeMult_count1 += 1;
-                    }
-                    if(A_trk == NNtrk1 - 1) continue;
+                
+                int n_G_ChargeMult_count = 0;
+                int n_G_ChargeMult_count1 =0;
+                
+                
+                for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
+                    if((*genDau_chg)[Gjet][G_trk] == 0) continue;
+                    if(fabs((*genDau_pt)[Gjet][G_trk])  < 0.3)     continue;
+                    if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
+                    n_G_ChargeMult_count1 += 1;
                 }
+
+
+
+
+                // for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
+                //     //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
+                //     if((*genDau_chg)[ijet][A_trk] == 0) continue;
+                //     if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
+                //     if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
+
+                //         //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
+                //     double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
+
+                //     if(jet_dau_pt >3.0) continue;// why we drop this
+
+
+                //     for(int i = 0; i < ptbin; i++){
+                //         if(jet_dau_pt >= ptbinbounds_lo[i] && jet_dau_pt < ptbinbounds_hi[i]){
+                //             A_ptBool[A_trk][i] = 1;
+                //         }
+                //     }
+
+                //     // for(int i = 0; i < trackbin; i++){
+                //     //     for(int j = 0; j < ptbin; j++){
+                //     //         if(tkBool[i] + A_ptBool[A_trk][j] == 2){
+                //     //             Ntrig[i][j] += 1;
+                //     //             if((*genDau_chg)[ijet][A_trk] > 0){
+                //     //                 NtrigP[i][j] += 1;
+                //     //             }
+                //     //             if((*genDau_chg)[ijet][A_trk] < 0){
+                //     //                 NtrigM[i][j] += 1;
+                //     //             }
+                //     //         }
+                //     //     }
+                //     // }
+
+                //     for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
+                //         if((*genDau_chg)[Gjet][G_trk] == 0) continue;
+                //         if(fabs((*genDau_pt)[Gjet][G_trk])  < 0.3)     continue;
+                //         if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
+                //         n_G_ChargeMult_count1 += 1;
+                //     }
+                //     // if(A_trk == NNtrk1 - 1) continue;
+                // }
 
 
 
@@ -314,14 +316,17 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     }
 
                     n_G_ChargeMult_count = max(n_G_ChargeMult_count1 , n_G_ChargeMult_count2) ;
-                
-                    // Multiplicity = n_jet1+n_jet2;
 
-                    // what is hBinDist_gen and hBinDist_gen_single here
-                    // category the gen_jet by the multiplicity and record in tkBool, hJet_Pass, the ith hBinDist_gen records the charge mul
-                    // we could calculate
 
                     hBinDist_gen_single            ->Fill(n_G_ChargeMult_count);
+
+
+                    int tkBool[trackbin] = {0};
+                    int Ntrig[trackbin][ptbin] = {0};
+                    int NtrigM[trackbin][ptbin] = {0};
+                    int NtrigP[trackbin][ptbin] = {0};
+                    int A_ptBool[NNtrk][ptbin] = {0};
+                    int T_ptBool[NNtrk2][ptbin]     = {0};// This is for the AB
 
                     for(int i = 0; i < trackbin; i++){
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
@@ -332,14 +337,53 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         }
                     }
                 
-                
 
-                    // int Ntrig[trackbin][ptbin] = {0};
-                    // int NtrigM[trackbin][ptbin] = {0};
-                    // int NtrigP[trackbin][ptbin] = {0};
-                    // int A_ptBool[NNtrk][ptbin] = {0};
-                    int T_ptBool[NNtrk2][ptbin]     = {0};// This is for the AB
-                    int Ntrig_temp[trackbin][ptbin] = {0};
+                    
+                    
+                    
+
+
+                    for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
+                    //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
+                        if((*genDau_chg)[ijet][A_trk] == 0) continue;
+                        if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
+                        if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
+
+                            //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
+                        double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
+
+                        if(jet_dau_pt >3.0) continue;// why we drop this
+
+
+                        for(int i = 0; i < ptbin; i++){
+                            if(jet_dau_pt >= ptbinbounds_lo[i] && jet_dau_pt < ptbinbounds_hi[i]){
+                                A_ptBool[A_trk][i] = 1;
+                            }
+                        }
+
+                        for(int i = 0; i < trackbin; i++){
+                            for(int j = 0; j < ptbin; j++){
+                                if(tkBool[i] + A_ptBool[A_trk][j] == 2){
+                                    Ntrig[i][j] += 1;
+                                    if((*genDau_chg)[ijet][A_trk] > 0){
+                                        NtrigP[i][j] += 1;
+                                    }
+                                    if((*genDau_chg)[ijet][A_trk] < 0){
+                                        NtrigM[i][j] += 1;
+                                    }
+                                }
+                            }
+                        }    
+                    }
+
+                    
+                    // Multiplicity = n_jet1+n_jet2;
+
+
+                    
+                
+                
+                  
                     
                     for(long int T_trk=0; T_trk< NNtrk2; T_trk++ ){
 
@@ -379,11 +423,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             }
                         }
 
-                        for(int i = 0; i < trackbin; i++){
-                            for(int j = 0; j < ptbin; j++){
-                                Ntrig_temp[i][j] = Ntrig[i][j];
-                            }
-                        }
+                        
                         
                         for(int i = 0; i < trackbin; i++){
                             for(int j = 0; j < ptbin; j++){
@@ -489,7 +529,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
 
-                        if(A_trk == NNtrk1 - 1) continue;
+                        
 
                         //A_trk is the first track from the first loop
                         //T_trk is the second loop
@@ -569,6 +609,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 
                         }//T_trk;  AB
 
+
                         for(long int T_trk=A_trk+1; T_trk< NNtrk1; T_trk++ ){
 
                             if((*genDau_chg)[ijet][T_trk] == 0) continue;
@@ -614,11 +655,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     }
 
-                    for(int i = 0; i < trackbin; i++){
-                        for(int j = 0; j < ptbin; j++){
-                            Ntrig[i][j] = Ntrig_temp[i][j];
-                        }
-                    }
 
 
 
