@@ -218,8 +218,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
             //ENTERING JET LOOP
 
-            //for(int f = 0; f<fileList.size(); f++){
-            //for (Long64_t ievent=0; ievent <nentries; ievent ++){
+           //in this first loop I choose the jetA and count the trks of A 
             for(int kjet=0; kjet < genJetPt->size(); kjet++){
 
                 int ijet = kjet;
@@ -231,9 +230,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 if( fabs((*genJetEta)[ijet]) > jetEtaCut ) continue;
                 if( (*genJetPt)[ijet] < jetPtCut_Jet   ) continue;
 
-                // filling distributions within track bins
-                // ALSO VERY IMPORTANTLY changing the tkBool to 1 for this particular jet. This will be useful later when I create conditions for filling other histograms.
-                
+                //    count the trks of A  
                 int n_G_ChargeMult_count = 0;
                 int n_G_ChargeMult_count1 =0;
                 
@@ -245,67 +242,28 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     n_G_ChargeMult_count1 += 1;
                 }
 
-
-
-
-                // for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
-                //     //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
-                //     if((*genDau_chg)[ijet][A_trk] == 0) continue;
-                //     if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
-                //     if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
-
-                //         //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                //     double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
-
-                //     if(jet_dau_pt >3.0) continue;// why we drop this
-
-
-                //     for(int i = 0; i < ptbin; i++){
-                //         if(jet_dau_pt >= ptbinbounds_lo[i] && jet_dau_pt < ptbinbounds_hi[i]){
-                //             A_ptBool[A_trk][i] = 1;
-                //         }
-                //     }
-
-                //     // for(int i = 0; i < trackbin; i++){
-                //     //     for(int j = 0; j < ptbin; j++){
-                //     //         if(tkBool[i] + A_ptBool[A_trk][j] == 2){
-                //     //             Ntrig[i][j] += 1;
-                //     //             if((*genDau_chg)[ijet][A_trk] > 0){
-                //     //                 NtrigP[i][j] += 1;
-                //     //             }
-                //     //             if((*genDau_chg)[ijet][A_trk] < 0){
-                //     //                 NtrigM[i][j] += 1;
-                //     //             }
-                //     //         }
-                //     //     }
-                //     // }
-
-                //     for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
-                //         if((*genDau_chg)[Gjet][G_trk] == 0) continue;
-                //         if(fabs((*genDau_pt)[Gjet][G_trk])  < 0.3)     continue;
-                //         if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
-                //         n_G_ChargeMult_count1 += 1;
-                //     }
-                //     // if(A_trk == NNtrk1 - 1) continue;
-                // }
-
-
-
+                // Enter the jetB
+                // Actually most of our calculation is in this loop
                 for(int jjet=0; (jjet< genJetPt->size()); jjet++){
+
+                    // choose the jetB                    
                     if (jjet == ijet) continue;
                     if( fabs((*genJetEta)[jjet]) > jetEtaCut ) continue;
-                    if( (*genJetPt)[jjet] < jetPtCut_Jet   ) continue;        
+                    if( (*genJetPt)[jjet] < jetPtCut_Jet   ) continue;      
+
                     double deltaJetPhi = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
                     double deltaJetEta = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
-                    double deltaJetR   = sqrt( pow((deltaJetPhi-M_PI),2) + pow(deltaJetEta,2));
-                    hdeltaR -> Fill(deltaJetR);
-
-
-                    if (deltaJetR > 0.4) continue;
-                    long int NNtrk2 = (genDau_pt->at(jjet)).size();
                     
-                    //G_trk end
+                    double deltaJetR   = sqrt( pow(deltaJetPhi,2) + pow(deltaJetEta,2));
+                    hdeltaR -> Fill(deltaJetR);
+                    // We only consider the back-to-back system, so we choose deltaeta<0
+                    if (deltaJetEta > 0) continue;
+                    if (deltaJetR > 0.4) continue;
 
+                    long int NNtrk2 = (genDau_pt->at(jjet)).size();
+
+
+                    // Calculate the trks in jetB
                     int n_G_ChargeMult_count2 = 0;
                     for(int G_trk2=0; G_trk2 < NNtrk2; G_trk2++ ){
                         if((*genDau_chg)[jjet][G_trk2] == 0) continue;
@@ -314,18 +272,22 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         n_G_ChargeMult_count2 += 1;
 
                     }
-
+                    // Here we define the mult of AB as max(A,B)
                     n_G_ChargeMult_count = max(n_G_ChargeMult_count1 , n_G_ChargeMult_count2) ;
 
 
                     hBinDist_gen_single            ->Fill(n_G_ChargeMult_count);
 
 
+                    //some useful bools 
+                    // We have to do this here because we need to get correct mult first
+                    // and then get tktool, Ntrig
+
                     int tkBool[trackbin] = {0};
                     int Ntrig[trackbin][ptbin] = {0};
                     int NtrigM[trackbin][ptbin] = {0};
                     int NtrigP[trackbin][ptbin] = {0};
-                    int A_ptBool[NNtrk1][ptbin] = {0};
+                    int A_ptBool[NNtrk1][ptbin] = {0};    //
                     int T_ptBool[NNtrk2][ptbin]     = {0};// This is for the AB
 
                     for(int i = 0; i < trackbin; i++){
@@ -342,24 +304,27 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     
                     
 
-
+                    // calculate the A_ptbool pile up Ntrig in jetA first,
+                    //and then we do this in jetB so that we can get the complete Ntrig
                     for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
-                    //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
+                    
                         if((*genDau_chg)[ijet][A_trk] == 0) continue;
                         if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
                         if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
 
-                            //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
+                            //     daughter pt with respect to the jetA axis                 pt With Respect To JetA
                         double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
 
                         if(jet_dau_pt >3.0) continue;// why we drop this
 
-
+                        // find A_trk in i ptbin
                         for(int i = 0; i < ptbin; i++){
                             if(jet_dau_pt >= ptbinbounds_lo[i] && jet_dau_pt < ptbinbounds_hi[i]){
                                 A_ptBool[A_trk][i] = 1;
                             }
                         }
+
+                        // for ith trkbin and jth ptbin, pile up the Ntrig of jetA
 
                         for(int i = 0; i < trackbin; i++){
                             for(int j = 0; j < ptbin; j++){
@@ -377,13 +342,13 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     }
 
                     
-                    // Multiplicity = n_jet1+n_jet2;
+                    // Multiplicity = max(jetA,jetB) ;
 
 
                     
                 
                 
-                  
+                    // Get the T_ptBool
                     
                     for(long int T_trk=0; T_trk< NNtrk2; T_trk++ ){
 
@@ -395,26 +360,16 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         double T_jet_dau_eta = 0;
                         double T_jet_dau_phi = 0;
 
+                        // pt, eta phi wrt Jet A, here we consider eta as -eta (reflect)
+                        
+                        T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], -(double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);  
+                        if(T_jet_dau_pt >3.0) continue;
 
-                        if (deltaJetPhi>M_PI){
-                            T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]-M_PI);   
-                            if(T_jet_dau_pt >3.0) continue;
-
-                            //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
-                            T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]-M_PI);
-                            //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                            T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]-M_PI);
-
-                        }
-                        else{
-                            T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], M_PI-(double)(*genDau_phi)[jjet][T_trk]);  
-                            if(T_jet_dau_pt >3.0) continue;
-
-                            //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
-                            T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], M_PI-(double)(*genDau_phi)[jjet][T_trk]);
-                            //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                            T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], M_PI-(double)(*genDau_phi)[jjet][T_trk]); 
-                        }
+                        //     daughter eta with respect to the jetA axis                 eta With Respect To JetA 
+                        T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], -(double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);
+                        //     daughter phi with respect to the jetA axis                 phi With Respect To JetA
+                        T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], -(double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]); 
+                        
                         
                         
                         for(int i = 0; i < ptbin; i++){
@@ -423,7 +378,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             }
                         }
 
-                        
+                        // The same as for jetA
                         
                         for(int i = 0; i < trackbin; i++){
                             for(int j = 0; j < ptbin; j++){
@@ -442,6 +397,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 
                     }
 
+                    // Here should be the final Ntrig for jetAB
+
                     for(int i = 0; i < trackbin; i++){
                         for(int j = 0; j < ptbin; j++){
                             hNtrig->Fill(i,j,Ntrig[i][j]);
@@ -449,54 +406,20 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     }
 
 
-                    
+                    //Main loop for corr func
 
+                    // first particle loop, here first particle is only from jetA, and the second just from jetB
+                    // Actually if we go over all the jet and get jet pairs, and we will get jetAB and jetBA
+                    // Here we only calculate corr(dau_A,dau_A) and corr(dau_A,dau_B)
+                    // when kjet == jjet and jjet == kjet must suitable 
+                    // and we can get corr(dau_B, dau_A) and corr(dau_B, dau_B) this time
+                    // for example, here mulA=mulB=5, if all daus suitable we will get 2C10=45 pairs
+                    // and for the first loop we wiil get 2C5+ 5*5 pairs, 
+                    // and we should weight the corr(dau_A,dau_B) 1/2 to avoid double-counting
 
-                    
-
-
-
-
-
-
-
-
-
-
-
-                    // VERY IMPORTANT calculating daughter pt wrt to jet axis.
-                    // So this needs to be 2d vector, for pt bin and for daughter index.
-                    // In each case I create a true false for that daughter falling in to the specific pt bin.
-                    // Note this is NOT jet x daughter. It's pt bin x daughter
-
-                    //for(int f = 0; f<fileList.size(); f++){
-                    //for (Long64_t ievent=0; ievent <nentries; ievent ++){
-                    //for(int ijet=0; ijet < jetCounter; ijet++){
-
-                    //opening each file
-                    //opening the tree
-                    //building the histograms
-                    //opening the events (pp)
-                    //loading each jet in the event
-                    //defining jet multiplicity
-                    //for each particle in the jet,we build the DeltaX DeltaY to every other particle
-                    //instead of X and Y we use Phi and Eta, pseudo rapidity
-
-
-              
-
-
-                    // }
-                    //continuation of main loops. Here is where the 2D Corr plots are created using the above booleans and 
-
-                    
-
-
-
-                    // first particle loop
 
                     for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
-                        //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
+                        
                         if((*genDau_chg)[ijet][A_trk] == 0) continue;
                         if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
                         if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
@@ -517,6 +440,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         double jet_dau_theta = 2*ATan(Exp(-(jet_dau_eta)));
 
 
+                        // the background should be just from this single jet loop
+                        // Actully because of the jjet loop, it will be overcounting the const times( the number of jets)
+                        // And it has no effect at all
+
                         for(int i = 0; i < trackbin; i++){
                             for(int j = 0; j < ptbin; j++){
                                 if(tkBool[i] + A_ptBool[A_trk][j] == 2){
@@ -535,10 +462,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         //T_trk is the second loop
 
 
-                        //n^2 complexity, second loop through all the particles
-                        // Here is different if we choose AB or BA, because we get AAs, ABs for AB jet 
-                        // and BA, BB for BA jet 
-
+                        // This is for corr(dau_A, dau_B)
                         for(long int T_trk = 0; T_trk < NNtrk2; T_trk++ ){
 
                             if((*genDau_chg)[jjet][T_trk] == 0) continue;
@@ -552,31 +476,22 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             double T_jet_dau_phi = 0;
 
 
-                            if (deltaJetPhi>M_PI){
-                                T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]-M_PI);   
-                                if(T_jet_dau_pt >3.0) continue;
+                            
+                            T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], -(double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);   
+                            if(T_jet_dau_pt >3.0) continue;
 
-                                //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
-                                T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]-M_PI);
-                                //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                                T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]-M_PI);
+                            //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
+                            T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], -(double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);
+                            //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
+                            T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], -(double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);
 
-                            }
-                            else{
-                                T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], M_PI-(double)(*genDau_phi)[jjet][T_trk]);  
-                                if(T_jet_dau_pt >3.0) continue;
-
-                                //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
-                                T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], M_PI-(double)(*genDau_phi)[jjet][T_trk]);
-                                //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                                T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], M_PI-(double)(*genDau_phi)[jjet][T_trk]); 
-                            }
+                            
+                            
                             if(T_jet_dau_eta > track_eta_lim) continue;
                             
 
                             //correlation function
-                            //for every A track, we do this with each T track, so roughly n^2
-                                                //A_trk        T_trk
+                                             //A_trk(dau_A)  T_trk(dau_B)
                             double deltaEta = (jet_dau_eta - T_jet_dau_eta);
                                                                         //A_trk        T_trk
                             double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
@@ -610,6 +525,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         }//T_trk;  AB
 
 
+                        // corr(dau_A,dau_A)
                         for(long int T_trk=A_trk+1; T_trk< NNtrk1; T_trk++ ){
 
                             if((*genDau_chg)[ijet][T_trk] == 0) continue;
@@ -636,31 +552,28 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][j] == 3){
                                             hPairs->Fill(i,j);
                                             int k_PU=0;
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ( 0.5/Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ( 0.5/Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ( 0.5/Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ( 0.5/Ntrig[i][j])); 
-                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ( 0.5/Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ( 0.5/Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ( 1.0/Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ( 1.0/Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ( 1.0/Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ( 1.0/Ntrig[i][j])); 
+                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ( 1.0/Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ( 1.0/Ntrig[i][j]));
 
-                                        //}}}
-                                        // This is the mixed charge signal. Each duaghter will serve as a trigger so regular Ntrig suffices.
-                                        // EPdraw will constitute sampling from EPD_P and EPD_M for the pseudo particles. 
-                                        // So that I take random phi and eta from P and random Phi and Eta from M and make a opposite sign difference.
+                                    
                                     }
                                 }
                             }
                         }//T_trk AA
 
 
-                    }
+                    }//A_trk
 
 
 
 
 
                 }//jjet
-                // }//A_trk
+             
             }//kjet
                     }//Event
                     fFile->Close();
