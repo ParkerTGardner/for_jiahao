@@ -278,50 +278,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
 
-
-
-
-                    // first particle loop
-                    //AA:
-                for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
-                    //this should be redundant if it passes the bools above? i guess it helps skip daughters faster. maybe i can reindex and run through the daughters quickly by aranging all the charged dauhghter sat the front.
-                    if((*genDau_chg)[ijet][A_trk] == 0) continue;
-                    if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
-                    if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
-
-                        //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                    double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
-
-
-                        //if(jet_dau_pt >3.0) continue;
-
-                    if(jet_dau_pt >3.0) continue;// why we drop this
-
-                    //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
-                    double jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
-                    //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                    double jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
-
-                    double jet_dau_theta = 2*ATan(Exp(-(jet_dau_eta)));
-
-                    if(jet_dau_eta > track_eta_lim) continue;
-                    for(int i = 0; i < trackbin; i++){
-                        for(int j = 0; j < ptbin; j++){
-                            if(tkBool[i] + A_ptBool[A_trk][j] == 2){
-                                int k_PU=0;
-
-                                hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, 1.0/( Ntrig[i][j] ));
-                            }
-                        }
-                    }
-
-                    
-
-                    if(A_trk == NNtrk1 - 1) continue;
-
-
-                }//Ajet and EPDraw:
-
                 for(int jjet=0; (jjet!=ijet)&&(jjet< genJetPt->size()); jjet++){
                     if( fabs((*genJetEta)[jjet]) > jetEtaCut ) continue;
                     if( (*genJetPt)[jjet] < jetPtCut_Jet   ) continue;        
@@ -441,11 +397,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     }
 
 
-                    for(int i = 0; i < trackbin; i++){
-                        for(int j = 0; j < ptbin; j++){
-                            Ntrig[i][j] = Ntrig_temp[i][j];
-                        }
-                    }
+                    
+
+
+                    
 
 
 
@@ -508,6 +463,17 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         double jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
 
                         double jet_dau_theta = 2*ATan(Exp(-(jet_dau_eta)));
+
+
+                        for(int i = 0; i < trackbin; i++){
+                            for(int j = 0; j < ptbin; j++){
+                                if(tkBool[i] + A_ptBool[A_trk][j] == 2){
+                                    int k_PU=0;
+
+                                    hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, 1.0/( Ntrig[i][j] ));
+                                }
+                            }
+                        }
 
 
 
@@ -635,6 +601,16 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                     }
+
+                    for(int i = 0; i < trackbin; i++){
+                        for(int j = 0; j < ptbin; j++){
+                            Ntrig[i][j] = Ntrig_temp[i][j];
+                        }
+                    }
+
+
+
+
                 }//jjet
                 // }//A_trk
             }//kjet
