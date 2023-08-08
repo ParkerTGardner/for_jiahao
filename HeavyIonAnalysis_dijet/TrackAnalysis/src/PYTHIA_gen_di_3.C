@@ -240,6 +240,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 int A_ptBool[NNtrk1][ptbin] = {0};//NNtrk,ptbin
 
 
+                int n_G_ChargeMult_count  = 0;
+                int n_G_ChargeMult_count1 = 0;
+
+
 
 
                 for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
@@ -273,8 +277,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     //         }
                     //     }
                     // }
-                    int n_G_ChargeMult_count  = 0;
-                    int n_G_ChargeMult_count1 = 0;
+
                     for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
                         if((*genDau_chg)[Gjet][G_trk] == 0) continue;
                         if(fabs((*genDau_pt)[Gjet][G_trk])  < 0.3)     continue;
