@@ -254,6 +254,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     double deltaJetPhi = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], -(double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]+M_PI);
                     double deltaJetEta = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], -(double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]+M_PI);
                     
+                    //if we take symmectric jet and deltaJetPhi<0, it means the jet just situates nearside
+                    if (deltaJetPhi<0) deltaJetPhi += M_PI;
                     double deltaJetR   = sqrt( pow(deltaJetPhi,2) + pow(deltaJetEta,2));
                     hdeltaR -> Fill(deltaJetR);
                     // We only consider the back-to-back system, so we choose deltaeta<0
