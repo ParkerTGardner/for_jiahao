@@ -313,7 +313,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     }
 
-                    n_G_ChargeMult_count =  n_G_ChargeMult_count1 + n_G_ChargeMult_count2;
+                    n_G_ChargeMult_count = max(n_G_ChargeMult_count1 , n_G_ChargeMult_count2) ;
                 
                     // Multiplicity = n_jet1+n_jet2;
 
