@@ -273,7 +273,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     //         }
                     //     }
                     // }
-                    int n_G_ChargeMult_count  = 0
+                    int n_G_ChargeMult_count  = 0;
                     int n_G_ChargeMult_count1 = 0;
                     for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
                         if((*genDau_chg)[Gjet][G_trk] == 0) continue;
