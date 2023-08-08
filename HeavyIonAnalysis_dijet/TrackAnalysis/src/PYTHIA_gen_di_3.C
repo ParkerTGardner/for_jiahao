@@ -289,7 +289,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
 
-                for(int jjet=0; (jjet!=ijet)&&(jjet< genJetPt->size()); jjet++){
+                for(int jjet=0; (jjet< genJetPt->size()); jjet++){
+                    if (jjet == ijet) continue;
                     if( fabs((*genJetEta)[jjet]) > jetEtaCut ) continue;
                     if( (*genJetPt)[jjet] < jetPtCut_Jet   ) continue;        
                     double deltaJetPhi = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
