@@ -260,18 +260,26 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         }
                     }
 
-                    for(int i = 0; i < trackbin; i++){
-                        for(int j = 0; j < ptbin; j++){
-                            if(tkBool[i] + A_ptBool[A_trk][j] == 2){
-                                Ntrig[i][j] += 1;
-                                if((*genDau_chg)[ijet][A_trk] > 0){
-                                    NtrigP[i][j] += 1;
-                                }
-                                if((*genDau_chg)[ijet][A_trk] < 0){
-                                    NtrigM[i][j] += 1;
-                                }
-                            }
-                        }
+                    // for(int i = 0; i < trackbin; i++){
+                    //     for(int j = 0; j < ptbin; j++){
+                    //         if(tkBool[i] + A_ptBool[A_trk][j] == 2){
+                    //             Ntrig[i][j] += 1;
+                    //             if((*genDau_chg)[ijet][A_trk] > 0){
+                    //                 NtrigP[i][j] += 1;
+                    //             }
+                    //             if((*genDau_chg)[ijet][A_trk] < 0){
+                    //                 NtrigM[i][j] += 1;
+                    //             }
+                    //         }
+                    //     }
+                    // }
+                    int n_G_ChargeMult_count  = 0
+                    int n_G_ChargeMult_count1 = 0;
+                    for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
+                        if((*genDau_chg)[Gjet][G_trk] == 0) continue;
+                        if(fabs((*genDau_pt)[Gjet][G_trk])  < 0.3)     continue;
+                        if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
+                        n_G_ChargeMult_count1 += 1;
                     }
                     if(A_trk == NNtrk1 - 1) continue;
                 }
@@ -289,19 +297,19 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     if (deltaJetR > 0.4) continue;
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
-                    int n_G_ChargeMult_count =0;
-                    for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
-                        if((*genDau_chg)[Gjet][G_trk] == 0) continue;
-                        if(fabs((*genDau_pt)[Gjet][G_trk])  < 0.3)     continue;
-                        if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
-                        for(int G_trk2=0; G_trk2 < NNtrk2; G_trk2++ ){
-                            if((*genDau_chg)[jjet][G_trk2] == 0) continue;
-                            if(fabs((*genDau_pt)[jjet][G_trk2])  < 0.3)     continue;
-                            if(fabs((*genDau_eta)[jjet][G_trk2]) > 2.4)     continue;
-                            n_G_ChargeMult_count += 1;
+                    
+                    //G_trk end
 
-                        }
-                    }//G_trk end
+                    int n_G_ChargeMult_count2 = 0;
+                    for(int G_trk2=0; G_trk2 < NNtrk2; G_trk2++ ){
+                        if((*genDau_chg)[jjet][G_trk2] == 0) continue;
+                        if(fabs((*genDau_pt)[jjet][G_trk2])  < 0.3)     continue;
+                        if(fabs((*genDau_eta)[jjet][G_trk2]) > 2.4)     continue;
+                        n_G_ChargeMult_count2 += 1;
+
+                    }
+
+                    n_G_ChargeMult_count =  n_G_ChargeMult_count1 + n_G_ChargeMult_count2;
                 
                     // Multiplicity = n_jet1+n_jet2;
 
