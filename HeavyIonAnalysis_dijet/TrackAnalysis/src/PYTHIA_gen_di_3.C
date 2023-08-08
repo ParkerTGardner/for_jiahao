@@ -325,7 +325,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     int Ntrig[trackbin][ptbin] = {0};
                     int NtrigM[trackbin][ptbin] = {0};
                     int NtrigP[trackbin][ptbin] = {0};
-                    int A_ptBool[NNtrk][ptbin] = {0};
+                    int A_ptBool[NNtrk1][ptbin] = {0};
                     int T_ptBool[NNtrk2][ptbin]     = {0};// This is for the AB
 
                     for(int i = 0; i < trackbin; i++){
