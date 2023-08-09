@@ -263,7 +263,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     
                     // double deltaJetR1   = sqrt( pow((deltaJetPhi),2) + pow(deltaJetEta,2));
                     // double deltaJetR2   = sqrt( pow((M_PI-deltaJetPhi),2) + pow(deltaJetEta,2));
-                    double deltaJetR = M_PI-((double)(*genJetPhi)[ijet] - (double)(*genJetPhi)[jjet])
+                    double deltaJetR = M_PI-((double)(*genJetPhi)[ijet] - (double)(*genJetPhi)[jjet]);
                     hdeltaR -> Fill(deltaJetR);
                     // We only consider the back-to-back system, so we choose deltaeta<0
                     // if (deltaJetEta < 0) continue;
