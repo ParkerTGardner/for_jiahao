@@ -280,7 +280,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     }
                     // Here we define the mult of AB as max(A,B)
-                    n_G_ChargeMult_count = max(n_G_ChargeMult_count1 , n_G_ChargeMult_count2) ;
+                    // n_G_ChargeMult_count = max(n_G_ChargeMult_count1 , n_G_ChargeMult_count2) ;
+                    n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
+
+
 
 
                     hBinDist_gen_single            ->Fill(n_G_ChargeMult_count);
