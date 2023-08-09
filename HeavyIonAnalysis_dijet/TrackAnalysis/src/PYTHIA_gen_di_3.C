@@ -251,13 +251,16 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if( fabs((*genJetEta)[jjet]) > jetEtaCut ) continue;
                     if( (*genJetPt)[jjet] < jetPtCut_Jet   ) continue;      
 
-                    double deltaJetTheta = thetaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], -(double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]+M_PI);
-                    double deltaJetEta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], -(double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]+M_PI);
+                    // double deltaJetTheta = thetaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], -(double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]+M_PI);
+                    double deltaJetEta0  = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], -(double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]+M_PI);
                     double deltaJetPhi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], -(double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]+M_PI);
+                    double deltaJetTheta = 2*TMath::ATan(TMath::Exp(-deltaEta0));
+                    double deltaJetTheta = M_PI/2 - deltaJetTheta;
+                    double deltaJetEta   = -TMath::Log( TMath::Tan( deltaJetTheta/2.0));
                     //if we take symmectric jet and deltaJetPhi<0, it means the jet just situates nearside
                     // deltaJetTheta = M_PI - deltaJetTheta;
                     
-                    double deltaJetR   = sqrt( pow((M_PI-deltaJetPhi),2) + pow(deltaJetEta,2));
+                    double deltaJetR   = sqrt( pow((M_PI/2-deltaJetPhi),2) + pow(deltaJetEta,2));
                     hdeltaR -> Fill(deltaJetR);
                     // We only consider the back-to-back system, so we choose deltaeta<0
                     if (deltaJetEta < 0) continue;
