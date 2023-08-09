@@ -260,11 +260,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     //if we take symmectric jet and deltaJetPhi<0, it means the jet just situates nearside
                     // deltaJetTheta = M_PI - deltaJetTheta;
                     
-                    double deltaJetR   = sqrt( pow((M_PI/2-deltaJetPhi),2) + pow(deltaJetEta,2));
-                    hdeltaR -> Fill(deltaJetR);
+                    double deltaJetR1   = sqrt( pow((deltaJetPhi),2) + pow(deltaJetEta,2));
+                    double deltaJetR2   = sqrt( pow((M_PI-deltaJetPhi),2) + pow(deltaJetEta,2));
+                    hdeltaR -> Fill(deltaJetR1);
                     // We only consider the back-to-back system, so we choose deltaeta<0
                     if (deltaJetEta < 0) continue;
-                    if (deltaJetR > 0.4) continue;
+                    if ((deltaJetR1 > 0.4)&&(deltaJetR2 > 0.4)) continue;
 
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
 
