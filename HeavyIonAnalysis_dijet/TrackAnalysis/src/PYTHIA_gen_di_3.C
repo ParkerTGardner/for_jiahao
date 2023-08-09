@@ -252,8 +252,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if( (*genJetPt)[jjet] < jetPtCut_Jet   ) continue;      
 
                     // double deltaJetTheta = thetaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], -(double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]+M_PI);
-                    double deltaJetEta0   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], -(double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]+M_PI);
-                    double deltaJetPhi    = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], -(double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]+M_PI);
+                    double deltaJetEta0   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
+                    double deltaJetPhi    = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
                     double deltaJetTheta0 = 2*TMath::ATan(TMath::Exp(-deltaJetEta0));
                     double deltaJetTheta  = M_PI/2 - deltaJetTheta0;
                     double deltaJetEta    = -TMath::Log( TMath::Tan( deltaJetTheta/2.0));
