@@ -146,9 +146,10 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hEvent_Pass   = new TH1D("hEvent_Pass","hEvent_Pass", trackbin,bin0,trackbin);
     TH1D* hJet_Pass     = new TH1D("hJet_Pass"  ,"hJet_Pass"  , trackbin,bin0,trackbin);
     TH1D* hJetPt = new TH1D("hJetPt"  ,"hJetPt" ,i150,i100,i3500);
-    TH1D* hBinDist_gen_single = new TH1D("hBinDist_gen_single","hBinDist_gen_single",bin360,bin0,bin120);
+    TH1D* hBinDist_gen_single = new TH1D("hBinDist_gen_single","hBinDist_gen_single",450,bin0,150);
     TH1D* hBinDist_reco_single = new TH1D("hBinDist_reco_single","hBinDist_reco_single",bin360,bin0,bin120);
     TH1D* hdeltaR = new TH1D("hdeltaR", "hdeltaR", 100,0,5);
+    
     //2D Corr histograms
 
     TH3D* hEPDraw[trackbin][ptbin][PUbin];
@@ -252,20 +253,21 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if( (*genJetPt)[jjet] < jetPtCut_Jet   ) continue;      
 
                     // double deltaJetTheta = thetaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], -(double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]+M_PI);
-                    double deltaJetEta0   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
-                    double deltaJetPhi    = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
-                    double deltaJetTheta0 = 2*TMath::ATan(TMath::Exp(-deltaJetEta0));
-                    double deltaJetTheta  = M_PI/2 - deltaJetTheta0;
-                    double deltaJetEta    = -TMath::Log( TMath::Tan( deltaJetTheta/2.0));
+                    // double deltaJetEta0   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
+                    // double deltaJetPhi    = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
+                    // double deltaJetTheta0 = 2*TMath::ATan(TMath::Exp(-deltaJetEta0));
+                    // double deltaJetTheta  = M_PI/2 - deltaJetTheta0;
+                    // double deltaJetEta    = -TMath::Log( TMath::Tan( deltaJetTheta/2.0));
                     //if we take symmectric jet and deltaJetPhi<0, it means the jet just situates nearside
                     // deltaJetTheta = M_PI - deltaJetTheta;
                     
-                    double deltaJetR1   = sqrt( pow((deltaJetPhi),2) + pow(deltaJetEta,2));
-                    double deltaJetR2   = sqrt( pow((M_PI-deltaJetPhi),2) + pow(deltaJetEta,2));
-                    hdeltaR -> Fill(deltaJetR1);
+                    // double deltaJetR1   = sqrt( pow((deltaJetPhi),2) + pow(deltaJetEta,2));
+                    // double deltaJetR2   = sqrt( pow((M_PI-deltaJetPhi),2) + pow(deltaJetEta,2));
+                    deltaJetR = M_PI-((double)(*genJetPhi)[ijet] - (double)(*genJetPhi)[jjet])
+                    hdeltaR -> Fill(deltaJetR);
                     // We only consider the back-to-back system, so we choose deltaeta<0
-                    if (deltaJetEta < 0) continue;
-                    if ((deltaJetR1 > 0.4)&&(deltaJetR2 > 0.4)) continue;
+                    // if (deltaJetEta < 0) continue;
+                    if (deltaJetR > 0.4) continue;
 
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
 
