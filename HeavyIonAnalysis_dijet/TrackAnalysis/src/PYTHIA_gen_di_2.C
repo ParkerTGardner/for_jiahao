@@ -250,7 +250,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // choose the jetB                    
                     if (jjet == ijet) continue;
                     if( fabs((*genJetEta)[jjet]) > jetEtaCut ) continue;
-                    if( (*genJetPt)[jjet] < jetPtCut_Jet - 100 ) continue;      
+                    if( (*genJetPt)[jjet] < jetPtCut_Jet -100 ) continue;      
 
                     // double deltaJetTheta = thetaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], -(double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]+M_PI);
                     // double deltaJetEta0   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
@@ -263,6 +263,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     
                     // double deltaJetR1   = sqrt( pow((deltaJetPhi),2) + pow(deltaJetEta,2));
                     // double deltaJetR2   = sqrt( pow((M_PI-deltaJetPhi),2) + pow(deltaJetEta,2));
+                    // double deltaJetEta = -(double)(*genJetPt)[ijet] - (double)(*genJetPt)[jjet]
+                    double deltaJetTheta = 2*TMath::ATan(TMath::Exp((double)(*genJetPt)[ijet])) - 2*TMath::ATan(TMath::Exp(-(double)(*genJetPt)[jjet]));
                     double deltaJetR = M_PI-((double)(*genJetPhi)[ijet] - (double)(*genJetPhi)[jjet]);
                     hdeltaR -> Fill(deltaJetR);
                     // We only consider the back-to-back system, so we choose deltaeta<0
@@ -377,10 +379,13 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);  
                         if(T_jet_dau_pt >3.0) continue;
 
+                        double T_dau_Theta0 = 2*TMath::ATan(TMath::Exp(double)(*genDau_eta)[jjet][T_trk])+deltaJetTheta;
+                        double T_dau_eta = -TMath::Log( TMath::Tan( T_dau_Theta0/2.0));
+
                         //     daughter eta with respect to the jetA axis                 eta With Respect To JetA 
-                        T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);
+                        T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], -(T_dau_eta), (double)(*genDau_phi)[jjet][T_trk]+M_PI);
                         //     daughter phi with respect to the jetA axis                 phi With Respect To JetA
-                        T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]); 
+                        T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], -(T_dau_eta), (double)(*genDau_phi)[jjet][T_trk]+M_PI); 
                         
                         
                         
@@ -489,13 +494,16 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                             
-                            T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);   
+                            T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);  
                             if(T_jet_dau_pt >3.0) continue;
 
-                            //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
-                            T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);
-                            //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                            T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);
+                            double T_dau_Theta0 = 2*TMath::ATan(TMath::Exp(double)(*genDau_eta)[jjet][T_trk])+deltaJetTheta;
+                            double T_dau_eta = -TMath::Log( TMath::Tan( T_dau_Theta0/2.0));
+
+                            //     daughter eta with respect to the jetA axis                 eta With Respect To JetA 
+                            T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], -(T_dau_eta), (double)(*genDau_phi)[jjet][T_trk]+M_PI);
+                            //     daughter phi with respect to the jetA axis                 phi With Respect To JetA
+                            T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], -(T_dau_eta), (double)(*genDau_phi)[jjet][T_trk]+M_PI); 
 
                             
                             
@@ -645,7 +653,7 @@ std::cout<< "made 4" << endl;
 
                     string subList = fList.substr(fList.size() - 3);
 
-                    TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_2/dijob_%s.root",subList.c_str()), "recreate");
+                    TFile* fS_tempA = new TFile(Form("pythia_batch_output/2_root_out_2/dijob_%s.root",subList.c_str()), "recreate");
                     for(int wtrk =1; wtrk <trackbin+1; wtrk++){
                         hBinDist_gen[wtrk-1]         ->Write();
                         for(int wppt =1; wppt <ptbin+1; wppt++){
