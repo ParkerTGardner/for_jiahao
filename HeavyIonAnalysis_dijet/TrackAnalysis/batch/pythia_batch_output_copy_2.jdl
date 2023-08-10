@@ -1,0 +1,58 @@
+Universe   = vanilla
+GetEnv     = True
+Executable = pythia_batch_output/pythia_sub_copy_2.sh
+Arguments  = 000
+Log        = pythia_batch_output/log_copy_2/submit_v0.$(Process).log
+Output     = pythia_batch_output/out_copy_2/submit_v0.$(Process).out
+Error      = pythia_batch_output/err_copy_2/submit_v0.$(Process).err
++MaxRuntime =60000
+Queue
+
+Arguments  = 001
+Queue
+   
+Arguments  = 002
+Queue
+   
+Arguments  = 003
+Queue
+   
+Arguments  = 004
+Queue
+   
+Arguments  = 005
+Queue
+   
+Arguments  = 006
+Queue
+   
+Arguments  = 007
+Queue
+   
+Arguments  = 008
+Queue
+   
+Arguments  = 009
+Queue
+   
+Arguments  = 010
+Queue
+   
+Arguments  = 011
+Queue
+   
+Arguments  = 012
+Queue
+   
+Arguments  = 013
+Queue
+   
+Arguments  = 014
+Queue
+   
+Arguments  = 015
+Queue
+   
+Arguments  = 016
+Queue
+   
