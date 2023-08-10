@@ -379,7 +379,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);  
                         if(T_jet_dau_pt >3.0) continue;
 
-                        double T_dau_Theta0 = 2*TMath::ATan(TMath::Exp(double)(*genDau_eta)[jjet][T_trk])+deltaJetTheta;
+                        double T_dau_Theta0 = 2*TMath::ATan(TMath::Exp(-(double)(*genDau_eta)[jjet][T_trk]))+deltaJetTheta;
                         double T_dau_eta = -TMath::Log( TMath::Tan( T_dau_Theta0/2.0));
 
                         //     daughter eta with respect to the jetA axis                 eta With Respect To JetA 
@@ -497,7 +497,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);  
                             if(T_jet_dau_pt >3.0) continue;
 
-                            double T_dau_Theta0 = 2*TMath::ATan(TMath::Exp(double)(*genDau_eta)[jjet][T_trk])+deltaJetTheta;
+                            double T_dau_Theta0 = 2*TMath::ATan(TMath::Exp(-(double)(*genDau_eta)[jjet][T_trk]))+deltaJetTheta;
                             double T_dau_eta = -TMath::Log( TMath::Tan( T_dau_Theta0/2.0));
 
                             //     daughter eta with respect to the jetA axis                 eta With Respect To JetA 
