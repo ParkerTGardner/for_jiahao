@@ -756,7 +756,7 @@ std::cout<< "made 4" << endl;
                                               hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
                                               hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
                                               hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
-                                              hMomSignalShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaJt, 1);
+                                              hMomBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaJt, 1);
 
                                           }
                                       }
@@ -770,7 +770,7 @@ std::cout<< "made 4" << endl;
 
                     string subList = fList.substr(fList.size() - 3);
 
-                    TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_copy_3/dijob_%s.root",subList.c_str()), "recreate");
+                    TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_copy/dijob_%s.root",subList.c_str()), "recreate");
                     for(int wtrk =1; wtrk <trackbin+1; wtrk++){
                         hBinDist_gen[wtrk-1]         ->Write();
                         for(int wppt =1; wppt <ptbin+1; wppt++){
