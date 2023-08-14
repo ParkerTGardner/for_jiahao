@@ -379,7 +379,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         // pt, eta phi wrt Jet A, here we consider eta as -eta (reflect)
                         
-                        T_jet_dau_pt0    =  ptWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);  
+                        double T_jet_dau_pt0    =  ptWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);  
                         if(T_jet_dau_pt0 >3.0) continue;
 
                         double T_dau_Theta0 = 2*TMath::ATan(TMath::Exp(-(double)(*genDau_eta)[jjet][T_trk]))+deltaJetTheta;
