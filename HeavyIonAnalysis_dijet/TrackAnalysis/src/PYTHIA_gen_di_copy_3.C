@@ -232,7 +232,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 //defining how many particles are in the jet, set observable based on jet multiplicity
                 //for example, what is the shape of jet(5,10,100 particles in jet)
                 if( fabs((*genJetEta)[ijet]) > jetEtaCut ) continue;
-                if( (*genJetPt)[ijet] < jetPtCut_Jet   ) continue;
+                if( (*genJetPt)[ijet] < jetPtCut_Jet   ) continue;      
 
                 //    count the trks of A  
                 int n_G_ChargeMult_count = 0;
@@ -253,7 +253,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // choose the jetB                    
                     // if (jjet == ijet) continue;
                     if( fabs((*genJetEta)[jjet]) > jetEtaCut ) continue;
-                    if( ((*genJetPt)[jjet] < (*genJetPt)[ijet]*0.95)||((*genJetPt)[jjet] > (*genJetPt)[ijet]*1.05)  ) continue;      
+                    if( ((*genJetPt)[jjet] < (*genJetPt)[ijet]*0.95)||((*genJetPt)[jjet] > (*genJetPt)[ijet]*1.05)  ) continue;     
 
                     // double deltaJetTheta = thetaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], -(double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]+M_PI);
                     // double deltaJetEta0   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
@@ -606,9 +606,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     for(long int A_trk = 0; A_trk < NNtrk2; A_trk++ ){
 
-                        if((*genDau_chg)[jjet][T_trk] == 0) continue;
-                        if(fabs((*genDau_eta)[jjet][T_trk]) > 2.4) continue;
-                        if(fabs((*genDau_pt)[jjet][T_trk])  < 0.3)      continue;
+                        if((*genDau_chg)[jjet][A_trk] == 0) continue;
+                        if(fabs((*genDau_eta)[jjet][A_trk]) > 2.4) continue;
+                        if(fabs((*genDau_pt)[jjet][A_trk])  < 0.3)      continue;
 
 
 
@@ -618,18 +618,18 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                         
-                        jet_dau_pt0    =  ptWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);  
+                        double jet_dau_pt0    =  ptWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][A_trk], (double)(*genDau_eta)[jjet][A_trk], (double)(*genDau_phi)[jjet][A_trk]);  
                         if(jet_dau_pt0 >3.0) continue;
 
-                        double A_dau_Theta0 = 2*TMath::ATan(TMath::Exp(-(double)(*genDau_eta)[jjet][T_trk]))+deltaJetTheta;
+                        double A_dau_Theta0 = 2*TMath::ATan(TMath::Exp(-(double)(*genDau_eta)[jjet][A_trk]))+deltaJetTheta;
                         double A_dau_eta = -TMath::Log( TMath::Tan( A_dau_Theta0/2.0));
 
                         //     daughter eta with respect to the jetA axis                 eta With Respect To JetA 
-                        jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], -(A_dau_eta), (double)(*genDau_phi)[jjet][T_trk]+M_PI);
+                        jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][A_trk], -(A_dau_eta), (double)(*genDau_phi)[jjet][A_trk]+M_PI);
                         //     daughter phi with respect to the jetA axis                 phi With Respect To JetA
-                        jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], -(A_dau_eta), (double)(*genDau_phi)[jjet][T_trk]+M_PI); 
+                        jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][A_trk], -(A_dau_eta), (double)(*genDau_phi)[jjet][A_trk]+M_PI); 
 
-                        jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], -(A_dau_eta), (double)(*genDau_phi)[jjet][T_trk]+M_PI);
+                        jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][A_trk], -(A_dau_eta), (double)(*genDau_phi)[jjet][A_trk]+M_PI);
 
 
                         // This is for corr(dau_A, dau_B)
