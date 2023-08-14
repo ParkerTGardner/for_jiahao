@@ -471,7 +471,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                     int k_PU=0;
 
-                                    hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, 1.0/( Ntrig[i][j] ));
+                                    hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, jet_dau_pt, 1.0/( Ntrig[i][j] ));
                                 }
                             }
                         }
