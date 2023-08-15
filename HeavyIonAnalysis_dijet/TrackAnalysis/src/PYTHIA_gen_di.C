@@ -191,7 +191,7 @@ void MyClass::Loop(int job, std::string fList){
     for(int wkt =1; wkt < ktbin+1; wkt++){
         hMomSignalShifted[wkt-1] = new TH1D(Form("hMomSignalS_kt_%d",wkt), Form("hMomSignalS_kt_%d",wkt) , 30, 0, 1.2);
         hMomBckrndShifted[wkt-1] = new TH1D(Form("hMomBckrndS_kt_%d",wkt), Form("hMomBckrndS_kt_%d",wkt) , 30, 0, 1.2);
-        kt_EPDraw[wkt-1] = new TH1D(Form("kt_EPDraw_kt_%d",wkt) Form("kt_EPDraw_kt_%d",wkt) , 30,0,1.2); 
+        kt_EPDraw[wkt-1] = new TH1D(Form("kt_EPDraw_kt_%d",wkt), Form("kt_EPDraw_kt_%d",wkt) , 30,0,1.2); 
     }
 
 
