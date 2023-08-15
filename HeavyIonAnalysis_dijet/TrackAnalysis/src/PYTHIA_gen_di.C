@@ -531,7 +531,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                             for(int i = 0; i < ktbin; i++){
 
-                                if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
+                                if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     kt_Ntrig[i] += 1;
                                     if((*genDau_chg)[ijet][A_trk] > 0){
                                         kt_NtrigP[i] += 1;
@@ -560,7 +560,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             if(T_jet_dau_eta > track_eta_lim) continue;
                             for(int i = 0; i < ktbin; i++){
 
-                                if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
+                                if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     kt_Ntrig[i] += 1;
                                     if((*genDau_chg)[ijet][A_trk] > 0){
                                         kt_NtrigP[i] += 1;
@@ -570,7 +570,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     }
                                 }
 
-                                if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
+                                if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     kt_Ntrig_0[i] += 1;
                                     if((*genDau_chg)[ijet][A_trk] > 0){
                                         kt_NtrigP_0[i] += 1;
@@ -650,7 +650,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                             for(int i = 0; i < ktbin; i++){
 
-                                if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
+                                if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     kt_Ntrig[i] += 1;
                                     if((*genDau_chg)[ijet][A_trk] > 0){
                                         kt_NtrigP[i] += 1;
@@ -750,9 +750,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     
                                     for (int l=0; l<=ktbin; l++){
 
-                                        if((ktbinbounds_lo[k] < 0.5*fabs(dau_pt_ave+jet_dau_pt)) && (ktbinbounds_hi[k] >= 0.5*fabs(dau_pt_ave+jet_dau_pt))){
+                                        if((ktbinbounds_lo[l] < 0.5*fabs(dau_pt_ave+jet_dau_pt)) && (ktbinbounds_hi[l] >= 0.5*fabs(dau_pt_ave+jet_dau_pt))){
 
-                                            kt_EPDraw[k] = Fill->(diffvec(dau_eta_ave,dau_phi_ave,dau_pt_ave,jet_dau_eta,jet_dau_phi,jet_dau_pt), binContent/kt_Ntrig_0[k]);
+                                            kt_EPDraw[l] = Fill->(diffvec(dau_eta_ave,dau_phi_ave,dau_pt_ave,jet_dau_eta,jet_dau_phi,jet_dau_pt), binContent/kt_Ntrig_0[l]);
 
                                         }
 
@@ -829,7 +829,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             double deltaPt  = diffvec(jet_dau_pt, jet_dau_eta, jet_dau_phi, kt_T_jet_dau_pt, kt_T_jet_dau_eta, kt_T_jet_dau_phi);
                             
                             for(int i = 0; i < ktbin; i++){
-                                if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+kt_T_jet_dau_pt)) && (ktbinbounds_hi >= 0.5*fabs(jet_dau_pt+kt_T_jet_dau_pt))){
+                                if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+kt_T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+kt_T_jet_dau_pt))){
                                     hkt_Pairs->Fill(i);
                                     hMomSignalShifted[i]->Fill(deltaPt,                         1.0/(kt_Ntrig[i]));
                                 }
@@ -894,7 +894,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             double deltaPt  = diffvec(jet_dau_pt, jet_dau_eta, jet_dau_phi, T_jet_dau_pt, T_jet_dau_eta, T_jet_dau_phi);
 
                             for(int i = 0; i < ktbin; i++){
-                                if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
+                                if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     hkt_Pairs->Fill(i);
                                     hMomSignalShifted[i]->Fill(deltaPt,                         1.0/(kt_Ntrig[i]));
                                 }
@@ -1011,7 +1011,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             double deltaPt  = diffvec(kt_jet_dau_pt, kt_jet_dau_eta, kt_jet_dau_phi, kt_T_jet_dau_pt, kt_T_jet_dau_eta, kt_T_jet_dau_phi);
 
                             for(int i = 0; i < ktbin; i++){
-                                if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
+                                if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     hkt_Pairs->Fill(i);
                                     hMomSignalShifted[i]->Fill(deltaPt,                         1.0/(kt_Ntrig[i]));
                                 }
@@ -1153,8 +1153,8 @@ std::cout<< "made 4" << endl;
 
                     for(int wkt =1; wkt<ktbin+1; wkt++){
                         
-                        hMomSignalShifted [wkt]-> Write(Form("hMomSigS_%d_to_%d", (int)(ktbinbounds_lo[wkt-1]), (int)(10*ktbinbounds_hi[wkt-1])));
-                        hMomBckrndShifted [wkt]-> Write(Form("hMomBckS_%d_to_%d", (int)(ktbinbounds_lo[wkt-1]), (int)(10*ktbinbounds_hi[wkt-1])));
+                        hMomSignalShifted [wkt-1]-> Write(Form("hMomSigS_%d_to_%d", (int)(ktbinbounds_lo[wkt-1]), (int)(10*ktbinbounds_hi[wkt-1])));
+                        hMomBckrndShifted [wkt-1]-> Write(Form("hMomBckS_%d_to_%d", (int)(ktbinbounds_lo[wkt-1]), (int)(10*ktbinbounds_hi[wkt-1])));
                     }
 
                     hBinDist_gen_single->Write();
