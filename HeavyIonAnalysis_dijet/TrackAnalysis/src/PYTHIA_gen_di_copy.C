@@ -166,7 +166,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hMomSignalShifted[ktbin];
     TH1D* hMomBckrndShifted[ktbin];
     TH1D* kt_EPDraw[ktbin];
-    TH3D* hkt_EPDraw = new TH3D(Form("hkt_EPDraw_kt_%d",wkt) Form("hkt_EPDraw_kt_%d",wkt) , EPD_xb, EPD_xlo, EPD_xhi, EPD_yb, EPD_ylo, EPD_yhi, 2*ptbin, -ptbin, ptbin);
+    TH3D* hkt_EPDraw = new TH3D(Form("hkt_EPDraw_kt"), Form("hkt_EPDraw_kt") , EPD_xb, EPD_xlo, EPD_xhi, EPD_yb, EPD_ylo, EPD_yhi, 2*ptbin, -ptbin, ptbin);
 
     TH1D* hBinDist_gen[trackbin];
     TH1D* hBinDist_reco[trackbin];
@@ -176,7 +176,7 @@ void MyClass::Loop(int job, std::string fList){
         for(int wppt = 1; wppt<ptbin+1; wppt++){
             for(int wpPU = 1; wpPU<PUbin+1; wpPU++){
 
-                these are the main histograms
+                // these are the main histograms
                 // hMomBckrndShifted[wtrk-1][wppt-1][wpPU-1]   = new TH1D(Form("hjtw_MomBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_MomBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , 30, 0, 1.2);
                 // hMomSignalShifted[wtrk-1][wppt-1][wpPU-1]   = new TH1D(Form("hjtw_MomSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_MomSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , 30, 0, 1.2);
                 hBckrndShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hjtw_BckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_BckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
@@ -189,8 +189,8 @@ void MyClass::Loop(int job, std::string fList){
     }
 
     for(int wkt =1; wkt < ktbin+1; wkt++){
-        hMomSignalShifted[wrt-1] = new TH1D(Form("hMomSignalS_kt_%d",wkt) Form("hMomSignalS_kt_%d",wkt) , 30, 0, 1.2);
-        hMomBckrndShifted[wrt-1] = new TH1D(Form("hMomBckrndS_kt_%d",wkt) Form("hMomBckrndS_kt_%d",wkt) , 30, 0, 1.2);
+        hMomSignalShifted[wkt-1] = new TH1D(Form("hMomSignalS_kt_%d",wkt), Form("hMomSignalS_kt_%d",wkt) , 30, 0, 1.2);
+        hMomBckrndShifted[wkt-1] = new TH1D(Form("hMomBckrndS_kt_%d",wkt), Form("hMomBckrndS_kt_%d",wkt) , 30, 0, 1.2);
         kt_EPDraw[wkt-1] = new TH1D(Form("kt_EPDraw_kt_%d",wkt) Form("kt_EPDraw_kt_%d",wkt) , 30,0,1.2); 
     }
 
@@ -741,18 +741,18 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     double dau_eta_lo = hkt_EPDraw->GetXaxis()->GetBinLowEdge(i);
                                     double dau_phi_lo = hkt_EPDraw->GetYaxis()->GetBinLowEdge(j);
                                     double dau_pt_lo = hkt_EPDraw->GetZaxis()->GetBinLowEdge(k);
-                                    double dau_eta_hi = hkt_EPDraw->GetXaxis()->GetBinHighEdge(i);
-                                    double dau_phi_hi = hkt_EPDraw->GetYaxis()->GetBinHighEdge(j);
-                                    double dau_pt_hi = hkt_EPDraw->GetZaxis()->GetBinHighEdge(k);
-                                    double dau_eta_ave =0.5*(dau_eta_lo+dau_eta_hi);
-                                    double dau_phi_ave =0.5*(dau_phi_lo+dau_phi_hi);
-                                    double dau_pt_ave =0.5*(dau_pt_lo+dau_pt_hi);
+                                    double dau_eta_wi = hkt_EPDraw->GetXaxis()->GetBinWidth(i);
+                                    double dau_phi_wi = hkt_EPDraw->GetYaxis()->GetBinWidth(j);
+                                    double dau_pt_wi = hkt_EPDraw->GetZaxis()->GetBinWidth(k);
+                                    double dau_eta_ave = dau_eta_lo+0.5*(dau_eta_hi);
+                                    double dau_phi_ave = dau_phi_lo+0.5*(dau_phi_hi);
+                                    double dau_pt_ave = dau_pt_lo+0.5*(dau_pt_hi);
                                     
                                     for (int l=0; l<=ktbin; l++){
 
                                         if((ktbinbounds_lo[l] < 0.5*fabs(dau_pt_ave+jet_dau_pt)) && (ktbinbounds_hi[l] >= 0.5*fabs(dau_pt_ave+jet_dau_pt))){
 
-                                            kt_EPDraw[l] = Fill->(diffvec(dau_eta_ave,dau_phi_ave,dau_pt_ave,jet_dau_eta,jet_dau_phi,jet_dau_pt), binContent/kt_Ntrig_0[l]);
+                                            kt_EPDraw[l]->Fill(diffvec(dau_eta_ave,dau_phi_ave,dau_pt_ave,jet_dau_eta,jet_dau_phi,jet_dau_pt), binContent/kt_Ntrig_0[l]);
 
                                         }
 
