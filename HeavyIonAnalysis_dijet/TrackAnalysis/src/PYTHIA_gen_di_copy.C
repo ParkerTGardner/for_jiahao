@@ -1097,7 +1097,7 @@ std::cout<< "made 4" << endl;
 
                             for(int x = 0; x<XENT; x++){
                                 gRandom->SetSeed(0);
-                                double WdeltaPt1//making the pseudoparticles
+                                double WdeltaPt;//making the pseudoparticles
                                 hkt_EPDraw->GetRandom(WdeltaPt);
                                 hMomBckrndShifted[wkt]->Fill(WdeltaPt, 1);
                             }
