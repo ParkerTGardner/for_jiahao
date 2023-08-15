@@ -750,7 +750,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     double dau_phi_ave = dau_phi_lo+0.5*(dau_phi_wi);
                                     double dau_pt_ave = dau_pt_lo+0.5*(dau_pt_wi);
                                     
-                                    for (int l=0; l<=ktbin; l++){
+                                    for (int l=0; l<ktbin; l++){
 
                                         if((ktbinbounds_lo[l] < 0.5*fabs(dau_pt_ave+jet_dau_pt)) && (ktbinbounds_hi[l] >= 0.5*fabs(dau_pt_ave+jet_dau_pt))){
 
@@ -1155,8 +1155,8 @@ std::cout<< "made 4" << endl;
 
                     for(int wkt =1; wkt<ktbin+1; wkt++){
                         
-                        hMomSignalShifted [wkt-1]-> Write(Form("hMomSigS_%d_to_%d", (int)(ktbinbounds_lo[wkt-1]), (int)(10*ktbinbounds_hi[wkt-1])));
-                        hMomBckrndShifted [wkt-1]-> Write(Form("hMomBckS_%d_to_%d", (int)(ktbinbounds_lo[wkt-1]), (int)(10*ktbinbounds_hi[wkt-1])));
+                        hMomSignalShifted [wkt-1]-> Write(Form("hMomSigS_%d_to_%d", (int)(10*ktbinbounds_lo[wkt-1]), (int)(10*ktbinbounds_hi[wkt-1])));
+                        hMomBckrndShifted [wkt-1]-> Write(Form("hMomBckS_%d_to_%d", (int)(10*ktbinbounds_lo[wkt-1]), (int)(10*ktbinbounds_hi[wkt-1])));
                     }
 
                     hBinDist_gen_single->Write();
