@@ -744,9 +744,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     double dau_eta_wi = hkt_EPDraw->GetXaxis()->GetBinWidth(i);
                                     double dau_phi_wi = hkt_EPDraw->GetYaxis()->GetBinWidth(j);
                                     double dau_pt_wi = hkt_EPDraw->GetZaxis()->GetBinWidth(k);
-                                    double dau_eta_ave = dau_eta_lo+0.5*(dau_eta_hi);
-                                    double dau_phi_ave = dau_phi_lo+0.5*(dau_phi_hi);
-                                    double dau_pt_ave = dau_pt_lo+0.5*(dau_pt_hi);
+                                    double dau_eta_ave = dau_eta_lo+0.5*(dau_eta_wi);
+                                    double dau_phi_ave = dau_phi_lo+0.5*(dau_phi_wi);
+                                    double dau_pt_ave = dau_pt_lo+0.5*(dau_pt_wi);
                                     
                                     for (int l=0; l<=ktbin; l++){
 
