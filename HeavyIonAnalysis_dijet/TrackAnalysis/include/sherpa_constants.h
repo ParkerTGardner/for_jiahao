@@ -1,10 +1,13 @@
 const int   trackbin                    =13 ;
+const int   ktbin = 8;
 const int ptbin =3;
 const float ptbinbounds_lo[ptbin] = {0,0.3,0.5};
 const float ptbinbounds_hi[ptbin] = {3.0,3.0,3.0};
 const int mm = 1000;
 const int   trackbinbounds[trackbin]         = {0 ,0 ,20,30,40,50,60,72,82,95 ,105,120,140};
 const int   trackbinboundsUpper[trackbin]    = {mm,20,30,40,50,60,72,82,95,105,120,140,mm};
+const float ktbinbounds_lo[ktbin] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8};
+const float ktbinbounds_hi[ktbin] = {0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1.0};
 const double        PI = 3.14159265359;
 const float         EtaBW = 0.3;
 const float         PhiBW = TMath::Pi()/16;

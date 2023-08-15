@@ -74,5 +74,20 @@ double phiWRTJet( double jetPt, double jetEta, double jetPhi, double trkPt, doub
   return phiWRTJet( j, trk);
 }
 
+double diffvec(TVector3 jet, TVector3 p){
+  TVector3 diff = jet - p;
+  return diff.Mag();
+}
+
+double diffvec( double jetPt, double jetEta, double jetPhi, double trkPt, double trkEta, double trkPhi){
+  TVector3 j = TVector3(0,0,0);
+  j.SetPtEtaPhi( jetPt, jetEta, jetPhi);
+
+  TVector3 trk = TVector3(0,0,0);
+  trk.SetPtEtaPhi( trkPt, trkEta, trkPhi);
+  return diffvec( j, trk);
+}
+
+
 #endif
 
