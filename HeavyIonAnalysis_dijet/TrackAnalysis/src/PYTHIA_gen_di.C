@@ -143,7 +143,7 @@ void MyClass::Loop(int job, std::string fList){
     TH2D* hNtrig        = new TH2D("hNtrig","hNtrig",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
 
     
-
+    // This is for kt_paird and kt_trigs
     TH1D* hkt_Ntrig     = new TH1D("hkt_Ntrig", "hkt_Ntrig", ktbin, bin0, ktbin);
     TH1D* hkt_Pairs     = new TH1D("hkt_Pairs", "hkt_Pairs", ktbin, bin0, ktbin);
 
@@ -162,10 +162,12 @@ void MyClass::Loop(int job, std::string fList){
     TH2D* hSignalShifted[trackbin][ptbin][PUbin];
     TH2D* hBckrndShifted[trackbin][ptbin][PUbin];
   
-
+    //This is for kt signal
     TH1D* hMomSignalShifted[ktbin];
     TH1D* hMomBckrndShifted[ktbin];
+    //We get random background from kt_EPDraw
     TH1D* kt_EPDraw[ktbin];
+    //hkt_EPDraw is just to memory all momentum for kt_EPDraw
     TH3D* hkt_EPDraw = new TH3D(Form("hkt_EPDraw_kt"), Form("hkt_EPDraw_kt") , EPD_xb, EPD_xlo, EPD_xhi, EPD_yb, EPD_ylo, EPD_yhi, 2*ptbin, -ptbin, ptbin);
 
     TH1D* hBinDist_gen[trackbin];
@@ -179,9 +181,9 @@ void MyClass::Loop(int job, std::string fList){
                 // these are the main histograms
                 // hMomBckrndShifted[wtrk-1][wppt-1][wpPU-1]   = new TH1D(Form("hjtw_MomBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_MomBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , 30, 0, 1.2);
                 // hMomSignalShifted[wtrk-1][wppt-1][wpPU-1]   = new TH1D(Form("hjtw_MomSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_MomSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , 30, 0, 1.2);
-                hBckrndShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hjtw_BckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_BckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
-                hSignalShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hjtw_SignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_SignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
-                hEPDraw[wtrk-1][wppt-1][wpPU-1]             = new TH3D(Form("hjtw_EPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hjtw_EPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi,    2*ptbin, -ptbin, ptbin);
+                hBckrndShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
+                hSignalShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
+                hEPDraw[wtrk-1][wppt-1][wpPU-1]             = new TH3D(Form("hEPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hEPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi,    2*ptbin, -ptbin, ptbin);
 
 
             }
@@ -247,7 +249,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 //defining how many particles are in the jet, set observable based on jet multiplicity
                 //for example, what is the shape of jet(5,10,100 particles in jet)
                 if( fabs((*genJetEta)[ijet]) > jetEtaCut ) continue;
-                if( (*genJetPt)[ijet] < jetPtCut_Jet-200   ) continue;
+                if( (*genJetPt)[ijet] < jetPtCut_Jet  ) continue;
 
                 //    count the trks of A  
                 int n_G_ChargeMult_count = 0;
@@ -519,7 +521,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                             // double T_dau_Theta0 = 2*TMath::ATan(TMath::Exp(-(double)(*genDau_eta)[jjet][T_trk]))+deltaJetTheta;
                             // double T_dau_eta = -TMath::Log( TMath::Tan( T_dau_Theta0/2.0));
-
+                            // I don't change p in jet B here
                             //     daughter eta with respect to the jetA axis                 eta With Respect To JetA 
                             T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);
                             //     daughter phi with respect to the jetA axis                 phi With Respect To JetA
