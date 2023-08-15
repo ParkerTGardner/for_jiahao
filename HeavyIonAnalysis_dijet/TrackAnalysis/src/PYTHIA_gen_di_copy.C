@@ -819,7 +819,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             for(int i = 0; i < ktbin; i++){
                                 if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     hkt_Pairs->Fill(i);
-                                    hMomSignalShifted[i]->Fill(diffvec,                         1.0/(kt_Ntrig[i]));
+                                    hMomSignalShifted[i]->Fill(deltaPt,                         1.0/(kt_Ntrig[i]));
                                 }
                             }
                             
@@ -989,7 +989,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             for(int i = 0; i < ktbin; i++){
                                 if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     hkt_Pairs->Fill(i);
-                                    hMomSignalShifted[i]->Fill(diffvec,                         1.0/(kt_Ntrig[i]));
+                                    hMomSignalShifted[i]->Fill(deltaPt,                         1.0/(kt_Ntrig[i]));
                                 }
                             }
                             
