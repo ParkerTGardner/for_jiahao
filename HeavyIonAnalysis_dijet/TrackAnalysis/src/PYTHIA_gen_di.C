@@ -269,10 +269,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 int NtrigM_0[trackbin][ptbin] = {0};
                 int NtrigP_0[trackbin][ptbin] = {0};
 
-                int kt_tkbool_0[ktbin] = {0}; // This is ktbin
+                // int kt_tkbool_0[ktbin] = {0}; // This is ktbin
                 int kt_Ntrig_0[ktbin] = {0};
-                int kt_NtrigM_0[ktbin] = {0};
-                int kt_NtrigP_0[ktbin] = {0};
+                // int kt_NtrigM_0[ktbin] = {0};
+                // int kt_NtrigP_0[ktbin] = {0};
 
                 for(int i = 0; i < trackbin; i++){
                 //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
@@ -335,10 +335,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
 
-                    int kt_tkbool[ktbin] = {0}; // This is ktbin
+                    // int kt_tkbool[ktbin] = {0}; // This is ktbin
                     int kt_Ntrig[ktbin] = {0};
-                    int kt_NtrigM[ktbin] = {0};
-                    int kt_NtrigP[ktbin] = {0};
+                    // int kt_NtrigM[ktbin] = {0};
+                    // int kt_NtrigP[ktbin] = {0};
 
                     for(int i = 0; i < trackbin; i++){
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
@@ -535,12 +535,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                                 if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     kt_Ntrig[i] += 1;
-                                    if((*genDau_chg)[ijet][A_trk] > 0){
-                                        kt_NtrigP[i] += 1;
-                                    }
-                                    if((*genDau_chg)[ijet][A_trk] < 0){
-                                        kt_NtrigM[i] += 1;
-                                    }
+                                    
                                 }
                             }
                         } //AB
@@ -574,12 +569,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                                 if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     kt_Ntrig_0[i] += 1;
-                                    if((*genDau_chg)[ijet][A_trk] > 0){
-                                        kt_NtrigP_0[i] += 1;
-                                    }
-                                    if((*genDau_chg)[ijet][A_trk] < 0){
-                                        kt_NtrigM_0[i] += 1;
-                                    }
+                                    
                                 }
                             }
                             
@@ -654,12 +644,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                                 if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     kt_Ntrig[i] += 1;
-                                    if((*genDau_chg)[ijet][A_trk] > 0){
-                                        kt_NtrigP[i] += 1;
-                                    }
-                                    if((*genDau_chg)[ijet][A_trk] < 0){
-                                        kt_NtrigM[i] += 1;
-                                    }
+                                    
                                 }
                             }
 

@@ -267,10 +267,16 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 int NtrigM_0[trackbin][ptbin] = {0};
                 int NtrigP_0[trackbin][ptbin] = {0};
 
-                int kt_tkbool_0[ktbin] = {0}; // This is ktbin
+                // int kt_tkbool_0[ktbin] = {0}; // This is ktbin
                 int kt_Ntrig_0[ktbin] = {0};
-                int kt_NtrigM_0[ktbin] = {0};
-                int kt_NtrigP_0[ktbin] = {0};
+                // int kt_NtrigM_0[ktbin] = {0};
+                // int kt_NtrigP_0[ktbin] = {0};
+
+                // I think the correct EPDraw weight is only the mult of jetA.
+                // because we get all dau from each jet(A) and 
+                // when we want to calculate the background, we pair the daughter from same mult jet randomly
+                // the correct trk number should be only the trk number of jetA instead of jet(A+B)
+                // That equals to take dau of jetA and dau of jetC and jetA and jetC in the same trackbin
 
                 for(int i = 0; i < trackbin; i++){
                 //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
@@ -292,8 +298,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     double deltaJetTheta = 2*TMath::ATan(TMath::Exp((double)(*genJetPt)[ijet])) - 2*TMath::ATan(TMath::Exp(-(double)(*genJetPt)[jjet]));
                     double deltaJetR = M_PI-((double)(*genJetPhi)[ijet] - (double)(*genJetPhi)[jjet]);
                     hdeltaR -> Fill(deltaJetR);
-                    // We only consider the back-to-back system, so we choose deltaeta<0
-                    // if (deltaJetEta < 0) continue;
+                    
                     if (deltaJetR > 0.4) continue;
 
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
@@ -308,8 +313,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         n_G_ChargeMult_count2 += 1;
 
                     }
-                    // Here we define the mult of AB as max(A,B)
-                    // n_G_ChargeMult_count = max(n_G_ChargeMult_count1 , n_G_ChargeMult_count2) ;
+
                     n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
 
 
@@ -327,7 +331,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     int NtrigM[trackbin][ptbin] = {0};
                     int NtrigP[trackbin][ptbin] = {0};
                     int A_ptBool[NNtrk1][ptbin] = {0};    //
-                    int T_ptBool[NNtrk2][ptbin]     = {0};// This is for the AB
+                    int T_ptBool[NNtrk2][ptbin] = {0};// This is for the AB
 
                    
 
@@ -335,8 +339,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     int kt_tkbool[ktbin] = {0}; // This is ktbin
                     int kt_Ntrig[ktbin] = {0};
-                    int kt_NtrigM[ktbin] = {0};
-                    int kt_NtrigP[ktbin] = {0};
+                    // int kt_NtrigM[ktbin] = {0};
+                    // int kt_NtrigP[ktbin] = {0};
+                    // Since the def of kt depends on the pair,so we only can get them in the corr loop
 
                     for(int i = 0; i < trackbin; i++){
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
@@ -349,10 +354,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     
                 
-
-                    
-                    
-                    
 
                     // calculate the A_ptbool pile up Ntrig in jetA first,
                     //and then we do this in jetB so that we can get the complete Ntrig
@@ -391,6 +392,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 }
                             }
                         }    
+
+                        //Get the Ntrig_0 in jetA
 
                         for(int i = 0; i < trackbin; i++){
                             for(int j = 0; j < ptbin; j++){
@@ -533,12 +536,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                                 if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     kt_Ntrig[i] += 1;
-                                    if((*genDau_chg)[ijet][A_trk] > 0){
-                                        kt_NtrigP[i] += 1;
-                                    }
-                                    if((*genDau_chg)[ijet][A_trk] < 0){
-                                        kt_NtrigM[i] += 1;
-                                    }
+                                    
                                 }
                             }
                         } //AB
@@ -562,22 +560,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                                 if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     kt_Ntrig[i] += 1;
-                                    if((*genDau_chg)[ijet][A_trk] > 0){
-                                        kt_NtrigP[i] += 1;
-                                    }
-                                    if((*genDau_chg)[ijet][A_trk] < 0){
-                                        kt_NtrigM[i] += 1;
-                                    }
                                 }
 
                                 if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     kt_Ntrig_0[i] += 1;
-                                    if((*genDau_chg)[ijet][A_trk] > 0){
-                                        kt_NtrigP_0[i] += 1;
-                                    }
-                                    if((*genDau_chg)[ijet][A_trk] < 0){
-                                        kt_NtrigM_0[i] += 1;
-                                    }
+
                                 }
                             }
                             
@@ -586,7 +573,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     }//A_trk
                     
-
+                    //BB
                     for(long int A_trk = 0; A_trk < NNtrk2; A_trk++ ){
 
                         if((*genDau_chg)[jjet][A_trk] == 0) continue;
@@ -652,12 +639,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                                 if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     kt_Ntrig[i] += 1;
-                                    if((*genDau_chg)[ijet][A_trk] > 0){
-                                        kt_NtrigP[i] += 1;
-                                    }
-                                    if((*genDau_chg)[ijet][A_trk] < 0){
-                                        kt_NtrigM[i] += 1;
-                                    }
+                                   
                                 }
                             }
 
@@ -1090,7 +1072,7 @@ std::cout<< "made 4" << endl;
 
                             long int NENT =  hkt_Pairs->GetBinContent(wkt);
                             long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
-                            float A_deltaPt[XENT] = {0};
+                            // float A_deltaPt[XENT] = {0};
                             // float A_PHI[XENT] = {0};
                             // float A_Jt[XENT]  = {0};
                             // int kt_bck_Ntrig[ktbin] = {0};
