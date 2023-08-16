@@ -284,7 +284,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     // We only consider the back-to-back system, so we choose deltaeta<0
                     // if (deltaJetEta < 0) continue;
-                    if (M_PI-deltaJetR > 0.4) continue;
+                    if (M_PI-deltaJetPhi > 0.4) continue;
 
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
 
