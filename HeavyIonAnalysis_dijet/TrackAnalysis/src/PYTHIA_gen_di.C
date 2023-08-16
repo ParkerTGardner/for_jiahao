@@ -168,7 +168,7 @@ void MyClass::Loop(int job, std::string fList){
     //We get random background from kt_EPDraw
     TH1D* kt_EPDraw[ktbin];
     //hkt_EPDraw is just to memory all momentum for kt_EPDraw
-    TH3D* hkt_EPDraw = new TH3D(Form("hkt_EPDraw_kt"), Form("hkt_EPDraw_kt") , EPD_xb, EPD_xlo, EPD_xhi, EPD_yb, EPD_ylo, EPD_yhi, 2*ptbin, -ptbin, ptbin);
+    TH3D* hkt_EPDraw = new TH3D(Form("hkt_EPDraw_kt"), Form("hkt_EPDraw_kt") , EPD_xb, EPD_xlo, EPD_xhi, EPD_yb, EPD_ylo, EPD_yhi, 30*3, -3, 3);
 
     TH1D* hBinDist_gen[trackbin];
     TH1D* hBinDist_reco[trackbin];
@@ -559,12 +559,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                                 if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
                                     kt_Ntrig[i] += 1;
-                                    if((*genDau_chg)[ijet][A_trk] > 0){
-                                        kt_NtrigP[i] += 1;
-                                    }
-                                    if((*genDau_chg)[ijet][A_trk] < 0){
-                                        kt_NtrigM[i] += 1;
-                                    }
+                                    
                                 }
 
                                 if((ktbinbounds_lo[i] < 0.5*fabs(jet_dau_pt+T_jet_dau_pt)) && (ktbinbounds_hi[i] >= 0.5*fabs(jet_dau_pt+T_jet_dau_pt))){
