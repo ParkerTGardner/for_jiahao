@@ -527,9 +527,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                             T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);
 
-                        
+                            double T_jet_dau_eta0   = etaWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);
                             
-                            if(T_jet_dau_eta > track_eta_lim) continue;
+                            if(T_jet_dau_eta0 > track_eta_lim) continue;
 
                             for(int i = 0; i < trackbin; i++){
                                 for(int j = 0; j < ptbin; j++){
