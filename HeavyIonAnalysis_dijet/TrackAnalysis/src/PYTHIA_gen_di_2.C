@@ -154,7 +154,20 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hdeltaJetEta = new TH1D("hdeltaJetEta", "hdeltaJetEta",50,-4,4);
     TH1D* hT_jet_dau_eta = new TH1D("hT_jet_dau_eta","hT_jet_dau_eta",100,-5,5);
     TH1D* hT_jet_dau_phi = new TH1D("hT_jet_dau_phi","hT_jet_dau_phi",100,-M_PI,M_PI);
-    TH1D* hT_jet_dau_pt  = new TH1D("hT_jet_dau_pt","hT_jet_dau_pt",100,-10,10);
+    TH1D* hT_jet_dau_pt  = new TH1D("hT_jet_dau_pt","hT_jet_dau_pt",100,0,10);
+    TH1D* htest_t_eta = new TH1D("htest_t_eta","htest_t_eta",100,-5,5);
+    TH1D* htest_t_phi = new TH1D("htest_t_phi","htest_t_phi",100,-M_PI,M_PI);
+    TH1D* htest_t_eta0 = new TH1D("htest_t_eta0","htest_t_eta0",100,-5,5);
+    TH1D* htest_t_phi0 = new TH1D("htest_t_phi0","htest_t_phi0",100,-M_PI,M_PI);
+    TH1D* htest_a_eta = new TH1D("htest_a_eta","htest_a_eta",100,-5,5);
+    TH1D* htest_a_phi = new TH1D("htest_a_phi","htest_a_phi",100,-M_PI,M_PI);
+    TH1D* htest_a_eta0 = new TH1D("htest_a_eta0","htest_a_eta0",100,-5,5);
+    TH1D* htest_a_phi0 = new TH1D("htest_a_phi0","htest_a_phi0",100,-M_PI,M_PI);
+    TH1D* htest_t_deltaeta = new TH1D("htest_t_deltaeta","htest_t_deltaeta",100,-5,5);
+    TH1D* htest_t_deltaphi = new TH1D("htest_t_deltaphi","htest_t_deltaphi",100,-M_PI,M_PI);
+    TH1D* htest_t_deltaeta0 = new TH1D("htest_t_deltaeta0","htest_t_deltaeta0",100,-5,5);
+    TH1D* htest_t_deltaphi0 = new TH1D("htest_t_deltaphi0","htest_t_deltaphi0",100,-M_PI,M_PI);
+
     
     //2D Corr histograms
 
@@ -549,6 +562,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                                                         //A_trk        T_trk
                             double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
 
+                            htest_t_deltaeta0->Fill(deltaEta);
+                            htest_t_deltaphi0->Fill(deltaPhi);
+                            
+
                             // double deltaJt  = fabs(jet_dau_pt - T_jet_dau_pt);
                             
                             for(        int i = 0; i < trackbin; i++){
@@ -565,7 +582,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                             hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               1/(Ntrig[i][j]));
                                             hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, 1/(Ntrig[i][j]));
                                             hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, 1/(Ntrig[i][j]));
-
+                                            htest_t_deltaeta->Fill(deltaEta);
+                                            htest_t_deltaphi->Fill(deltaPhi);
                                             // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
 
 
@@ -679,6 +697,10 @@ std::cout<< "made 4" << endl;
                     hT_jet_dau_eta->Write();
                     hT_jet_dau_phi->Write();
                     hT_jet_dau_pt->Write();
+                    htest_t_deltaeta->Write();
+                    htest_t_deltaeta0->Write();
+                    htest_t_deltaphi->Write();
+                    htest_t_deltaphi0->Write();
                     fS_tempA->Close();
                     }
 
