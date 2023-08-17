@@ -678,6 +678,7 @@ std::cout<< "made 4" << endl;
                     hdeltaJetTheta->Write();
                     hT_jet_dau_eta->Write();
                     hT_jet_dau_phi->Write();
+                    hT_jet_dau_pt->Write();
                     fS_tempA->Close();
                     }
 
