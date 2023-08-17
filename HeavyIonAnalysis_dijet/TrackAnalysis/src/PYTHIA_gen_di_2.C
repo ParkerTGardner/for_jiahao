@@ -154,7 +154,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hdeltaJetEta = new TH1D("hdeltaJetEta", "hdeltaJetEta",50,-4,4);
     TH1D* hT_jet_dau_eta = new TH1D("hT_jet_dau_eta","hT_jet_dau_eta",100,-5,5);
     TH1D* hT_jet_dau_phi = new TH1D("hT_jet_dau_phi","hT_jet_dau_phi",100,-M_PI,M_PI);
-
+    TH1D* hT_jet_dau_pt  = new TH1D("hT_jet_dau_pt","hT_jet_dau_pt",100,-10,10);
     
     //2D Corr histograms
 
@@ -406,11 +406,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         hT_jet_dau_eta->Fill(T_jet_dau_eta);
                         hT_jet_dau_phi->Fill(T_jet_dau_phi);
+                        hT_jet_dau_pt ->Fill(T_jet_dau_pt);
                         
                         
                         
                         for(int i = 0; i < ptbin; i++){
-                            if(T_jet_dau_pt >= ptbinbounds_lo[i] && T_jet_dau_pt < ptbinbounds_hi[i]){
+                            if(T_jet_dau_pt0 >= ptbinbounds_lo[i] && T_jet_dau_pt0 < ptbinbounds_hi[i]){
                                 T_ptBool[T_trk][i] = 1;
                             }
                         }
