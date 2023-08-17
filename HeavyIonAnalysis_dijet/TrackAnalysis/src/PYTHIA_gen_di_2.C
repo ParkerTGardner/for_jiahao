@@ -148,12 +148,12 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hJetPt = new TH1D("hJetPt"  ,"hJetPt" ,i150,i100,i3500);
     TH1D* hBinDist_gen_single = new TH1D("hBinDist_gen_single","hBinDist_gen_single",bin360,bin0, bin120);
     TH1D* hBinDist_reco_single = new TH1D("hBinDist_reco_single","hBinDist_reco_single",bin360,bin0,bin120);
-    TH1D* hdeltaR = new TH1D("hdeltaR", "hdeltaR", 100,0,10);
-    TH1D* hdeltaJetPhi = new TH1D("hdeltaJetPhi", "hdeltaJetPhi",50,-M_PI,M_PI);
-    TH1D* hdeltaJetTheta = new TH1D("dheltaJetTheta", "hdeltaJetTheta",50,-M_PI,M_PI);
+    TH1D* hdeltaR = new TH1D("hdeltaR", "hdeltaR", 50,0,5);
+    TH1D* hdeltaJetPhi = new TH1D("hdeltaJetPhi", "hdeltaJetPhi",50,0,5/4*M_PI);
+    TH1D* hdeltaJetTheta = new TH1D("hdeltaJetTheta", "hdeltaJetTheta",50,-M_PI,M_PI);
     TH1D* hdeltaJetEta = new TH1D("hdeltaJetEta", "hdeltaJetEta",50,-4,4);
     TH1D* hT_jet_dau_eta = new TH1D("hT_jet_dau_eta","hT_jet_dau_eta",100,-5,5);
-    TH1D* hT_jet_dau_phi = new TH1D("hT_jet_dau_eta","hT_jet_dau_eta",50,-M_PI,M_PI);
+    TH1D* hT_jet_dau_phi = new TH1D("hT_jet_dau_phi","hT_jet_dau_phi",100,-M_PI,M_PI);
 
     
     //2D Corr histograms
@@ -273,8 +273,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // double deltaJetR1   = sqrt( pow((deltaJetPhi),2) + pow(deltaJetEta,2));
                     // double deltaJetR2   = sqrt( pow((M_PI-deltaJetPhi),2) + pow(deltaJetEta,2));
                     double deltaJetEta = (double)(*genJetEta)[ijet] - (double)(*genJetEta)[jjet];
-                    double deltaJetTheta = 2*TMath::ATan(TMath::Exp((double)(*genJetPt)[ijet])) - 2*TMath::ATan(TMath::Exp(-(double)(*genJetPt)[jjet]));
-                    double deltaJetPhi = (double)(*genJetPhi)[ijet] - (double)(*genJetPhi)[jjet];
+                    double deltaJetTheta = fabs(2*TMath::ATan(TMath::Exp(-(double)(*genJetEta)[ijet])) - 2*TMath::ATan(TMath::Exp(-(double)(*genJetEta)[jjet])));
+                    double deltaJetPhi = fabs((double)(*genJetPhi)[ijet] - (double)(*genJetPhi)[jjet]);
                     double deltaR = sqrt(pow(deltaJetPhi,2)+pow(deltaJetEta,2));
                     hdeltaR -> Fill(deltaR);
                     hdeltaJetEta -> Fill(deltaJetEta);
