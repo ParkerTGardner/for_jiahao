@@ -584,6 +584,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                             hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, 1/(Ntrig[i][j]));
                                             htest_t_deltaeta->Fill(deltaEta);
                                             htest_t_deltaphi->Fill(deltaPhi);
+                                            
                                             // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
 
 
@@ -701,6 +702,7 @@ std::cout<< "made 4" << endl;
                     htest_t_deltaeta0->Write();
                     htest_t_deltaphi->Write();
                     htest_t_deltaphi0->Write();
+                    hNtrig->Write();
                     fS_tempA->Close();
                     }
 
