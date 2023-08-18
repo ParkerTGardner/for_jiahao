@@ -670,8 +670,8 @@ std::cout<< "made 4" << endl;
                                           gRandom->SetSeed(0);
                                           double WEtaA, WPhiA;//making the pseudoparticles
                                           double WEtaT, WPhiT;
-                                          hEPDrawA[wtrk-1][wppt-1][wpPU-1]->GetRandom3(WEtaA, WPhiA);
-                                          hEPDrawT[wtrk-1][wppt-1][wpPU-1]->GetRandom3(WEtaT, WPhiT);
+                                          hEPDrawA[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEtaA, WPhiA);
+                                          hEPDrawT[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEtaT, WPhiT);
                                           A_ETA[x] = WEtaA;
                                           A_PHI[x] = WPhiA;
                                           T_ETA[x] = WEtaT;
