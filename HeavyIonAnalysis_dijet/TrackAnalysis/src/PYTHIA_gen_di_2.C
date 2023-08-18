@@ -513,7 +513,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                     int k_PU=0;
 
-                                    hEPDrawA[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, jet_dau_pt, (float)((float)(1.0)/Ntrig[i][j]));;
+                                    hEPDrawA[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, jet_dau_pt, ((double)(1.0)/Ntrig[i][j]));
                                 }
                             }
                         }
@@ -573,7 +573,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     if(tkBool[i] + T_ptBool[T_trk][j] == 2){
                                         int k_PU=0;
 
-                                        hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi , T_jet_dau_pt, (float)((float)(1.0)/Ntrig[i][j]));
+                                        hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi , T_jet_dau_pt, ((double)(1.0)/Ntrig[i][j]));
                                     }
                                 }
                             }
@@ -599,12 +599,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     if(tkBool[i] + A_ptBool[A_trk][j] + T_ptBool[T_trk][j] == 3){
                                             hPairs->Fill(i,j);
                                             int k_PU=0;
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 (float)((float)(1.0)/Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                (float)((float)(1.0)/Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                (float)((float)(1.0)/Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               (float)((float)(1.0)/Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, (float)((float)(1.0)/Ntrig[i][j]));;
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, (float)((float)(1.0)/Ntrig[i][j]));;
+                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/Ntrig[i][j]));
                                             // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
 
 
@@ -657,13 +657,13 @@ std::cout<< "made 4" << endl;
                                       float A_ETA[XENT] = {0};
                                       float A_PHI[XENT] = {0};
                                       float T_ETA[XENT] = {0};
-                                      float T_Phi[XENT] = {0};
+                                      float T_PHI[XENT] = {0};
 				                    //   float A_Jt[XENT]  = {0};
 
                                       for(int x = 0; x<XENT; x++){
                                           gRandom->SetSeed(0);
                                           double WEtaA, WPhiA, WJtA;//making the pseudoparticles
-                                          double WEtaT, WPhiT, WEJtT;
+                                          double WEtaT, WPhiT, WJtT;
                                           hEPDrawA[wtrk-1][wppt-1][wpPU-1]->GetRandom3(WEtaA, WPhiA,WJtA);
                                           hEPDrawT[wtrk-1][wppt-1][wpPU-1]->GetRandom3(WEtaT, WPhiT,WJtT);
                                           A_ETA[x] = WEtaA;
