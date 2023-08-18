@@ -299,7 +299,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     // We only consider the back-to-back system, so we choose deltaeta<0
                     // if (deltaJetEta < 0) continue;
-                    if (M_PI-deltaJetPhi > 0.4) continue;
+                    if (M_PI-deltaJetPhi > 0.1) continue;
+                    if (fabs(deltaJetEta)> 2 )  continue;
 
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
 
@@ -497,15 +498,15 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         // Actully because of the jjet loop, it will be overcounting the const times( the number of jets)
                         // And it has no effect at all
 
-                        for(int i = 0; i < trackbin; i++){
-                            for(int j = 0; j < ptbin; j++){
-                                if(tkBool[i] + A_ptBool[A_trk][j] == 2){
-                                    int k_PU=0;
+                        // for(int i = 0; i < trackbin; i++){
+                        //     for(int j = 0; j < ptbin; j++){
+                        //         if(tkBool[i] + A_ptBool[A_trk][j] == 2){
+                        //             int k_PU=0;
 
-                                    hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, jet_dau_pt, (float)((float)(1.0)/Ntrig[i][j]));;
-                                }
-                            }
-                        }
+                        //             hEPDraw[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, jet_dau_pt, (float)((float)(1.0)/Ntrig[i][j]));;
+                        //         }
+                        //     }
+                        // }
 
                         for(int i = 0; i < trackbin; i++){
                             for(int j = 0; j < ptbin; j++){
@@ -557,15 +558,15 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             
                             if(T_jet_dau_eta0 > track_eta_lim) continue;
 
-                            for(int i = 0; i < trackbin; i++){
-                                for(int j = 0; j < ptbin; j++){
-                                    if(tkBool[i] + T_ptBool[T_trk][j] == 2){
-                                        int k_PU=0;
+                            // for(int i = 0; i < trackbin; i++){
+                            //     for(int j = 0; j < ptbin; j++){
+                            //         if(tkBool[i] + T_ptBool[T_trk][j] == 2){
+                            //             int k_PU=0;
 
-                                        hEPDraw[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi , T_jet_dau_pt, (float)((float)(1.0)/Ntrig[i][j]));
-                                    }
-                                }
-                            }
+                            //             hEPDraw[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi , T_jet_dau_pt, (float)((float)(1.0)/Ntrig[i][j]));
+                            //         }
+                            //     }
+                            // }
 
                             for(int i = 0; i < trackbin; i++){
                                 for(int j = 0; j < ptbin; j++){
@@ -655,21 +656,27 @@ std::cout<< "made 4" << endl;
                                       long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
                                       float A_ETA[XENT] = {0};
                                       float A_PHI[XENT] = {0};
+                                      float T_ETA[XENT] = {0};
+                                      float T_Phi[XENT] = {0};
 				                    //   float A_Jt[XENT]  = {0};
 
                                       for(int x = 0; x<XENT; x++){
                                           gRandom->SetSeed(0);
-                                          double WEta1, WPhi1, WJt1;//making the pseudoparticles
-                                          hEPDraw[wtrk-1][wppt-1][wpPU-1]->GetRandom3(WEta1, WPhi1,WJt1);
-                                          A_ETA[x] = WEta1;
-                                          A_PHI[x] = WPhi1;
+                                          double WEtaA, WPhiA, WJtA;//making the pseudoparticles
+                                          double WEtaT, WPhiT, WEJtT;
+                                          hEPDrawA[wtrk-1][wppt-1][wpPU-1]->GetRandom3(WEtaA, WPhiA,WJtA);
+                                          hEPDrawT[wtrk-1][wppt-1][wpPU-1]->GetRandom3(WEtaT, WPhiT,WJtT);
+                                          A_ETA[x] = WEtaA;
+                                          A_PHI[x] = WPhiA;
+                                          T_ETA[x] = WEtaT;
+                                          T_PHI[x] = WPhiT;
                                         //   A_Jt[x]  = WJt1;
                                       }
                                       for(long int i = 0; i < (XENT-1); i++){
                                           for(long int j = (i+1); j < XENT; j++){
 
-                                              double WdeltaEta = (A_ETA[i]-A_ETA[j]);
-                                              double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-A_PHI[j])));
+                                              double WdeltaEta = (A_ETA[i]-T_ETA[j]);
+                                              double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
                                             //   double WdeltaJt  = fabs(A_Jt[i]-A_Jt[j]);
 
                                               hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
