@@ -148,7 +148,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hJetPt = new TH1D("hJetPt"  ,"hJetPt" ,i150,i100,i3500);
     TH1D* hBinDist_gen_single = new TH1D("hBinDist_gen_single","hBinDist_gen_single",bin360,bin0, bin120);
     TH1D* hBinDist_reco_single = new TH1D("hBinDist_reco_single","hBinDist_reco_single",bin360,bin0,bin120);
-    TH1D* hdeltaR = new TH1D("hdeltaR", "hdeltaR", 50,0,5);
+    TH1D* hdeltaR = new TH1D("hdeltaR", "hdeltaR", 100,0,5);
     TH1D* hdeltaJetPhi = new TH1D("hdeltaJetPhi", "hdeltaJetPhi",50,0,5/4*M_PI);
     TH1D* hdeltaJetTheta = new TH1D("hdeltaJetTheta", "hdeltaJetTheta",50,-M_PI,M_PI);
     TH1D* hdeltaJetEta = new TH1D("hdeltaJetEta", "hdeltaJetEta",50,-4,4);
@@ -171,11 +171,15 @@ void MyClass::Loop(int job, std::string fList){
     
     //2D Corr histograms
 
-    TH3D* hEPDraw[trackbin][ptbin][PUbin];
+    // TH3D* hEPDraw[trackbin][ptbin][PUbin];
     TH2D* hSignalShifted[trackbin][ptbin][PUbin];
     TH2D* hBckrndShifted[trackbin][ptbin][PUbin];
-    TH3D* hEPDrawA[trackbin][ptbin][PUbin];
-    TH3D* hEPDrawT[trackbin][ptbin][PUbin];
+    TH2D* hEPDrawA[trackbin][ptbin][PUbin];
+    TH2D* hEPDrawT[trackbin][ptbin][PUbin];
+
+  
+
+    
 
 
     TH1D* hBinDist_gen[trackbin];
@@ -191,10 +195,12 @@ void MyClass::Loop(int job, std::string fList){
                 // hMomSignalShifted[wtrk-1][wppt-1][wpPU-1]   = new TH1D(Form("hjtw_MomSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_MomSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , 30, 0, 1.2);
                 hBckrndShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hjtw_BckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_BckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
                 hSignalShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hjtw_SignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_SignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
-                hEPDraw[wtrk-1][wppt-1][wpPU-1]             = new TH3D(Form("hjtw_EPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hjtw_EPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi,    2*ptbin, -ptbin, ptbin);
-                hEPDrawA[wtrk-1][wppt-1][wpPU-1]             = new TH3D(Form("hjtw_EPDrawA_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hjtw_EPDrawA_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi,    2*ptbin, -ptbin, ptbin);
-                hEPDrawT[wtrk-1][wppt-1][wpPU-1]             = new TH3D(Form("hjtw_EPDrawT_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hjtw_EPDrawT_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi,    2*ptbin, -ptbin, ptbin);
-
+                // hEPDraw[wtrk-1][wppt-1][wpPU-1]             = new TH3D(Form("hjtw_EPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hjtw_EPDraw_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
+                hEPDrawA[wtrk-1][wppt-1][wpPU-1]             = new TH2D(Form("hjtw_EPDrawA_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hjtw_EPDrawA_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
+                hEPDrawT[wtrk-1][wppt-1][wpPU-1]             = new TH2D(Form("hjtw_EPDrawT_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hjtw_EPDrawT_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , -EPD_xhi, EPD_xlo , EPD_yb      , EPD_ylo    , EPD_yhi);
+                // h_jet_dau[wtrk-1][wppt-1][wpPU-1]             = new TH2D(Form("hjtw_BckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hjtw_BckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
+                // TH2D* h_jet_dau_A[trackbin][ptbin][PUbin];
+                // TH2D* h_jet_dau_T[trackbin][ptbin][PUbin];
 
             }
         }
@@ -513,7 +519,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                     int k_PU=0;
 
-                                    hEPDrawA[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, jet_dau_pt, ((double)(1.0)/Ntrig[i][j]));
+                                    hEPDrawA[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, ((double)(1.0)/Ntrig[i][j]));
                                 }
                             }
                         }
@@ -573,7 +579,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     if(tkBool[i] + T_ptBool[T_trk][j] == 2){
                                         int k_PU=0;
 
-                                        hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi , T_jet_dau_pt, ((double)(1.0)/Ntrig[i][j]));
+                                        hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi ,  ((double)(1.0)/Ntrig[i][j]));
                                     }
                                 }
                             }
@@ -662,10 +668,10 @@ std::cout<< "made 4" << endl;
 
                                       for(int x = 0; x<XENT; x++){
                                           gRandom->SetSeed(0);
-                                          double WEtaA, WPhiA, WJtA;//making the pseudoparticles
-                                          double WEtaT, WPhiT, WJtT;
-                                          hEPDrawA[wtrk-1][wppt-1][wpPU-1]->GetRandom3(WEtaA, WPhiA,WJtA);
-                                          hEPDrawT[wtrk-1][wppt-1][wpPU-1]->GetRandom3(WEtaT, WPhiT,WJtT);
+                                          double WEtaA, WPhiA;//making the pseudoparticles
+                                          double WEtaT, WPhiT;
+                                          hEPDrawA[wtrk-1][wppt-1][wpPU-1]->GetRandom3(WEtaA, WPhiA);
+                                          hEPDrawT[wtrk-1][wppt-1][wpPU-1]->GetRandom3(WEtaT, WPhiT);
                                           A_ETA[x] = WEtaA;
                                           A_PHI[x] = WPhiA;
                                           T_ETA[x] = WEtaT;
@@ -707,7 +713,7 @@ std::cout<< "made 4" << endl;
 
                                 hSignalShifted             [wtrk-1][wppt-1][wpPU-1]->Write(Form("hSigS_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU    ));
                                 hBckrndShifted             [wtrk-1][wppt-1][wpPU-1]->Write(Form("hBckS_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU    ));
-                                hEPDraw                    [wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPD_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU     ));
+                                // hEPDraw                    [wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPD_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU     ));
                                 hEPDrawA                   [wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPDA_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU     ));
                                 hEPDrawT                   [wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPDT_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU     ));
                                 
