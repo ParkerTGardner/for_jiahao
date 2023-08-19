@@ -362,6 +362,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         if((*genDau_chg)[ijet][A_trk] == 0) continue;
                         if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
                         if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
+                        if((*genDau_eta)[ijet][A_trk] < 0.8) continue;
 
                             //     daughter pt with respect to the jetA axis                 pt With Respect To JetA
                         double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
@@ -406,6 +407,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         if((*genDau_chg)[jjet][T_trk] == 0) continue;
                         if(fabs((*genDau_eta)[jjet][T_trk]) > 2.4) continue;
                         if(fabs((*genDau_pt)[jjet][T_trk])  < 0.3)      continue;
+                        if((*genDau_eta)[jjet][T_trk] > -0.8) continue;
+                        
 
                         double T_jet_dau_pt  = 0;
                         double T_jet_dau_eta = 0;
