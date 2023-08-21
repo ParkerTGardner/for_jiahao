@@ -230,7 +230,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 int kt_tkbool[ktbin] = {0}; // This is ktbin
                 int kt_Ntrig[ktbin] = {0};
             
-                // Fill kt_Ntrig in jetA,jetB
+                // Fill kt_Ntrig in jetA
                 for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
                 
                     if((*genDau_chg)[ijet][A_trk] == 0) continue;
@@ -307,7 +307,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
 
-                    
+                    // This is for background
+                    // For every new jet, we get kt_Ntrig for nomalization
+                    // For every new daughter in this jet, we calculate every deltap and fill the corresponding ktbin
+                    // Finally we get all particle's deltap for each ktbin---- It's really time-comsuming
+                    // Then we choose 10 times pairs than signal's for each ktbin
 
                     int nBinsX = hkt_EPDraw->GetNbinsX();
                     int nBinsY = hkt_EPDraw->GetNbinsY();
