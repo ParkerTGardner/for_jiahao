@@ -430,7 +430,7 @@ std::cout<< "made 4" << endl;
                     hEvent_Pass   ->Write();
                     hJet_Pass     ->Write();
                     hkt_Ntrig_single     ->Write();
-                    hdeltaR       ->Write();
+                    // hdeltaR       ->Write();
                     fS_tempA->Close();
                     }
 
