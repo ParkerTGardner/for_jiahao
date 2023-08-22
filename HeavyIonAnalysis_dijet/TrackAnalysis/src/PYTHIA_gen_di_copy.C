@@ -414,13 +414,13 @@ std::cout<< "made 4" << endl;
                         for (long int x = 0 ; kt_finishtag<ktbin; x++){
                             
                             kt_finishtag = 0;
-                            double A_Eta, A_PHI, A_Jt = 0.0;
-                            double T_ETA, T_PHI, T_Jt = 0.0;
+                            double A_Eta, A_Phi, A_Jt = 0.0;
+                            double T_Eta, T_Phi, T_Jt = 0.0;
                             gRandom->SetSeed(0);
-                            double hkt_EPDraw->GetRandom3(A_Eta, A_PHI, A_Jt);
+                            hkt_EPDraw->GetRandom3(A_Eta, A_Phi, A_Jt);
                             gRandom->SetSeed(0);
-                            double hkt_EPDraw->GetRandom3(T_Eta, T_PHI, T_Jt);//making the pseudoparticles
-                            WdeltaPt = diffvec(A_Eta, A_PHI, A_Jt,T_Eta, T_PHI, T_Jt );
+                            hkt_EPDraw->GetRandom3(T_Eta, T_Phi, T_Jt);//making the pseudoparticles
+                            double WdeltaPt = diffvec(A_Eta, A_Phi, A_Jt,T_Eta, T_Phi, T_Jt );
 
 
 
@@ -429,7 +429,7 @@ std::cout<< "made 4" << endl;
 
                                 if((ktbinbounds_lo[l] < 0.5*fabs(A_Jt+T_Jt)) && (ktbinbounds_hi[l] >= 0.5*fabs(A_Jt+T_Jt))&&(temp[l]<XENT[l])){
 
-                                    hMomBckrndShifted[wkt]->Fill(WdeltaPt, 1);
+                                    hMomBckrndShifted[l]->Fill(WdeltaPt, 1);
                                     temp[l]++;
                                 }
                             }
