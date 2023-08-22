@@ -282,7 +282,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     hJet_Pass           ->Fill(i);
                 }
 
-                //Main loop for corr func
+                //Main loop for p corr func
 
                 for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
                     
@@ -306,47 +306,48 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     double jet_dau_theta = 2*ATan(Exp(-(jet_dau_eta)));
 
 
+                   
 
-                    // This is for background
-                    // For every new jet, we get kt_Ntrig for nomalization
-                    // For every new daughter in this jet, we calculate every deltap and fill the corresponding ktbin
-                    // Finally we get all particle's deltap for each ktbin---- It's really time-comsuming
-                    // Then we choose 10 times pairs than signal's for each ktbin
+                    // // This is for background
+                    // // For every new jet, we get kt_Ntrig for nomalization
+                    // // For every new daughter in this jet, we calculate every deltap and fill the corresponding ktbin
+                    // // Finally we get all particle's deltap for each ktbin---- It's really time-comsuming
+                    // // Then we choose 10 times pairs than signal's for each ktbin
 
-                    int nBinsX = hkt_EPDraw->GetNbinsX();
-                    int nBinsY = hkt_EPDraw->GetNbinsY();
-                    int nBinsZ = hkt_EPDraw->GetNbinsZ();
+                    // int nBinsX = hkt_EPDraw->GetNbinsX();
+                    // int nBinsY = hkt_EPDraw->GetNbinsY();
+                    // int nBinsZ = hkt_EPDraw->GetNbinsZ();
 
-                    for (int i = 1; i <= nBinsX; i++) {
-                        for (int j = 1; j <= nBinsY; j++) {
-                            for (int k = 1; k <= nBinsZ; k++) {
-                                double binContent = hkt_EPDraw->GetBinContent(i, j, k);
-                                double dau_eta_lo = hkt_EPDraw->GetXaxis()->GetBinLowEdge(i);
-                                double dau_phi_lo = hkt_EPDraw->GetYaxis()->GetBinLowEdge(j);
-                                double dau_pt_lo = hkt_EPDraw->GetZaxis()->GetBinLowEdge(k);
-                                double dau_eta_wi = hkt_EPDraw->GetXaxis()->GetBinWidth(i);
-                                double dau_phi_wi = hkt_EPDraw->GetYaxis()->GetBinWidth(j);
-                                double dau_pt_wi = hkt_EPDraw->GetZaxis()->GetBinWidth(k);
-                                double dau_eta_ave = dau_eta_lo+0.5*(dau_eta_wi);
-                                double dau_phi_ave = dau_phi_lo+0.5*(dau_phi_wi);
-                                double dau_pt_ave = dau_pt_lo+0.5*(dau_pt_wi);
+                    // for (int i = 1; i <= nBinsX; i++) {
+                    //     for (int j = 1; j <= nBinsY; j++) {
+                    //         for (int k = 1; k <= nBinsZ; k++) {
+                    //             double binContent = hkt_EPDraw->GetBinContent(i, j, k);
+                    //             double dau_eta_lo = hkt_EPDraw->GetXaxis()->GetBinLowEdge(i);
+                    //             double dau_phi_lo = hkt_EPDraw->GetYaxis()->GetBinLowEdge(j);
+                    //             double dau_pt_lo = hkt_EPDraw->GetZaxis()->GetBinLowEdge(k);
+                    //             double dau_eta_wi = hkt_EPDraw->GetXaxis()->GetBinWidth(i);
+                    //             double dau_phi_wi = hkt_EPDraw->GetYaxis()->GetBinWidth(j);
+                    //             double dau_pt_wi = hkt_EPDraw->GetZaxis()->GetBinWidth(k);
+                    //             double dau_eta_ave = dau_eta_lo+0.5*(dau_eta_wi);
+                    //             double dau_phi_ave = dau_phi_lo+0.5*(dau_phi_wi);
+                    //             double dau_pt_ave = dau_pt_lo+0.5*(dau_pt_wi);
                                 
-                                for (int l=0; l<ktbin; l++){
+                    //             for (int l=0; l<ktbin; l++){
 
-                                    if((ktbinbounds_lo[l] < 0.5*fabs(dau_pt_ave+jet_dau_pt)) && (ktbinbounds_hi[l] >= 0.5*fabs(dau_pt_ave+jet_dau_pt))){
+                    //                 if((ktbinbounds_lo[l] < 0.5*fabs(dau_pt_ave+jet_dau_pt)) && (ktbinbounds_hi[l] >= 0.5*fabs(dau_pt_ave+jet_dau_pt))){
 
-                                        kt_EPDraw[l]->Fill(diffvec(dau_eta_ave,dau_phi_ave,dau_pt_ave,jet_dau_eta,jet_dau_phi,jet_dau_pt), (double)((double)(binContent)/kt_Ntrig[l]));
+                    //                     kt_EPDraw[l]->Fill(diffvec(dau_eta_ave,dau_phi_ave,dau_pt_ave,jet_dau_eta,jet_dau_phi,jet_dau_pt), (double)((double)(binContent)/kt_Ntrig[l]));
 
-                                    }
+                    //                 }
 
-                                }
+                    //             }
 
                                 
                                     
                                 
-                            }
-                        }
-                    }
+                    //         }
+                    //     }
+                    // }
 
                     // corr(dau_A,dau_A)
                     for(long int T_trk=A_trk+1; T_trk< NNtrk1; T_trk++ ){
@@ -393,27 +394,60 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 std::cout<< "made 4" << endl;
                         
                         
-
-
+                    // long int NENT[ktbin] = {0};
+                        long int XENT[ktbin] = {0};
                         for(int wkt = 0; wkt < ktbin; wkt++){
                             std::cout << wkt  << "/" << ktbin << std::endl;
                             //Nent is the number of pairs in the signal which we will try to 10x
                             //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
                             //us 10 times as many pairs as we have in the signal histogrm.
 
-                            long int NENT =  hkt_Pairs->GetBinContent(wkt);
-                            long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
-                            
+                            long int NENT      =  hkt_Pairs->GetBinContent(wkt);
+                                     XENT[wkt] =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
+                        }
+                        // This is finish tag
+                        int kt_finishtag;
+                        // This is for the counting to get correct num for the 
+                        long int temp[ktbin] = {0};   
 
-                            for(int x = 0; x<XENT; x++){
-                                gRandom->SetSeed(0);
-                                double WdeltaPt = kt_EPDraw[wkt]->GetRandom();//making the pseudoparticles
-                                
-                                hMomBckrndShifted[wkt]->Fill(WdeltaPt, 1);
+                        //Actually it is like a while loop
+                        for (long int x = 0 ; kt_finishtag<ktbin; x++){
+                            
+                            kt_finishtag = 0;
+                            double A_Eta, A_PHI, A_Jt = 0.0;
+                            double T_ETA, T_PHI, T_Jt = 0.0;
+                            gRandom->SetSeed(0);
+                            double hkt_EPDraw->GetRandom3(A_Eta, A_PHI, A_Jt);
+                            gRandom->SetSeed(0);
+                            double hkt_EPDraw->GetRandom3(T_Eta, T_PHI, T_Jt);//making the pseudoparticles
+                            WdeltaPt = diffvec(A_Eta, A_PHI, A_Jt,T_Eta, T_PHI, T_Jt );
+
+
+
+                            // To get enough number pairs for each ktbin, we should use temp and finishtag
+                            for (int l=0; l<ktbin; l++){
+
+                                if((ktbinbounds_lo[l] < 0.5*fabs(A_Jt+T_Jt)) && (ktbinbounds_hi[l] >= 0.5*fabs(A_Jt+T_Jt))&&(temp[l]<XENT[l])){
+
+                                    hMomBckrndShifted[wkt]->Fill(WdeltaPt, 1);
+                                    temp[l]++;
+                                }
                             }
 
+                            for(int i = 0; i < ktbin; i++){
+                                if(temp[i]==XENT[i]) kt_finishtag++;
+                            }
+                            
+                                           
                         }
+
+                        
+
+                            
                       //}}}
+
+                      
+                                
 
 
 
