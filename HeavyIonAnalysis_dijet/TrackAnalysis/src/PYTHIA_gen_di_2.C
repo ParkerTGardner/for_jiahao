@@ -307,7 +307,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // if (deltaJetEta < 0) continue;
                     if (fabs(M_PI-deltaJetPhi) > 0.1) continue;
                     if (deltaR<3||deltaR>3.6 )  continue;
-                    // if (fabs(deltaJetTheta)>)
 
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
 
