@@ -154,19 +154,23 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hdeltaJetEta = new TH1D("hdeltaJetEta", "hdeltaJetEta",50,-4,4);
     TH1D* hT_jet_dau_eta = new TH1D("hT_jet_dau_eta","hT_jet_dau_eta",100,-5,5);
     TH1D* hT_jet_dau_phi = new TH1D("hT_jet_dau_phi","hT_jet_dau_phi",100,-M_PI,M_PI);
-    TH1D* hT_jet_dau_pt  = new TH1D("hT_jet_dau_pt","hT_jet_dau_pt",100,0,10);
-    TH1D* htest_t_eta = new TH1D("htest_t_eta","htest_t_eta",100,-5,5);
-    TH1D* htest_t_phi = new TH1D("htest_t_phi","htest_t_phi",100,-M_PI,M_PI);
-    TH1D* htest_t_eta0 = new TH1D("htest_t_eta0","htest_t_eta0",100,-5,5);
-    TH1D* htest_t_phi0 = new TH1D("htest_t_phi0","htest_t_phi0",100,-M_PI,M_PI);
-    TH1D* htest_a_eta = new TH1D("htest_a_eta","htest_a_eta",100,-5,5);
-    TH1D* htest_a_phi = new TH1D("htest_a_phi","htest_a_phi",100,-M_PI,M_PI);
-    TH1D* htest_a_eta0 = new TH1D("htest_a_eta0","htest_a_eta0",100,-5,5);
-    TH1D* htest_a_phi0 = new TH1D("htest_a_phi0","htest_a_phi0",100,-M_PI,M_PI);
-    TH1D* htest_t_deltaeta = new TH1D("htest_t_deltaeta","htest_t_deltaeta",100,-5,5);
-    TH1D* htest_t_deltaphi = new TH1D("htest_t_deltaphi","htest_t_deltaphi",100,-M_PI,M_PI);
-    TH1D* htest_t_deltaeta0 = new TH1D("htest_t_deltaeta0","htest_t_deltaeta0",100,-5,5);
-    TH1D* htest_t_deltaphi0 = new TH1D("htest_t_deltaphi0","htest_t_deltaphi0",100,-M_PI,M_PI);
+    TH1D* hJet_Eta_ave = new TH1D("hJet_Eta_ave","hJet_Eta_ave",50,-4,4);
+    TH1D* hJet_Ptw_Eta_ave = new TH1D("hJet_Ptw_Eta_ave","hJet_Ptw_Eta_ave", 200,-1000,1000);
+    TH1D* hJet_Eta_ave_nocut = new TH1D("hJet_Eta_ave_nocut","hJet_Eta_ave_nocut",50,-4,4);
+    TH1D* hJet_Ptw_Eta_ave_nocut = new TH1D("hJet_Ptw_Eta_ave_nocut","hJet_Ptw_Eta_ave_nocut", 200,-1000,1000);
+    // TH1D* hT_jet_dau_pt  = new TH1D("hT_jet_dau_pt","hT_jet_dau_pt",100,0,10);
+    // TH1D* htest_t_eta = new TH1D("htest_t_eta","htest_t_eta",100,-5,5);
+    // TH1D* htest_t_phi = new TH1D("htest_t_phi","htest_t_phi",100,-M_PI,M_PI);
+    // TH1D* htest_t_eta0 = new TH1D("htest_t_eta0","htest_t_eta0",100,-5,5);
+    // TH1D* htest_t_phi0 = new TH1D("htest_t_phi0","htest_t_phi0",100,-M_PI,M_PI);
+    // TH1D* htest_a_eta = new TH1D("htest_a_eta","htest_a_eta",100,-5,5);
+    // TH1D* htest_a_phi = new TH1D("htest_a_phi","htest_a_phi",100,-M_PI,M_PI);
+    // TH1D* htest_a_eta0 = new TH1D("htest_a_eta0","htest_a_eta0",100,-5,5);
+    // TH1D* htest_a_phi0 = new TH1D("htest_a_phi0","htest_a_phi0",100,-M_PI,M_PI);
+    // TH1D* htest_t_deltaeta = new TH1D("htest_t_deltaeta","htest_t_deltaeta",100,-5,5);
+    // TH1D* htest_t_deltaphi = new TH1D("htest_t_deltaphi","htest_t_deltaphi",100,-M_PI,M_PI);
+    // TH1D* htest_t_deltaeta0 = new TH1D("htest_t_deltaeta0","htest_t_deltaeta0",100,-5,5);
+    // TH1D* htest_t_deltaphi0 = new TH1D("htest_t_deltaphi0","htest_t_deltaphi0",100,-M_PI,M_PI);
 
     
     //2D Corr histograms
@@ -258,6 +262,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                 //defining how many particles are in the jet, set observable based on jet multiplicity
                 //for example, what is the shape of jet(5,10,100 particles in jet)
+                
+
                 if( fabs((*genJetEta)[ijet]) > jetEtaCut ) continue;
                 if( (*genJetPt)[ijet] < jetPtCut_Jet   ) continue;
 
@@ -277,10 +283,16 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 // Actually most of our calculation is in this loop
                 for(int jjet=ijet+1; (jjet< genJetPt->size()); jjet++){
 
+                    hJet_Eta_ave_nocut->Fill(((*genJetEta)[ijet]+(*genJetEta)[jjet])/2.0);
+                    hJet_Ptw_Eta_ave_nocut->Fill(((*genJetEta)[ijet]*(*genJetPt)[ijet]+(*genJetEta)[jjet]*(*genJetPt)[jjet])/((*genJetPt)[ijet]+(*genJetPt)[jjet]));
+
                     // choose the jetB                    
                     // if (jjet == ijet) continue;
                     if( fabs((*genJetEta)[jjet]) > jetEtaCut ) continue;
-                    if( (*genJetPt)[jjet] < jetPtCut_Jet-200   ) continue;      
+                    if( (*genJetPt)[jjet] < jetPtCut_Jet-200   ) continue;    
+
+                    hJet_Eta_ave->Fill(((*genJetEta)[ijet]+(*genJetEta)[jjet])/2.0);
+                    hJet_Ptw_Eta_ave->Fill(((*genJetEta)[ijet]*(*genJetPt)[ijet]+(*genJetEta)[jjet]*(*genJetPt)[jjet])/((*genJetPt)[ijet]+(*genJetPt)[jjet]));  
 
                     // double deltaJetTheta = thetaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], -(double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]+M_PI);
                     // double deltaJetEta0   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet]);
@@ -307,7 +319,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // if (deltaJetEta < 0) continue;
                     if (fabs(M_PI-deltaJetPhi) > 0.1) continue;
                     // if (deltaR<3||deltaR>3.6 )  continue;
-                    if (fabs(deltaJetEta)>2) continue;
+                    if (fabs(deltaJetEta)>1) continue;
 
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
 
@@ -359,6 +371,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // calculate the A_ptbool pile up Ntrig in jetA first,
                     //and then we do this in jetB so that we can get the complete Ntrig
                     for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
+                        
                     
                         if((*genDau_chg)[ijet][A_trk] == 0) continue;
                         if(fabs((*genDau_eta)[ijet][A_trk]) > 2.4) continue;
@@ -592,8 +605,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                                                         //A_trk        T_trk
                             double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
 
-                            htest_t_deltaeta0->Fill(deltaEta);
-                            htest_t_deltaphi0->Fill(deltaPhi);
+                            // htest_t_deltaeta0->Fill(deltaEta);
+                            // htest_t_deltaphi0->Fill(deltaPhi);
                             
 
                             // double deltaJt  = fabs(jet_dau_pt - T_jet_dau_pt);
@@ -732,10 +745,6 @@ std::cout<< "made 4" << endl;
                     hT_jet_dau_eta->Write();
                     hT_jet_dau_phi->Write();
                     hT_jet_dau_pt->Write();
-                    htest_t_deltaeta->Write();
-                    htest_t_deltaeta0->Write();
-                    htest_t_deltaphi->Write();
-                    htest_t_deltaphi0->Write();
                     hNtrig->Write();
                     fS_tempA->Close();
                     }
