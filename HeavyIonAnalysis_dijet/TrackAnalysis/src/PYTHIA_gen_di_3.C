@@ -293,7 +293,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     
                     // double deltaJetR1   = sqrt( pow((deltaJetPhi),2) + pow(deltaJetEta,2));
                     // double deltaJetR2   = sqrt( pow((M_PI-deltaJetPhi),2) + pow(deltaJetEta,2));
-                    double deltaJetEta = (double)(*genJetEta)[ijet] - (double)(*genJetEta)[jjet];
+                    double deltaJetEta = (double)(*genJetEta)[ijet] + (double)(*genJetEta)[jjet];
                     double deltaJetTheta = fabs(2*TMath::ATan(TMath::Exp(-(double)(*genJetEta)[ijet])) - 2*TMath::ATan(TMath::Exp(-(double)(*genJetEta)[jjet])));
                     double deltaJetPhi =  fabs((double)(*genJetPhi)[ijet]-(double)(*genJetPhi)[jjet]);
                     double deltaR = sqrt(pow(deltaJetPhi,2)+pow(deltaJetEta,2));
@@ -306,8 +306,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // We only consider the back-to-back system, so we choose deltaeta<0
                     // if (deltaJetEta < 0) continue;
                     if (fabs(M_PI-deltaJetPhi) > 0.1) continue;
-                    if (deltaR<3||deltaR>3.6 )  continue;
-                    if (deltaJetEta>0) continue;
+                    // if (deltaR<3||deltaR>3.6 )  continue;
+                    if (fabs(deltaJetEta)>2) continue;
 
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
 
