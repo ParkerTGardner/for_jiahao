@@ -403,7 +403,10 @@ std::cout<< "made 4" << endl;
                             //us 10 times as many pairs as we have in the signal histogrm.
 
                             long int NENT      =  hkt_Pairs->GetBinContent(wkt);
-                                     XENT[wkt] =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
+                                    //  XENT[wkt] =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
+                                    // We can not choose exactly 10 times particles than the sig, 
+                                    // As an approximation, I take 100 times entries for background than signal
+                                    XENT[wkt] = backMult*backMult*NENT;
                         }
                         // This is finish tag
                         int kt_finishtag;
@@ -467,7 +470,7 @@ std::cout<< "made 4" << endl;
                     
                     hEvent_Pass   ->Write();
                     hJet_Pass     ->Write();
-                    hkt_Ntrig_single     ->Write();
+                    hkt_Pairs     ->Write();
                     // hdeltaR       ->Write();
                     fS_tempA->Close();
                     }
