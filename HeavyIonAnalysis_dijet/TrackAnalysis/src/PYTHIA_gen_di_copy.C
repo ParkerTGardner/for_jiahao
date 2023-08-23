@@ -418,14 +418,14 @@ std::cout<< "made 4" << endl;
                             
                             kt_finishtag = 0;
                             double A_Eta, A_Phi, A_Jt = 0.0;
-                            double T_Eta, T_Phi, T_Jt = 0.0;
-                            gRandom->SetSeed(0);
+                            unsigned seed1 = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+                            gRandom->SetSeed(seed1);
                             hkt_EPDraw->GetRandom3(A_Eta, A_Phi, A_Jt);
-                            gRandom->SetSeed(0);
+                            double T_Eta, T_Phi, T_Jt = 0.0;
+                            unsigned seed2 = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+                            gRandom->SetSeed(seed2);
                             hkt_EPDraw->GetRandom3(T_Eta, T_Phi, T_Jt);//making the pseudoparticles
                             double WdeltaPt = diffvec(A_Eta, A_Phi, A_Jt,T_Eta, T_Phi, T_Jt );
-
-
 
                             // To get enough number pairs for each ktbin, we should use temp and finishtag
                             for (int l=0; l<ktbin; l++){
