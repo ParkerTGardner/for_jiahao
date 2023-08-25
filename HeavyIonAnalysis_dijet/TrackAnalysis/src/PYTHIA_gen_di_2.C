@@ -183,8 +183,8 @@ void MyClass::Loop(int job, std::string fList){
     TH2D* hEPDrawA[trackbin][ptbin][PUbin];
     TH2D* hEPDrawT[trackbin][ptbin][PUbin];
     // TH2D* hPPT[trackbin][ptbin][PUbin];
-    TH2D* hJJT                  = new TH2D(Form("hJJT") ,Form("hJJT") , 100, 0, 1);
-    TH2D* hJJT_Cut              = new TH2D(Form("hJJT_Cut") ,Form("hJJT_Cut") , 100, 0, 1);
+    TH2D* hJJT                  = new TH2D(Form("hJJT") ,Form("hJJT") , 120, 0, 1.2, 140, 0, 700);
+    TH2D* hJJT_Cut              = new TH2D(Form("hJJT_Cut") ,Form("hJJT_Cut") , 120, 0, 1.2, 140, 0,700);
 
   
 
