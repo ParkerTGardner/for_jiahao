@@ -148,7 +148,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hJetPt = new TH1D("hJetPt"  ,"hJetPt" ,i150,i100,i3500);
     TH1D* hBinDist_gen_single = new TH1D("hBinDist_gen_single","hBinDist_gen_single",bin360,bin0, bin120);
     TH1D* hBinDist_reco_single = new TH1D("hBinDist_reco_single","hBinDist_reco_single",bin360,bin0,bin120);
-    TH1D* hdeltaR = new TH1D("hdeltaR", "hdeltaR", 100,2.5,4);
+    TH1D* hdeltaR = new TH1D("hdeltaR", "hdeltaR", 240,0,2.4);
     TH1D* hdeltaJetPhi = new TH1D("hdeltaJetPhi", "hdeltaJetPhi",50,0,5/4*M_PI);
     TH1D* hdeltaJetTheta = new TH1D("hdeltaJetTheta", "hdeltaJetTheta",50,-M_PI,M_PI);
     TH1D* hdeltaJetEta = new TH1D("hdeltaJetEta", "hdeltaJetEta",50,-4,4);
@@ -327,7 +327,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // We only consider the back-to-back system, so we choose deltaeta<0
                     // if (deltaJetEta < 0) continue;
                     if (fabs(M_PI-deltaJetPhi) > 0.1) continue;
-                    if (deltaR > 0.8 )  continue;
+                    if (deltaR > 1.0 )  continue;
                     // if (fabs(deltaJetEta)>1.6) continue;
 
                     hJet_Eta_ave_cutR->Fill(((*genJetEta)[jjet]-(*genJetEta)[ijet])/2.0);

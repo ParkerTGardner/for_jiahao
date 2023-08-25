@@ -148,7 +148,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hJetPt = new TH1D("hJetPt"  ,"hJetPt" ,i150,i100,i3500);
     TH1D* hBinDist_gen_single = new TH1D("hBinDist_gen_single","hBinDist_gen_single",bin360,bin0, bin120);
     TH1D* hBinDist_reco_single = new TH1D("hBinDist_reco_single","hBinDist_reco_single",bin360,bin0,bin120);
-    TH1D* hdeltaR = new TH1D("hdeltaR", "hdeltaR", 100,2.5,4);
+    TH1D* hdeltaR = new TH1D("hdeltaR", "hdeltaR", 240,0,2.4);
     TH1D* hdeltaJetPhi = new TH1D("hdeltaJetPhi", "hdeltaJetPhi",50,0,5/4*M_PI);
     TH1D* hdeltaJetTheta = new TH1D("hdeltaJetTheta", "hdeltaJetTheta",50,-M_PI,M_PI);
     TH1D* hdeltaJetEta = new TH1D("hdeltaJetEta", "hdeltaJetEta",50,-4,4);
@@ -161,6 +161,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hJet_Eta_ave_nocut = new TH1D("hJet_Eta_ave_nocut","hJet_Eta_ave_nocut",100,-2,2);
     TH1D* hJet_Ptw_Eta_ave_nocut = new TH1D("hJet_Ptw_Eta_ave_nocut","hJet_Ptw_Eta_ave_nocut", 100,-2,2);
     TH1D* hT_jet_dau_pt  = new TH1D("hT_jet_dau_pt","hT_jet_dau_pt",100,0,10);
+    TH1D* hErrors_funcadd = new TH1D("hErrors_funcadd","hErrors_funcadd",200,-10,10);
     // TH1D* htest_t_eta = new TH1D("htest_t_eta","htest_t_eta",100,-5,5);
     // TH1D* htest_t_phi = new TH1D("htest_t_phi","htest_t_phi",100,-M_PI,M_PI);
     // TH1D* htest_t_eta0 = new TH1D("htest_t_eta0","htest_t_eta0",100,-5,5);
@@ -296,6 +297,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     // choose the jetB                    
                     // if (jjet == ijet) continue;
+                    hErrors_funcadd->Fill(100*(BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[jjet],(double)(*genJetEta)[jjet],(double)(*genJetPhi)[jjet])-((double)(*genJetEta)[jjet]-(double)(*genJetEta)[ijet]))/(BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[jjet],(double)(*genJetEta)[jjet],(double)(*genJetPhi)[jjet])));
                     hJJT->Fill((*genJetPt)[ijet]/(*genJetPt)[jjet],(*genJetPt)[ijet]);
                     if( fabs((*genJetEta)[jjet]) > jetEtaCut ) continue;
                     if( (*genJetPt)[jjet] < jetPtCut_Jet-200   ) continue;    
@@ -327,7 +329,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     // We only consider the back-to-back system, so we choose deltaeta<0
                     // if (deltaJetEta < 0) continue;
-                    if (fabs(M_PI-deltaJetPhi) > 0.1) continue;
+                    if (fabs(M_PI-deltaJetPhi) > M_PI/8) continue;
                     if (deltaR > 0.8 )  continue;
                     // if (fabs(deltaJetEta)>1.6) continue;
 
@@ -766,6 +768,7 @@ std::cout<< "made 4" << endl;
                     hJet_Eta_ave_cut1->Write();
                     hJet_Eta_ave_cutR->Write();
                     hJet_Ptw_Eta_ave_cut1->Write();
+                    hErrors_funcadd->Write();
                     // hJet_Ptw_Eta_ave_nocut->Write();
                     hJet_Ptw_Eta_ave_cutR->Write();
                     fS_tempA->Close();
