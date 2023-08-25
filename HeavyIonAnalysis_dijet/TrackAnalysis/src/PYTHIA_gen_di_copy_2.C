@@ -294,11 +294,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     // choose the jetB                    
                     // if (jjet == ijet) continue;
-                    hJJT->Fill((*genJetPt)[ijet]/(*genJetPt)[jjet],(*genJetPt)[ijet]);
+                    hJJT->Fill((*genJetPt)[jjet]/(*genJetPt)[ijet],(*genJetPt)[ijet]);
+
                     if( fabs((*genJetEta)[jjet]) > jetEtaCut ) continue;
                     if( (*genJetPt)[jjet] < jetPtCut_Jet-200   ) continue;    
-                    hJJT_Cut->Fill((*genJetPt)[ijet]/(*genJetPt)[jjet],(*genJetPt)[ijet]);
 
+                    hJJT_Cut->Fill((*genJetPt)[jjet]/(*genJetPt)[ijet],(*genJetPt)[ijet]);
                     hJet_Eta_ave_cut1->Fill(((*genJetEta)[jjet]-(*genJetEta)[ijet])/2.0);
                     hJet_Ptw_Eta_ave_cut1->Fill((((*genJetEta)[jjet]-(*genJetEta)[ijet])*(*genJetPt)[jjet])/((*genJetPt)[ijet]+(*genJetPt)[jjet]));  
 

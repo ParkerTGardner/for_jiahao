@@ -298,11 +298,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // choose the jetB                    
                     // if (jjet == ijet) continue;
                     hErrors_funcadd->Fill(100*(BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[jjet],(double)(*genJetEta)[jjet],(double)(*genJetPhi)[jjet])-((double)(*genJetEta)[jjet]-(double)(*genJetEta)[ijet]))/(BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[jjet],(double)(*genJetEta)[jjet],(double)(*genJetPhi)[jjet])));
-                    hJJT->Fill((*genJetPt)[ijet]/(*genJetPt)[jjet],(*genJetPt)[ijet]);
-                    if( fabs((*genJetEta)[jjet]) > jetEtaCut ) continue;
-                    if( (*genJetPt)[jjet] < jetPtCut_Jet-200   ) continue;    
-                    hJJT_Cut->Fill((*genJetPt)[ijet]/(*genJetPt)[jjet],(*genJetPt)[ijet]);
+                    hJJT->Fill((*genJetPt)[jjet]/(*genJetPt)[ijet],(*genJetPt)[ijet]);
 
+                    if( fabs((*genJetEta)[jjet]) > jetEtaCut ) continue;
+                    if( (*genJetPt)[jjet] < jetPtCut_Jet-200   ) continue; 
+
+                    hJJT_Cut->Fill((*genJetPt)[jjet]/(*genJetPt)[ijet],(*genJetPt)[ijet]);
                     hJet_Eta_ave_cut1->Fill(BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[jjet],(double)(*genJetEta)[jjet],(double)(*genJetPhi)[jjet])/2.0);
                     hJet_Ptw_Eta_ave_cut1->Fill((BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[jjet],(double)(*genJetEta)[jjet],(double)(*genJetPhi)[jjet])*(*genJetPt)[jjet])/((*genJetPt)[ijet]+(*genJetPt)[jjet]));  
 
