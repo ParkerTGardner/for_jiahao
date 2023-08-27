@@ -386,7 +386,7 @@ std::cout<< "made 4" << endl;
 
                     string subList = fList.substr(fList.size() - 3);
 
-                    TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_copy_2/dijob_%s.root",subList.c_str()), "recreate");
+                    TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_2/dijob_%s.root",subList.c_str()), "recreate");
 
                     // hBinDist_gen_single->Write();
                     hEvent_Pass   ->Write();
