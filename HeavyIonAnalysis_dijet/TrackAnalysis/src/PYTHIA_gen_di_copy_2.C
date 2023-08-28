@@ -149,7 +149,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hBinDist_gen_single = new TH1D("hBinDist_gen_single","hBinDist_gen_single",bin360,bin0, bin120);
     TH1D* hBinDist_reco_single = new TH1D("hBinDist_reco_single","hBinDist_reco_single",bin360,bin0,bin120);
     TH1D* hdeltaR = new TH1D("hdeltaR", "hdeltaR", 240,0,2.4);
-    TH1D* hdeltaJetPhi = new TH1D("hdeltaJetPhi", "hdeltaJetPhi",50,0,5/4*M_PI);
+    TH1D* hdeltaJetPhi = new TH1D("hdeltaJetPhi", "hdeltaJetPhi",50,3.0/4.0*M_PI,M_PI);
     TH1D* hdeltaJetTheta = new TH1D("hdeltaJetTheta", "hdeltaJetTheta",50,-M_PI,M_PI);
     TH1D* hdeltaJetEta = new TH1D("hdeltaJetEta", "hdeltaJetEta",50,-4,4);
     TH1D* hT_jet_dau_eta = new TH1D("hT_jet_dau_eta","hT_jet_dau_eta",100,-5,5);
@@ -161,7 +161,7 @@ void MyClass::Loop(int job, std::string fList){
     // TH1D* hJet_Eta_ave_nocut = new TH1D("hJet_Eta_ave_nocut","hJet_Eta_ave_nocut",100,-2,2);
     // TH1D* hJet_Ptw_Eta_ave_nocut = new TH1D("hJet_Ptw_Eta_ave_nocut","hJet_Ptw_Eta_ave_nocut", 100,-2,2);
     TH1D* hT_jet_dau_pt  = new TH1D("hT_jet_dau_pt","hT_jet_dau_pt",100,0,10);
-
+    TH1D* hEtaJetA =new TH1D("hEtaJetA","hEtaJetA",50,-1,1);
 
     TH2D* hEtaPhiA = new TH2D("hEtaPhiA","hEtaPhiA", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
     TH1D* hEtaA = new TH1D("hEtaA","hEtaA", 2*EPD_xb   , -EPD_xhi, EPD_xhi );
@@ -237,7 +237,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                 if( fabs((*genJetEta)[ijet]) > jetEtaCut ) continue;
                 if( (*genJetPt)[ijet] < jetPtCut_Jet   ) continue;
-
+                hEtaJetA->Fill(BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet]));
                 
 
                 // double boosted_eta = BeamBoost((*genJetEta)[ijet],(*genJetEta)[ijet],(*genJetEta)[ijet])
@@ -266,7 +266,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     double deltaJetPhi =  fabs((double)(*genJetPhi)[ijet]-(double)(*genJetPhi)[jjet]);
                     double deltaR = sqrt(pow(M_PI-deltaJetPhi,2)+pow(deltaJetEta,2));
 
-                    if (fabs(M_PI-deltaJetPhi) > M_PI/24) continue;
+                    if (fabs(M_PI-deltaJetPhi) > M_PI/6) continue;
+                    if ((*genJetPt)[jjet]/(*genJetPt)[ijet]<0.8) continue;
                     // if (deltaR<0.8) continue;
 
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
@@ -304,7 +305,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         double jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], 0, (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk],  BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]), (double)(*genDau_phi)[ijet][A_trk]);
 
                         double jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], 0, (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]), (double)(*genDau_phi)[ijet][A_trk]);
-                        hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1);
+                        // hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1);
                         hEtaA -> Fill(jet_dau_eta,1);
                         hPhiA -> Fill(jet_dau_phi,1);
                         hJtA  -> Fill(jet_dau_pt, 1);
@@ -397,7 +398,7 @@ std::cout<< "made 4" << endl;
                     hdeltaR       ->Write();
                     hdeltaJetEta->Write();
                     hdeltaJetPhi->Write();
-                    hdeltaJetTheta->Write();
+                    // hdeltaJetTheta->Write();
                     hT_jet_dau_eta->Write();
                     hT_jet_dau_phi->Write();
                     hT_jet_dau_pt->Write();
@@ -412,6 +413,7 @@ std::cout<< "made 4" << endl;
                     // hJet_Ptw_Eta_ave_nocut->Write();
                     // hJet_Eta_ave_cut1->Write();
                     hJet_Eta_ave_cutR->Write();
+                    hEtaJetA->Write();
                     // hJet_Ptw_Eta_ave_cut1->Write();
                     // hErrors_funcadd->Write();
                     // hJet_Ptw_Eta_ave_nocut->Write();
