@@ -304,7 +304,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         TVector3 dau_A = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
                         double dau_A_pt = dau_A.Perp();
                         double dau_A_eta = dau_A.Eta();
-                        double dau_A_phi = Bdau_A.Phi();
+                        double dau_A_phi = dau_A.Phi();
                         //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
                         double jet_dau_eta   = etaWRTJet((double)(1.0), (double)(0.0), (double)(0.0), dau_A_pt,  dau_A_eta, dau_A_phi);
                         //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
