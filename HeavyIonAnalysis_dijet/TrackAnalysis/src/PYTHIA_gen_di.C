@@ -167,7 +167,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hEtaA = new TH1D("hEtaA","hEtaA", 2*EPD_xb   , -EPD_xhi, EPD_xhi );
     TH1D* hPhiA = new TH1D("hPhiA","hPhiA",EPD_yb      , EPD_ylo    , EPD_yhi);
     TH1D* hJtA = new TH1D("hJtA","hJtA",100,0,10);
-    TH1D* hEtaJetA =new TH1D("hEtaJetA","hEtaJetA",50,-1,1);
+    // TH1D* hEtaJetA =new TH1D("hEtaJetA","hEtaJetA",50,-1,1);
     TH2D* hEtaPhiT = new TH2D("hEtaPhiT","hEtaPhiT", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
    
     TH2D* hJJT                  = new TH2D(Form("hJJT") ,Form("hJJT") , 120, 0, 1.2, 140, 0, 700);
@@ -266,7 +266,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     double deltaJetPhi =  fabs((double)(*genJetPhi)[ijet]-(double)(*genJetPhi)[jjet]);
                     double deltaR = sqrt(pow(M_PI-deltaJetPhi,2)+pow(deltaJetEta,2));
 
-                    if (fabs(M_PI-deltaJetPhi) > M_PI/24) continue;
+                    if (fabs(M_PI-deltaJetPhi) > M_PI/6) continue;
                     // if (deltaR<0.8) continue;
 
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();

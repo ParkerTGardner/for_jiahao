@@ -161,7 +161,7 @@ void MyClass::Loop(int job, std::string fList){
     // TH1D* hJet_Eta_ave_nocut = new TH1D("hJet_Eta_ave_nocut","hJet_Eta_ave_nocut",100,-2,2);
     // TH1D* hJet_Ptw_Eta_ave_nocut = new TH1D("hJet_Ptw_Eta_ave_nocut","hJet_Ptw_Eta_ave_nocut", 100,-2,2);
     TH1D* hT_jet_dau_pt  = new TH1D("hT_jet_dau_pt","hT_jet_dau_pt",100,0,10);
-    TH1D* hEtaJetA =new TH1D("hEtaJetA","hEtaJetA",50,-1,1);
+    // TH1D* hEtaJetA =new TH1D("hEtaJetA","hEtaJetA",50,-1,1);
 
     TH2D* hEtaPhiA = new TH2D("hEtaPhiA","hEtaPhiA", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
     TH1D* hEtaA = new TH1D("hEtaA","hEtaA", 2*EPD_xb   , -EPD_xhi, EPD_xhi );
