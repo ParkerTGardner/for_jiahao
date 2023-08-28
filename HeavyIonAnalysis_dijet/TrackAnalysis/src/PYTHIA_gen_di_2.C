@@ -302,9 +302,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         if(jet_dau_pt0 >3.0) continue;// why we drop this
                         TVector3 dau_A = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
-                        double dau_A_pt = BeamBoost.Perp();
-                        double dau_A_eta = BeamBoost.Eta();
-                        double dau_A_phi = BeamBoost.Phi();
+                        double dau_A_pt = dau_A.Perp();
+                        double dau_A_eta = dau_A.Eta();
+                        double dau_A_phi = Bdau_A.Phi();
                         //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
                         double jet_dau_eta   = etaWRTJet((double)(1.0), (double)(0.0), (double)(0.0), dau_A_pt,  dau_A_eta, dau_A_phi);
                         //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
