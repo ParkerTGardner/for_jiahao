@@ -142,7 +142,7 @@ void MyClass::Loop(int job, std::string fList){
 
     TH2D* hPairs        = new TH2D("hPairs","hPairs",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
 
-    TH2D* hNtrig        = new TH2D("hNtrig","hNtrig",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
+    // TH2D* hNtrig        = new TH2D("hNtrig","hNtrig",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
 
 
     TH1D* hEvent_Pass   = new TH1D("hEvent_Pass","hEvent_Pass", trackbin,bin0,trackbin);
@@ -263,7 +263,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // hJet_Ptw_Eta_ave_cut1->Fill((BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[jjet],(double)(*genJetEta)[jjet],(double)(*genJetPhi)[jjet])*(*genJetPt)[jjet])/((*genJetPt)[ijet]+(*genJetPt)[jjet]));  
 
                     TVector3 JetAB = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[jjet],(double)(*genJetEta)[jjet],(double)(*genJetPhi)[jjet]);
-                    double deltaJetEta = -JetA.Eta();
+                    double deltaJetEta = -JetAB.Eta();
                     // double deltaJetTheta = fabs(2*TMath::ATan(TMath::Exp(-(double)(*genJetEta)[ijet])) - 2*TMath::ATan(TMath::Exp(-(double)(*genJetEta)[jjet])));
                     double deltaJetPhi =  fabs((double)(*genJetPhi)[ijet]-(double)(*genJetPhi)[jjet]);
                     // double deltaR = sqrt(pow(M_PI-deltaJetPhi,2)+pow(deltaJetEta,2));
@@ -304,7 +304,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         TVector3 dau_A = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
                         double dau_A_pt = BeamBoost.Perp();
                         double dau_A_eta = BeamBoost.Eta();
-                        double dau_A_phi = BeamBoost.Phi()
+                        double dau_A_phi = BeamBoost.Phi();
                         //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
                         double jet_dau_eta   = etaWRTJet((double)(1.0), (double)(0.0), (double)(0.0), dau_A_pt,  dau_A_eta, dau_A_phi);
                         //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
@@ -350,7 +350,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             // double T_dau_Theta0 = 2*TMath::ATan(TMath::Exp(-(double)(*genDau_eta)[jjet][T_trk]))+deltaJetTheta;
                             // double T_dau_eta = -TMath::Log( TMath::Tan( T_dau_Theta0/2.0));
 
-                            TVector3 dau_T = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[jjet][T_trk],(double)(*genDau_eta)[jjet][T_trk],(double)(*genDau_phi)[jjet][T_trk])
+                            TVector3 dau_T = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[jjet][T_trk],(double)(*genDau_eta)[jjet][T_trk],(double)(*genDau_phi)[jjet][T_trk]);
                             double dau_T_pt = dau_T.Perp();
                             double dau_T_eta = dau_T.Eta();
                             double dau_T_phi = dau_T.Phi();
@@ -417,7 +417,7 @@ std::cout<< "made 4" << endl;
                     hPhiA ->Write();
                     hJtA ->Write();
                     hEtaPhiT ->Write();
-                    hNtrig->Write();
+                    // hNtrig->Write();
                     hJJT->Write();
                     hJJT_Cut->Write();
                     hdeltaJetBoostedPhi->Write();
