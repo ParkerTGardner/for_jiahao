@@ -274,8 +274,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
 
                     // hdeltaR -> Fill(deltaR);
-                    hdeltaJetEta -> Fill(deltaJetEta);
-                    hdeltaJetPhi -> Fill(deltaJetPhi);
+                    hdeltaJetEta -> Fill(BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet]).Phi());
+                
+                    hdeltaJetPhi -> Fill(BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet]).Pt());
+                
                     hdeltaJetBoostedPhi -> Fill(JetAB.Phi());
                     hJJT_Cut->Fill((*genJetPt)[jjet]/(*genJetPt)[ijet],(*genJetPt)[ijet]);
                     // hdeltaJetTheta -> Fill(deltaJetTheta);
