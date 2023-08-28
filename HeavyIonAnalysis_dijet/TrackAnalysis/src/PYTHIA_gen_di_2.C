@@ -276,7 +276,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // hdeltaR -> Fill(deltaR);
                     hdeltaJetEta -> Fill(BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet]).Phi());
                 
-                    hdeltaJetPhi -> Fill(BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet]).Pt());
+                    hdeltaJetPhi -> Fill(BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet]).Perp());
                 
                     hdeltaJetBoostedPhi -> Fill(JetAB.Phi());
                     hJJT_Cut->Fill((*genJetPt)[jjet]/(*genJetPt)[ijet],(*genJetPt)[ijet]);
