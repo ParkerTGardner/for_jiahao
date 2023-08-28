@@ -317,52 +317,53 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         //T_trk is the second loop
 
 
-                        // This is for corr(dau_A, dau_B)
-                        for(long int T_trk = 0; T_trk < NNtrk2; T_trk++ ){
-
-                            if((*genDau_chg)[jjet][T_trk] == 0) continue;
-                            if(fabs((*genDau_eta)[jjet][T_trk]) > 2.4) continue;
-                            if(fabs((*genDau_pt)[jjet][T_trk])  < 0.3)      continue;
-
-
-
-                            double T_jet_dau_pt  = 0;
-                            double T_jet_dau_eta = 0;
-                            double T_jet_dau_phi = 0;
-
-
-                            
-                            T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);  
-                            if(T_jet_dau_pt >3.0) continue;
-
-                            // double T_dau_Theta0 = 2*TMath::ATan(TMath::Exp(-(double)(*genDau_eta)[jjet][T_trk]))+deltaJetTheta;
-                            // double T_dau_eta = -TMath::Log( TMath::Tan( T_dau_Theta0/2.0));
-
-                            //     daughter eta with respect to the jetA axis                 eta With Respect To JetA 
-                            T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], 0, (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk],  BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[jjet][T_trk],(double)(*genDau_eta)[jjet][T_trk],(double)(*genDau_phi)[jjet][T_trk]), (double)(*genDau_phi)[jjet][T_trk]);
-                            //     daughter phi with respect to the jetA axis                 phi With Respect To JetA
-                            T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], 0, (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk],  BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[jjet][T_trk],(double)(*genDau_eta)[jjet][T_trk],(double)(*genDau_phi)[jjet][T_trk]), (double)(*genDau_phi)[jjet][T_trk]); 
-
-                            T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], 0, (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk],  BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[jjet][T_trk],(double)(*genDau_eta)[jjet][T_trk],(double)(*genDau_phi)[jjet][T_trk]), (double)(*genDau_phi)[jjet][T_trk]);
-
-                            double T_jet_dau_eta0   = etaWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);
-                            
-                            if(T_jet_dau_eta0 > track_eta_lim) continue;
-
-                            hEtaPhiT->Fill(T_jet_dau_eta, T_jet_dau_phi, 1);
-
-                            hT_jet_dau_eta->Fill(T_jet_dau_eta);
-                            hT_jet_dau_phi->Fill(T_jet_dau_phi);
-                            hT_jet_dau_pt ->Fill(T_jet_dau_pt);
-
-
-                            
-
-                
-                        }//T_trk;  AB
+                       
 
 
                     }
+                    // This is for corr(dau_A, dau_B)
+                    for(long int T_trk = 0; T_trk < NNtrk2; T_trk++ ){
+
+                        if((*genDau_chg)[jjet][T_trk] == 0) continue;
+                        if(fabs((*genDau_eta)[jjet][T_trk]) > 2.4) continue;
+                        if(fabs((*genDau_pt)[jjet][T_trk])  < 0.3)      continue;
+
+
+
+                        double T_jet_dau_pt  = 0;
+                        double T_jet_dau_eta = 0;
+                        double T_jet_dau_phi = 0;
+
+
+                        
+                        T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);  
+                        if(T_jet_dau_pt >3.0) continue;
+
+                        // double T_dau_Theta0 = 2*TMath::ATan(TMath::Exp(-(double)(*genDau_eta)[jjet][T_trk]))+deltaJetTheta;
+                        // double T_dau_eta = -TMath::Log( TMath::Tan( T_dau_Theta0/2.0));
+
+                        //     daughter eta with respect to the jetA axis                 eta With Respect To JetA 
+                        T_jet_dau_eta   = etaWRTJet((double)(*genJetPt)[ijet], 0, (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk],  BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[jjet][T_trk],(double)(*genDau_eta)[jjet][T_trk],(double)(*genDau_phi)[jjet][T_trk]), (double)(*genDau_phi)[jjet][T_trk]);
+                        //     daughter phi with respect to the jetA axis                 phi With Respect To JetA
+                        T_jet_dau_phi   = phiWRTJet((double)(*genJetPt)[ijet], 0, (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk],  BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[jjet][T_trk],(double)(*genDau_eta)[jjet][T_trk],(double)(*genDau_phi)[jjet][T_trk]), (double)(*genDau_phi)[jjet][T_trk]); 
+
+                        T_jet_dau_pt    =  ptWRTJet((double)(*genJetPt)[ijet], 0, (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[jjet][T_trk],  BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[jjet][T_trk],(double)(*genDau_eta)[jjet][T_trk],(double)(*genDau_phi)[jjet][T_trk]), (double)(*genDau_phi)[jjet][T_trk]);
+
+                        double T_jet_dau_eta0   = etaWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);
+                        
+                        if(T_jet_dau_eta0 > track_eta_lim) continue;
+
+                        hEtaPhiT->Fill(T_jet_dau_eta, T_jet_dau_phi, 1);
+
+                        hT_jet_dau_eta->Fill(T_jet_dau_eta);
+                        hT_jet_dau_phi->Fill(T_jet_dau_phi);
+                        hT_jet_dau_pt ->Fill(T_jet_dau_pt);
+
+
+                        
+
+            
+                    }//T_trk;  AB
 
 
 
@@ -414,6 +415,7 @@ std::cout<< "made 4" << endl;
                     // hErrors_funcadd->Write();
                     // hJet_Ptw_Eta_ave_nocut->Write();
                     hJet_Ptw_Eta_ave_cutR->Write();
+                    hEtaJetA->Write();
                     fS_tempA->Close();
                     }
 

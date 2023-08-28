@@ -317,7 +317,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         //T_trk is the second loop
 
 
-                        // This is for corr(dau_A, dau_B)
+                        
+
+
+                    }
+
+                    // This is for corr(dau_A, dau_B)
                         for(long int T_trk = 0; T_trk < NNtrk2; T_trk++ ){
 
                             if((*genDau_chg)[jjet][T_trk] == 0) continue;
@@ -360,9 +365,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                 
                         }//T_trk;  AB
-
-
-                    }
 
 
 
