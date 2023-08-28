@@ -88,19 +88,19 @@ double diffvec( double jetPt, double jetEta, double jetPhi, double trkPt, double
   return diffvec( j, trk);
 }
 
-double BeamBoost( double jetPt, double jetEta, double jetPhi, double trkPt, double trkEta, double trkPhi){
+TVector3 BeamBoost( double jetPt, double jetEta, double jetPhi, double trkPt, double trkEta, double trkPhi){
   // boost with Jet.pz
   TVector3 j0 = TVector3(0,0,0);
   j0.SetPtEtaPhi( jetPt, jetEta, jetPhi);
   //the boost func in root is inversed boost, so here should use -v
-  TVector3 j (0,0,-j0.Z()/j0.Mag());
+  TVector3 j (-j0.X()/j0.Mag(),-j0.Y()/j0.Mag(),-j0.Z()/j0.Mag());
 
   TVector3 trk0 = TVector3(0,0,0);
   trk0.SetPtEtaPhi( trkPt, trkEta, trkPhi);
   TLorentzVector trk(0.,0.,0.,0.);
   trk.SetPtEtaPhiE( trkPt, trkEta, trkPhi, trk0.Mag());
   trk.Boost(j);
-  return trk.Eta();
+  return trk;
 }
 
 #endif
