@@ -248,6 +248,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 }
                 if (n_G_ChargeMult_count1 <20) continue;
 
+                TVector3 JetA;
+                JetA.SetPtEtaPhi((*genJetPt)[ijet],(*genJetEta)[ijet],(*genJetPhi)[ijet]);
+
                
                 for(int jjet=ijet+1; (jjet< genJetPt->size()); jjet++){
 
@@ -304,10 +307,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         
                         TVector3 dau_A = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
                         TVector3 JetB ((double)(*genJetPt)[jjet],(double)(*genJetEta)[jjet],(double)(*genJetPhi)[jjet]);
-                        //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
+                        //     daughter eta with respect to thes jet axis                 eta With Respect To Jet 
                         double jet_dau_eta   = etaWRTJet(JetAA, dau_A);
                         //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                        double jet_dau_phi   = phiWRTJet(JetAA, JetB,dau_A);
+                        double jet_dau_phi   = phiWRTJet(JetA, dau_A);
 
                         double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
                         hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1);

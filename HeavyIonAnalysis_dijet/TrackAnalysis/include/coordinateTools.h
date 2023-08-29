@@ -54,10 +54,10 @@ double etaWRTJet( double jetPt, double jetEta, double jetPhi, double trkPt, doub
 }
 
 
-double phiWRTJet(TVector3 jetA, TVector3 jetB, TVector3 p){
+double phiWRTJet(TVector3 jetA, TVector3 p){
   TVector3 pt = p-((p*jetA.Unit())*(jetA.Unit()));//pt vector
-  // TVector3 z = TVector3(0,0,1);
-  TVector3 phiOrigin = jetA.Unit().Cross((jetA.Unit().Cross(jetB.Unit())));//vector that will be phi=0 (in plane of jet and beam line)
+  TVector3 z = TVector3(0,0,1);
+  TVector3 phiOrigin = jetA.Unit().Cross((jetA.Unit().Cross(z.Unit())));//vector that will be phi=0 (in plane of jet and beam line)
   double phi = pt.Angle(phiOrigin);//get phi from 0 to pi
 
   //determine sign of phi based on cross product of pt and origin
@@ -65,14 +65,14 @@ double phiWRTJet(TVector3 jetA, TVector3 jetB, TVector3 p){
   else return -phi;
 }
 
-// double phiWRTJet( double jetPt, double jetEta, double jetPhi, double trkPt, double trkEta, double trkPhi){
-//   TVector3 j = TVector3(0,0,0);
-//   j.SetPtEtaPhi( jetPt, jetEta, jetPhi);
+double phiWRTJet( double jetPt, double jetEta, double jetPhi, double trkPt, double trkEta, double trkPhi){
+  TVector3 j = TVector3(0,0,0);
+  j.SetPtEtaPhi( jetPt, jetEta, jetPhi);
 
-//   TVector3 trk = TVector3(0,0,0);
-//   trk.SetPtEtaPhi( trkPt, trkEta, trkPhi);
-//   return phiWRTJet( j, trk);
-// }
+  TVector3 trk = TVector3(0,0,0);
+  trk.SetPtEtaPhi( trkPt, trkEta, trkPhi);
+  return phiWRTJet( j, trk);
+}
 
 double diffvec(TVector3 jet, TVector3 p){
   TVector3 diff = jet - p;
