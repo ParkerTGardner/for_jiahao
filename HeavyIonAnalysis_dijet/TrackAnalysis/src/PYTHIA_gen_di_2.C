@@ -268,9 +268,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // double deltaR = sqrt(pow(M_PI-deltaJetPhi,2)+pow(deltaJetEta,2));
 
                     if (fabs(M_PI-deltaJetPhi) > M_PI/6) continue;
-                    if (fabs(deltaJetEta)>0.45) continue;
+                    if (fabs(deltaJetEta)>1.3) continue;
                     // if ((*genJetPt)[jjet]/(*genJetPt)[ijet]>0.8) continue;
                     // if (deltaR<0.8) continue;
+                    hEtaA -> Fill((double)(*genJetEta)[ijet]-(double)(*genJetEta)[jjet],1);
 
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
 
@@ -311,7 +312,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
                         hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1);
-                        hEtaA -> Fill(jet_dau_eta,1);
+                        // hEtaA -> Fill(jet_dau_eta,1);
                         hPhiA -> Fill(jet_dau_phi,1);
                         hJtA  -> Fill(jet_dau_pt, 1);
 
