@@ -301,7 +301,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         if(jet_dau_pt0 >3.0) continue;// why we drop this
 
-                        TVector3 JetAA ((double)(*genJetPt)[ijet], 0, (double)(*genJetPhi)[ijet]);
+                        TVector3 JetAA BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet]);
                         TVector3 dau_A = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
 
                         //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
@@ -356,11 +356,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             TVector3 dau_T = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[jjet][T_trk],(double)(*genDau_eta)[jjet][T_trk],(double)(*genDau_phi)[jjet][T_trk]);
 
                             //     daughter eta with respect to the jetA axis                 eta With Respect To JetA 
-                            T_jet_dau_eta   = etaWRTJet(JetAB, dau_T);
+                            T_jet_dau_eta   = etaWRTJet(JetAA, dau_T);
                             //     daughter phi with respect to the jetA axis                 phi With Respect To JetA
-                            T_jet_dau_phi   = phiWRTJet(JetAB, dau_T); 
+                            T_jet_dau_phi   = phiWRTJet(JetAA, dau_T); 
 
-                            T_jet_dau_pt    =  ptWRTJet(JetAB, dau_T);
+                            T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
 
                             
 
