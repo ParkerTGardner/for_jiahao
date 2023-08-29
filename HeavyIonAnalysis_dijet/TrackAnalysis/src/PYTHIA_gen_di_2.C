@@ -155,13 +155,17 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hdeltaJetEta = new TH1D("hdeltaJetEta", "hdeltaJetEta",50,-4,4);
     TH1D* hT_jet_dau_eta = new TH1D("hT_jet_dau_eta","hT_jet_dau_eta",100,-5,5);
     TH1D* hT_jet_dau_phi = new TH1D("hT_jet_dau_phi","hT_jet_dau_phi",100,-M_PI,M_PI);
+    TH1D* hT_jet_dau_pt  = new TH1D("hT_jet_dau_pt","hT_jet_dau_pt",100,0,10);
+    TH1D* hT_jet_dau_eta_no = new TH1D("hT_jet_dau_eta_no","hT_jet_dau_eta_no",100,-5,5);
+    TH1D* hT_jet_dau_phi_no = new TH1D("hT_jet_dau_phi_no","hT_jet_dau_phi_no",100,-M_PI,M_PI);
+    TH1D* hT_jet_dau_pt_no  = new TH1D("hT_jet_dau_pt_no","hT_jet_dau_pt_no",100,0,10);
     // TH1D* hJet_Eta_ave_cut1 = new TH1D("hJet_Eta_ave_cut1","hJet_Eta_ave_cut1",100,-2,2);
     // TH1D* hJet_Ptw_Eta_ave_cut1 = new TH1D("hJet_Ptw_Eta_ave_cut1","hJet_Ptw_Eta_ave_cut1", 100,-2,2);
     TH1D* hJet_Eta_ave_cutR = new TH1D("hJet_Eta_ave_cutR","hJet_Eta_ave_cutR",100,-2,2);
     TH1D* hJet_Ptw_Eta_ave_cutR = new TH1D("hJet_Ptw_Eta_ave_cutR","hJet_Ptw_Eta_ave_cutR", 100,-2,2);
     // TH1D* hJet_Eta_ave_nocut = new TH1D("hJet_Eta_ave_nocut","hJet_Eta_ave_nocut",100,-2,2);
     // TH1D* hJet_Ptw_Eta_ave_nocut = new TH1D("hJet_Ptw_Eta_ave_nocut","hJet_Ptw_Eta_ave_nocut", 100,-2,2);
-    TH1D* hT_jet_dau_pt  = new TH1D("hT_jet_dau_pt","hT_jet_dau_pt",100,0,10);
+   
     // TH1D* hEtaJetA =new TH1D("hEtaJetA","hEtaJetA",50,-1,1);
 
     TH2D* hEtaPhiA = new TH2D("hEtaPhiA","hEtaPhiA", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
@@ -267,8 +271,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     double deltaJetPhi =  fabs((double)(*genJetPhi)[ijet]-(double)(*genJetPhi)[jjet]);
                     // double deltaR = sqrt(pow(M_PI-deltaJetPhi,2)+pow(deltaJetEta,2));
 
-                    if (fabs(M_PI-deltaJetPhi) > M_PI/6) continue;
-                    if (fabs(deltaJetEta)>1.3) continue;
+                    if (fabs(M_PI-deltaJetPhi) > M_PI/10) continue;
+                    // if (fabs(deltaJetEta)>1.3) continue;
                     // if ((*genJetPt)[jjet]/(*genJetPt)[ijet]>0.8) continue;
                     // if (deltaR<0.8) continue;
                     hEtaA -> Fill((double)(*genJetEta)[ijet]-(double)(*genJetEta)[jjet],1);
@@ -363,6 +367,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                             T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
 
+                            double T_jet_dau_pt_no    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
+
+                            double T_jet_dau_eta_no   = etaWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
+                            double T_jet_dau_phi_no   = phiWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][T_trk], (double)(*genDau_eta)[ijet][T_trk], (double)(*genDau_phi)[ijet][T_trk]);
+
                             
 
                             hEtaPhiT->Fill(T_jet_dau_eta, T_jet_dau_phi, 1);
@@ -370,6 +379,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             hT_jet_dau_eta->Fill(T_jet_dau_eta);
                             hT_jet_dau_phi->Fill(T_jet_dau_phi);
                             hT_jet_dau_pt ->Fill(T_jet_dau_pt);
+
+                            hT_jet_dau_eta_no->Fill(T_jet_dau_eta_no);
+                            hT_jet_dau_phi_no->Fill(T_jet_dau_phi_no);
+                            hT_jet_dau_pt_no ->Fill(T_jet_dau_pt_no);
 
 
                             
@@ -412,6 +425,12 @@ std::cout<< "made 4" << endl;
                     hT_jet_dau_eta->Write();
                     hT_jet_dau_phi->Write();
                     hT_jet_dau_pt->Write();
+
+                    hT_jet_dau_eta_no->Write();
+                    hT_jet_dau_phi_no->Write();
+                    hT_jet_dau_pt_no->Write();
+
+
                     hEtaPhiA->Write();
                     hEtaA ->Write();
                     hPhiA ->Write();
