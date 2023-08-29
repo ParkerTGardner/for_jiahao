@@ -57,7 +57,7 @@ double etaWRTJet( double jetPt, double jetEta, double jetPhi, double trkPt, doub
 double phiWRTJet(TVector3 jetA, TVector3 p){
   TVector3 pt = p-((p*jetA.Unit())*(jetA.Unit()));//pt vector
   TVector3 z = TVector3(0,0,1);
-  TVector3 phiOrigin = jetA.Unit().Cross((jetA.Unit().Cross(z.Unit())));//vector that will be phi=0 (in plane of jet and beam line)
+  TVector3 phiOrigin = (jetA.Unit().Cross(z.Unit()));//vector that will be phi=0 (in plane of jet and beam line)
   double phi = pt.Angle(phiOrigin);//get phi from 0 to pi
 
   //determine sign of phi based on cross product of pt and origin
