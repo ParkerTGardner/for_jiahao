@@ -268,7 +268,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // double deltaR = sqrt(pow(M_PI-deltaJetPhi,2)+pow(deltaJetEta,2));
 
                     if (fabs(M_PI-deltaJetPhi) > M_PI/6) continue;
-                    if (fabs(deltaJetEta)>0.75) continue;
+                    if (fabs(deltaJetEta)>0.58) continue;
                     // if ((*genJetPt)[jjet]/(*genJetPt)[ijet]>0.8) continue;
                     // if (deltaR<0.8) continue;
 
