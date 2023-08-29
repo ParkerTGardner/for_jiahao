@@ -15,9 +15,9 @@ mkdirBin:
 	$(MKDIR_BIN)
 
 #bin/PYTHIA_gen_di.exe: src/PYTHIA_gen_di.C
-	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/PYTHIA_gen_di.exe src/PYTHIA_gen_di.C
+#	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/PYTHIA_gen_di.exe src/PYTHIA_gen_di.C
 #bin/PYTHIA_gen_di_2.exe: src/PYTHIA_gen_di_2.C
-	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/PYTHIA_gen_di_2.exe src/PYTHIA_gen_di_2.C
+#	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/PYTHIA_gen_di_2.exe src/PYTHIA_gen_di_2.C
 bin/PYTHIA_gen_di_3.exe: src/PYTHIA_gen_di_3.C
 	$(CXX) $(CXXFLAGS) -Wno-error=maybe-uninitialized $(ROOT) -I $(PWD) -o bin/PYTHIA_gen_di_3.exe src/PYTHIA_gen_di_3.C
 #bin/PYTHIA_gen_di_copy.exe: src/PYTHIA_gen_di_copy.C
