@@ -61,18 +61,18 @@ double phiWRTJet(TVector3 jetA, TVector3 jetB, TVector3 p){
   double phi = pt.Angle(phiOrigin);//get phi from 0 to pi
 
   //determine sign of phi based on cross product of pt and origin
-  if( (phiOrigin.Cross(pt.Unit()))*jet >= 0) return phi;
+  if( (phiOrigin.Cross(pt.Unit()))*jetA >= 0) return phi;
   else return -phi;
 }
 
-double phiWRTJet( double jetPt, double jetEta, double jetPhi, double trkPt, double trkEta, double trkPhi){
-  TVector3 j = TVector3(0,0,0);
-  j.SetPtEtaPhi( jetPt, jetEta, jetPhi);
+// double phiWRTJet( double jetPt, double jetEta, double jetPhi, double trkPt, double trkEta, double trkPhi){
+//   TVector3 j = TVector3(0,0,0);
+//   j.SetPtEtaPhi( jetPt, jetEta, jetPhi);
 
-  TVector3 trk = TVector3(0,0,0);
-  trk.SetPtEtaPhi( trkPt, trkEta, trkPhi);
-  return phiWRTJet( j, trk);
-}
+//   TVector3 trk = TVector3(0,0,0);
+//   trk.SetPtEtaPhi( trkPt, trkEta, trkPhi);
+//   return phiWRTJet( j, trk);
+// }
 
 double diffvec(TVector3 jet, TVector3 p){
   TVector3 diff = jet - p;
