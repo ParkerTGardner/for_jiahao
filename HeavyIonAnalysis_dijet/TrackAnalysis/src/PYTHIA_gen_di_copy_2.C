@@ -238,7 +238,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                 if( fabs((*genJetEta)[ijet]) > jetEtaCut ) continue;
                 if( (*genJetPt)[ijet] < jetPtCut_Jet   ) continue;
-                hEtaJetA->Fill(BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet]).Eta());
+                hEtaJetA->Fill((*genJetEta)[ijet]);
                 
 
                 // double boosted_eta = BeamBoost((*genJetEta)[ijet],(*genJetEta)[ijet],(*genJetEta)[ijet])
@@ -268,7 +268,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // double deltaR = sqrt(pow(M_PI-deltaJetPhi,2)+pow(deltaJetEta,2));
 
                     if (fabs(M_PI-deltaJetPhi) > M_PI/6) continue;
-                    if (fabs(deltaJetEta)>0.2) continue;
+                    if (fabs(deltaJetEta)>0.86) continue;
                     // if ((*genJetPt)[jjet]/(*genJetPt)[ijet]>0.8) continue;
                     // if (deltaR<0.8) continue;
 
