@@ -239,7 +239,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 //for example, what is the shape of jet(5,10,100 particles in jet)
                 
 
-                if( fabs((*genJetEta)[ijet]) > jetEtaCut ) continue;
+                if( fabs((*genJetEta)[ijet]) > jetEtaCut + 100 ) continue;
                 if( (*genJetPt)[ijet] < jetPtCut_Jet   ) continue;
                 hEtaJetA->Fill(BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet]).Eta());
                 int n_G_ChargeMult_count1 =0;

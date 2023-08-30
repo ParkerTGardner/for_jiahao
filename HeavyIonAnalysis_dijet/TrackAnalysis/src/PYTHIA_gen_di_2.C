@@ -218,7 +218,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                   if(genJetChargedMultiplicity->size()==0) continue;
 
 
-                  if(!F_eventpass(genJetPt, genJetPt->size(), jetPtCut_Event)){
+                  if(!F_eventpass(genJet Pt, genJetPt->size(), jetPtCut_Event)){
                       continue;
                   }
                   int gjN = genJetPhi->size();
@@ -240,7 +240,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 
 
                 if( fabs((*genJetEta)[ijet]) > jetEtaCut ) continue;
-                if( (*genJetPt)[ijet] < jetPtCut_Jet   ) continue;
+                if( (*genJetPt)[ijet] < jetPtCut_Jet -200  ) continue;
                 hEtaJetA->Fill(BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet]).Eta());
                 int n_G_ChargeMult_count1 =0;
                 for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
