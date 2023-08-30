@@ -174,7 +174,7 @@ void MyClass::Loop(int job, std::string fList){
    
     TH2D* hJJT                  = new TH2D(Form("hJJT") ,Form("hJJT") , 120, 0, 1.2, 140, 0, 700);
     TH2D* hJJT_Cut              = new TH2D(Form("hJJT_Cut") ,Form("hJJT_Cut") , 120, 0, 1.2, 140, 0,700);
-    TH2D* JetCorr               = new TH2D("JetCorr","JetCorr",50,-4,4, 50, -M_PI/6,M_PI/6);
+    TH2D* hJetCorr              = new TH2D("hJetCorr","hJetCorr",50,-4,4, 50, -M_PI/6,M_PI/6);
 
     TH1D* hEtaA_post = new TH1D("hEtaA_post","hEtaA_post", 2*EPD_xb   , -EPD_xhi, EPD_xhi );
     TH1D* hPhiA_post = new TH1D("hPhiA_post","hPhiA_post",EPD_yb      , EPD_ylo    , EPD_yhi);
@@ -253,7 +253,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
                     n_G_ChargeMult_count1 += 1;
                 }
-                if (n_G_ChargeMult_count1 < 60) continue;
+                if (n_G_ChargeMult_count1 < 40) continue;
                 TVector3 JetA;
                 JetA.SetPtEtaPhi((*genJetPt)[ijet],(*genJetEta)[ijet],(*genJetPhi)[ijet]);
 
@@ -293,7 +293,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // hdeltaR -> Fill(deltaR);
                     hdeltaJetEta -> Fill(deltaJetEta);
                     hdeltaJetPhi -> Fill(deltaJetPhi);
-                    JetCorr ->Fill (deltaJetEta, deltaJetPhi);
+                    hJetCorr ->Fill (deltaJetEta, deltaJetPhi);
                     // hdeltaJetTheta -> Fill(deltaJetTheta);
                     TVector3 JetAA = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet]);
 
@@ -467,7 +467,7 @@ std::cout<< "made 4" << endl;
                     // hJet_Eta_ave_cut1->Write();
                     hJet_Eta_ave_cutR->Write();
                     hEtaJetA->Write();
-                    JetCorr->Write();
+                    hJetCorr->Write();
                     // hJet_Ptw_Eta_ave_cut1->Write();
                     // hErrors_funcadd->Write();
                     // hJet_Ptw_Eta_ave_nocut->Write();
