@@ -265,12 +265,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
 
                             //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                        double jet_dau_pt0    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
+                        double jet_dau_pt00    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
 
 
                             //if(jet_dau_pt >3.0) continue;
 
-                        if(jet_dau_pt0 >3.0) continue;// why we drop this
+                        if(jet_dau_pt00 >3.0) continue;// why we drop this
 
                         TVector3 dau_A0;
                         dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
@@ -367,7 +367,7 @@ std::cout<< "made 4" << endl;
 
                     hEtaA_post ->Write();
                     hPhiA_post ->Write();
-                    hJtA_post ->Write()
+                    hJtA_post ->Write();
                     hEtaPhiT ->Write();
                     hNtrig->Write();
                     hJJT->Write();
