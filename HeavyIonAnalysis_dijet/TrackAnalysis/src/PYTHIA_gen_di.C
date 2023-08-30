@@ -174,7 +174,7 @@ void MyClass::Loop(int job, std::string fList){
    
     TH2D* hJJT                  = new TH2D(Form("hJJT") ,Form("hJJT") , 120, 0, 1.2, 140, 0, 700);
     TH2D* hJJT_Cut              = new TH2D(Form("hJJT_Cut") ,Form("hJJT_Cut") , 120, 0, 1.2, 140, 0,700);
-    TH2D* JetCorr               = new TH2D("JetCorr","JetCorr",50,-4,4, 50, -M_PI/6,M_PI,6);
+    TH2D* JetCorr               = new TH2D("JetCorr","JetCorr",50,-4,4, 50, -M_PI/6,M_PI/6);
 
     TH1D* hEtaA_post = new TH1D("hEtaA_post","hEtaA_post", 2*EPD_xb   , -EPD_xhi, EPD_xhi );
     TH1D* hPhiA_post = new TH1D("hPhiA_post","hPhiA_post",EPD_yb      , EPD_ylo    , EPD_yhi);
