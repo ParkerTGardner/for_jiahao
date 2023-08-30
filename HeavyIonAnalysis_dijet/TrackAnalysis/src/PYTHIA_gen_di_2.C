@@ -218,7 +218,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                   if(genJetChargedMultiplicity->size()==0) continue;
 
 
-                  if(!F_eventpass(genJet Pt, genJetPt->size(), jetPtCut_Event)){
+                  if(!F_eventpass(genJetPt, genJetPt->size(), jetPtCut_Event)){
                       continue;
                   }
                   int gjN = genJetPhi->size();
