@@ -155,6 +155,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hdeltaJetEta = new TH1D("hdeltaJetEta", "hdeltaJetEta",50,-4,4);
     TH1D* hT_jet_dau_eta = new TH1D("hT_jet_dau_eta","hT_jet_dau_eta",100,-5,5);
     TH1D* hT_jet_dau_phi = new TH1D("hT_jet_dau_phi","hT_jet_dau_phi",100,-M_PI,M_PI);
+    TH1D* hT_jet_dau_phi2 = new TH1D("hT_jet_dau_phi2","hT_jet_dau_phi2",100,-M_PI,M_PI);
     // TH1D* hJet_Eta_ave_cut1 = new TH1D("hJet_Eta_ave_cut1","hJet_Eta_ave_cut1",100,-2,2);
     // TH1D* hJet_Ptw_Eta_ave_cut1 = new TH1D("hJet_Ptw_Eta_ave_cut1","hJet_Ptw_Eta_ave_cut1", 100,-2,2);
     TH1D* hJet_Eta_ave_cutR = new TH1D("hJet_Eta_ave_cutR","hJet_Eta_ave_cutR",100,-2,2);
@@ -239,6 +240,15 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 if( fabs((*genJetEta)[ijet]) > jetEtaCut ) continue;
                 if( (*genJetPt)[ijet] < jetPtCut_Jet   ) continue;
                 hEtaJetA->Fill((*genJetEta)[ijet]);
+
+                int n_G_ChargeMult_count1 =0;
+                for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
+                    if((*genDau_chg)[Gjet][G_trk] == 0) continue;
+                    if(fabs((*genDau_pt)[Gjet][G_trk])  < 0.3)     continue;
+                    if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
+                    n_G_ChargeMult_count1 += 1;
+                }
+                if (n_G_ChargeMult_count1 < 40) continue;
                 
 
                 // double boosted_eta = BeamBoost((*genJetEta)[ijet],(*genJetEta)[ijet],(*genJetEta)[ijet])
@@ -363,12 +373,17 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
 
                             
+                            
 
                             hEtaPhiT->Fill(T_jet_dau_eta, T_jet_dau_phi, 1);
 
                             hT_jet_dau_eta->Fill(T_jet_dau_eta);
                             hT_jet_dau_phi->Fill(T_jet_dau_phi);
                             hT_jet_dau_pt ->Fill(T_jet_dau_pt);
+
+
+                            T_jet_dau_phi2   = phiWRTJet2(JetAA, JetAB, dau_T); 
+                            hT_jet_dau_phi2->Fill(T_jet_dau_phi2);
 
 
                             
@@ -411,6 +426,7 @@ std::cout<< "made 4" << endl;
                     hT_jet_dau_eta->Write();
                     hT_jet_dau_phi->Write();
                     hT_jet_dau_pt->Write();
+                    hT_jet_dau_phi2->Write();
                     hEtaPhiA->Write();
                     hEtaA ->Write();
                     hPhiA ->Write();
@@ -423,6 +439,7 @@ std::cout<< "made 4" << endl;
                     // hJet_Eta_ave_cut1->Write();
                     hJet_Eta_ave_cutR->Write();
                     hEtaJetA->Write();
+                    
                     // hJet_Ptw_Eta_ave_cut1->Write();
                     // hErrors_funcadd->Write();
                     // hJet_Ptw_Eta_ave_nocut->Write();
