@@ -174,6 +174,11 @@ void MyClass::Loop(int job, std::string fList){
    
     TH2D* hJJT                  = new TH2D(Form("hJJT") ,Form("hJJT") , 120, 0, 1.2, 140, 0, 700);
     TH2D* hJJT_Cut              = new TH2D(Form("hJJT_Cut") ,Form("hJJT_Cut") , 120, 0, 1.2, 140, 0,700);
+    TH2D* JetCorr               = new TH2D("JetCorr","JetCorr",50,-4,4, 50, -M_PI/6,M_PI,6);
+
+    TH1D* hEtaA_post = new TH1D("hEtaA_post","hEtaA_post", 2*EPD_xb   , -EPD_xhi, EPD_xhi );
+    TH1D* hPhiA_post = new TH1D("hPhiA_post","hPhiA_post",EPD_yb      , EPD_ylo    , EPD_yhi);
+    TH1D* hJtA_post = new TH1D("hJtA_post","hJtA_post",100,0,10);
 
   
 
@@ -248,7 +253,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
                     n_G_ChargeMult_count1 += 1;
                 }
-                if (n_G_ChargeMult_count1 < 40) continue;
+                if (n_G_ChargeMult_count1 < 60) continue;
                 
 
                 // double boosted_eta = BeamBoost((*genJetEta)[ijet],(*genJetEta)[ijet],(*genJetEta)[ijet])
@@ -278,7 +283,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // double deltaR = sqrt(pow(M_PI-deltaJetPhi,2)+pow(deltaJetEta,2));
 
                     if (fabs(M_PI-deltaJetPhi) > M_PI/6) continue;
-                    if (fabs(deltaJetEta)>0.40) continue;
+                    // if (fabs(deltaJetEta)>0.40) continue;
                     // if ((*genJetPt)[jjet]/(*genJetPt)[ijet]>0.8) continue;
                     // if (deltaR<0.8) continue;
 
@@ -287,6 +292,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // hdeltaR -> Fill(deltaR);
                     hdeltaJetEta -> Fill(deltaJetEta);
                     hdeltaJetPhi -> Fill(deltaJetPhi);
+                    JetCorr ->Fill (deltaJetEta, deltaJetPhi);
                     // hdeltaJetTheta -> Fill(deltaJetTheta);
                     TVector3 JetAA = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet]);
 
@@ -304,12 +310,15 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         if(fabs((*genDau_pt)[ijet][A_trk])  < 0.3)     continue;
 
                             //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                        double jet_dau_pt0    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
+                        double jet_dau_pt00    =  ptWRTJet((double)(*genJetPt)[ijet], (double)(*genJetEta)[ijet], (double)(*genJetPhi)[ijet], (double)(*genDau_pt)[ijet][A_trk], (double)(*genDau_eta)[ijet][A_trk], (double)(*genDau_phi)[ijet][A_trk]);
 
 
                             //if(jet_dau_pt >3.0) continue;
 
-                        if(jet_dau_pt0 >3.0) continue;// why we drop this
+                        if(jet_dau_pt00 >3.0) continue;// why we drop this
+
+                        TVector3 dau_A0;
+                        dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
 
                         
                         TVector3 dau_A = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
@@ -324,6 +333,19 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         hEtaA -> Fill(jet_dau_eta,1);
                         hPhiA -> Fill(jet_dau_phi,1);
                         hJtA  -> Fill(jet_dau_pt, 1);
+
+
+
+                        double jet_dau_eta0   = etaWRTJet(JetA, dau_A0);
+                        //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
+                        double jet_dau_phi0   = phiWRTJet(JetA, dau_A0);
+
+                        double jet_dau_pt0    =  ptWRTJet(JetA, dau_A0);
+                        // hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1);
+                        hEtaA_post -> Fill(jet_dau_eta0,1);
+                        hPhiA_post -> Fill(jet_dau_phi0,1);
+                        hJtA_post  -> Fill(jet_dau_pt0, 1);
+
 
 
 
@@ -432,6 +454,10 @@ std::cout<< "made 4" << endl;
                     hEtaA ->Write();
                     hPhiA ->Write();
                     hJtA ->Write();
+
+                    hEtaA_post ->Write();
+                    hPhiA_post ->Write();
+                    hJtA_post ->Write();
                     hEtaPhiT ->Write();
                     hNtrig->Write();
                     hJJT->Write();
@@ -440,7 +466,7 @@ std::cout<< "made 4" << endl;
                     // hJet_Eta_ave_cut1->Write();
                     hJet_Eta_ave_cutR->Write();
                     hEtaJetA->Write();
-                    
+                    JetCorr->Write();
                     // hJet_Ptw_Eta_ave_cut1->Write();
                     // hErrors_funcadd->Write();
                     // hJet_Ptw_Eta_ave_nocut->Write();
