@@ -254,7 +254,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     n_G_ChargeMult_count1 += 1;
                 }
                 if (n_G_ChargeMult_count1 < 60) continue;
-                
+                TVector3 JetA;
+                JetA.SetPtEtaPhi((*genJetPt)[ijet],(*genJetEta)[ijet],(*genJetPhi)[ijet]);
 
                 // double boosted_eta = BeamBoost((*genJetEta)[ijet],(*genJetEta)[ijet],(*genJetEta)[ijet])
                 // Enter the jetB
