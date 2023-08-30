@@ -168,6 +168,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hEtaA = new TH1D("hEtaA","hEtaA", 2*EPD_xb   , -EPD_xhi, EPD_xhi );
     TH1D* hPhiA = new TH1D("hPhiA","hPhiA",EPD_yb      , EPD_ylo    , EPD_yhi);
     TH1D* hJtA = new TH1D("hJtA","hJtA",100,0,10);
+    
     TH1D* hEtaJetA =new TH1D("hEtaJetA","hEtaJetA",50,-1,1);
     TH2D* hEtaPhiT = new TH2D("hEtaPhiT","hEtaPhiT", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
    
@@ -176,9 +177,11 @@ void MyClass::Loop(int job, std::string fList){
 
   
 
+    TH1D* hEtaA_post = new TH1D("hEtaA_post","hEtaA_post", 2*EPD_xb   , -EPD_xhi, EPD_xhi );
+    TH1D* hPhiA_post = new TH1D("hPhiA_post","hPhiA_post",EPD_yb      , EPD_ylo    , EPD_yhi);
+    TH1D* hJtA_post = new TH1D("hJtA_post","hJtA_post",100,0,10);
+
     
-
-
   
     
 
@@ -246,7 +249,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
                     n_G_ChargeMult_count1 += 1;
                 }
-                if (n_G_ChargeMult_count1 < 20) continue;
+                if (n_G_ChargeMult_count1 < 60) continue;
 
                 TVector3 JetA;
                 JetA.SetPtEtaPhi((*genJetPt)[ijet],(*genJetEta)[ijet],(*genJetPhi)[ijet]);
@@ -276,13 +279,24 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         //     daughter eta with respect to thes jet axis                 eta With Respect To Jet 
                         double jet_dau_eta   = etaWRTJet(JetAA, dau_A);
                         //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                        double jet_dau_phi   = phiWRTJet(JetA, dau_A0);
+                        double jet_dau_phi   = phiWRTJet(JetAA, dau_A);
 
                         double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
-                        hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1);
+                        // hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1);
                         hEtaA -> Fill(jet_dau_eta,1);
                         hPhiA -> Fill(jet_dau_phi,1);
                         hJtA  -> Fill(jet_dau_pt, 1);
+
+
+                        double jet_dau_eta0   = etaWRTJet(JetA, dau_A0);
+                        //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
+                        double jet_dau_phi0   = phiWRTJet(JetA, dau_A0);
+
+                        double jet_dau_pt0    =  ptWRTJet(JetA, dau_A0);
+                        // hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1);
+                        hEtaA_post -> Fill(jet_dau_eta0,1);
+                        hPhiA_post -> Fill(jet_dau_phi0,1);
+                        hJtA_post  -> Fill(jet_dau_pt0, 1);
 
 
 
@@ -350,6 +364,10 @@ std::cout<< "made 4" << endl;
                     hEtaA ->Write();
                     hPhiA ->Write();
                     hJtA ->Write();
+
+                    hEtaA_post ->Write();
+                    hPhiA_post ->Write();
+                    hJtA_post ->Write()
                     hEtaPhiT ->Write();
                     hNtrig->Write();
                     hJJT->Write();
