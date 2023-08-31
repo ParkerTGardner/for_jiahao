@@ -166,7 +166,7 @@ void MyClass::Loop(int job, std::string fList){
    
     TH2D* hJJT                  = new TH2D(Form("hJJT") ,Form("hJJT") , 120, 0, 1.2, 140, 0, 700);
     TH2D* hJJT_Cut              = new TH2D(Form("hJJT_Cut") ,Form("hJJT_Cut") , 120, 0, 1.2, 140, 0,700);
-    TH2D* hJetCorr              = new TH2D("hJetCorr","hJetCorr",50,-4,4, 50, -M_PI/6,M_PI/6);
+    TH2D* hJetCorr              = new TH2D("hJetCorr","hJetCorr",50,-4,4, 50, -M_PI/6.0,M_PI/6);
 
     TH1D* hEtaA_pre = new TH1D("hEtaA_pre","hEtaA_pre", 2*EPD_xb   , -EPD_xhi, EPD_xhi );
     TH1D* hJtA_pre = new TH1D("hJtA_pre","hJtA_pre",100,0,10);
@@ -302,7 +302,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     hdeltaR -> Fill(deltaR);
                     hdeltaJetEta -> Fill(deltaJetEta);
                     hdeltaJetPhi -> Fill(deltaJetPhi);
-                    hJetCorr -> Fill(deltaJetEta, deltaJetPhi);
+                    hJetCorr -> Fill(deltaJetEta, M_PI-deltaJetPhi,1);
                     // hdeltaJetTheta -> Fill(deltaJetTheta);
                     TVector3 JetAA = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet]);
 
@@ -433,7 +433,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         //boosted B wrt A and random axis
 
                         double T_jet_dau_phi_random   = phiWRTJet2(JetAA, reference_z, dau_T);
-                        hPhiA_random -> Fill(T_jet_dau_phi_random);
+                        hPhiT_random -> Fill(T_jet_dau_phi_random);
 
                         //pre-boost B wrt A
                         double T_jet_dau_eta0   = etaWRTJet(JetA, dau_T0);

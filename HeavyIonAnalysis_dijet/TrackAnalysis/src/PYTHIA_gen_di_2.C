@@ -302,7 +302,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     hdeltaR -> Fill(deltaR);
                     hdeltaJetEta -> Fill(deltaJetEta);
                     hdeltaJetPhi -> Fill(deltaJetPhi);
-                    hJetCorr -> Fill(deltaJetEta, deltaJetPhi);
+                    hJetCorr -> Fill(deltaJetEta, M_PI-deltaJetPhi,1);
                     // hdeltaJetTheta -> Fill(deltaJetTheta);
                     TVector3 JetAA = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet]);
 
@@ -433,7 +433,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         //boosted B wrt A and random axis
 
                         double T_jet_dau_phi_random   = phiWRTJet2(JetAA, reference_z, dau_T);
-                        hPhiA_random -> Fill(T_jet_dau_phi_random);
+                        hPhiT_random -> Fill(T_jet_dau_phi_random);
 
                         //pre-boost B wrt A
                         double T_jet_dau_eta0   = etaWRTJet(JetA, dau_T0);
