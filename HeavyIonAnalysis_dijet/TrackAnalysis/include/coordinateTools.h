@@ -126,7 +126,9 @@ TVector3 BeamBoost2( double jetPt, double jetEta, double jetPhi, double trkPt, d
   TLorentzVector trk(0.,0.,0.,0.);
   trk.SetPtEtaPhiE( trkPt, trkEta, trkPhi, trk0.Mag());
   trk.Boost(-j0.Unit());
-  return trk.Vect();
+  TVector3 post_trk = trk.Vect();
+  if (post_trk.Mag()==0) post_trk.SetX(1.);
+  return post_trk;
 }
 
 #endif
