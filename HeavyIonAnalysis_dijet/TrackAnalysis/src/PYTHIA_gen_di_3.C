@@ -300,8 +300,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         n_G_ChargeMult_count2 += 1;
                     }
 
+
                     // n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
-                    n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
+                    // n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
+                    n_G_ChargeMult_count = max(n_G_ChargeMult_count1, n_G_ChargeMult_count2);
                     hBinDist_gen_single            ->Fill(n_G_ChargeMult_count);
 
                     //some useful bools 
