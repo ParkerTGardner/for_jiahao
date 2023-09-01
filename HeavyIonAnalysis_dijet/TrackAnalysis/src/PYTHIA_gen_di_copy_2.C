@@ -258,7 +258,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                 TVector3 JetA;
                 JetA.SetPtEtaPhi((*genJetPt)[ijet],(*genJetEta)[ijet],(*genJetPhi)[ijet]);
-
+                TLorentzVector JetA_4 = (JetA, JetA.Mag());
+                
                 if( fabs(JetA.Eta()) > jetEtaCut ) continue;
                 if( JetA.Perp() < jetPtCut_Jet   ) continue;
 
@@ -282,12 +283,17 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     TVector3 JetB;
                     JetB.SetPtEtaPhi((*genJetPt)[jjet],(*genJetEta)[jjet],(*genJetPhi)[jjet]);
+                    TLorentzVector JetB_4 = (JetB, JetB.Mag());
+
                     if( fabs(JetB.Eta()) > jetEtaCut ) continue;
                     if( JetB.Perp() < jetPtCut_Jet-200   ) continue;
               
-                    TVector3 Boost_to_CM = JetA + JetB;
-                    TVector3 JetAA = BeamBoost(Boost_to_CM,JetA);
-                    TVector3 JetBB = BeamBoost(Boost_to_CM,JetB);
+                    TLorentzVector Boost_to_CM = JetA_4 + JetB_4;
+                    TLorentzVector JetAA_4 = BeamBoost(Boost_to_CM,JetA_4);
+                    TLorentzVector JetBB_4 = BeamBoost(Boost_to_CM,JetB_4);
+
+                    TVector3 JetAA = JetAA_4.Vect();
+                    TVector3 JetBB = JetBB_4.Vect();
 
                     // TVector3 JetAB = BeamBoost(JetA.Perp(),JetA.Eta(),JetA.Phi(),JetB.Perp(),JetB.Eta(),JetB.Phi());
                     double deltaJetEta = JetAA.Eta() + JetBB.Eta();
@@ -349,7 +355,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     
                         TVector3 dau_A0;
                         dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
-
+                        TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
                         
                         if((*genDau_chg)[ijet][A_trk] == 0) continue;
                         if(fabs(dau_A0.Eta()) > 2.4)        continue;
@@ -360,7 +366,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         if(jet_dau_pt0 >3.0) continue;
 
-                        TVector3 dau_A = BeamBoost(Boost_to_CM,dau_A0);
+                        TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
+                        TVector3       dau_A   = dau_A_4.Vect();
 
                         // boosted:
                         double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
@@ -403,7 +410,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         TVector3 dau_T0;
                         dau_T0.SetPtEtaPhi((double)(*genDau_pt)[jjet][T_trk],(double)(*genDau_eta)[jjet][T_trk],(double)(*genDau_phi)[jjet][T_trk]);
-                            
+                        TLorentzVector dau_T0_4 (dau_T0,dau_T0.Mag());     
                         
                         T_jet_dau_pt    =  ptWRTJet(JetB, dau_T0);  
                         if(T_jet_dau_pt >3.0) continue;
@@ -412,7 +419,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         
                         if(T_jet_dau_eta0 > track_eta_lim) continue;
 
-                        TVector3 dau_T = BeamBoost(Boost_to_CM, dau_T0);
+                        TLorentzVector dau_T_4 = BeamBoost(Boost_to_CM, dau_T0_4);
+                        TVector3 dau_T = dau_T_4.Vect();
+
                         T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
                         
                         
@@ -454,9 +463,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
                         
-                        TVector3 dau_A0;
-                        dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
-
+                        TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
                         
                         if((*genDau_chg)[ijet][A_trk] == 0) continue;
                         if(fabs(dau_A0.Eta()) > 2.4)        continue;
@@ -465,10 +472,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
                         double jet_dau_pt0    =  ptWRTJet(JetA, dau_A0);
 
-                        if(jet_dau_pt0 >3.0) continue;// why we drop this
+                        if(jet_dau_pt0 >3.0) continue;
 
-                        
-                        TVector3 dau_A = BeamBoost(Boost_to_CM, dau_A0);
+                        TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
+                        TVector3       dau_A   = dau_A_4.Vect();
+         
 
                         //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
                         double jet_dau_eta   = etaWRTJet(JetAA, dau_A);
@@ -509,19 +517,22 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             if(fabs((*genDau_eta)[jjet][T_trk]) > 2.4) continue;
                             if(fabs((*genDau_pt)[jjet][T_trk])  < 0.3)      continue;
 
-                            double T_jet_dau_pt00    =  ptWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);  
-                            if(T_jet_dau_pt00 >3.0) continue;
-
-                            double T_jet_dau_eta00   = etaWRTJet((double)(*genJetPt)[jjet], (double)(*genJetEta)[jjet], (double)(*genJetPhi)[jjet], (double)(*genDau_pt)[jjet][T_trk], (double)(*genDau_eta)[jjet][T_trk], (double)(*genDau_phi)[jjet][T_trk]);
-                            
-                            if(T_jet_dau_eta00 > track_eta_lim) continue;
-
-                            //Unboosted dau_T0
+                             //Unboosted dau_T0
                             TVector3 dau_T0;
                             dau_T0.SetPtEtaPhi((double)(*genDau_pt)[jjet][T_trk],(double)(*genDau_eta)[jjet][T_trk],(double)(*genDau_phi)[jjet][T_trk]);
+                            TLorentzVector dau_T0_4 (dau_T0,dau_T0.Mag());     
                             
+                            T_jet_dau_pt    =  ptWRTJet(JetB, dau_T0);  
+                            if(T_jet_dau_pt >3.0) continue;
+
+                            double T_jet_dau_eta0   = etaWRTJet(JetB, dau_T0);
+                            
+                            if(T_jet_dau_eta0 > track_eta_lim) continue;
+
                             //boosted dau_T
-                            TVector3 dau_T = BeamBoost(Boost_to_CM,dau_T0);
+                            TLorentzVector dau_T_4 = BeamBoost(Boost_to_CM, dau_T0_4);
+                            TVector3 dau_T = dau_T_4.Vect();
+
 
                             //boosted B wrt old A   
                             double T_jet_dau_eta   = etaWRTJet(JetAA, dau_T);
