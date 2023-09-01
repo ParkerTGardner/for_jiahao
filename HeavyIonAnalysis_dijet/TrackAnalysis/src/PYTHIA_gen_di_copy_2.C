@@ -258,7 +258,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                 TVector3 JetA;
                 JetA.SetPtEtaPhi((*genJetPt)[ijet],(*genJetEta)[ijet],(*genJetPhi)[ijet]);
-                TLorentzVector JetA_4 = (JetA, JetA.Mag());
+                TLorentzVector JetA_4 (JetA, JetA.Mag());
                 
                 if( fabs(JetA.Eta()) > jetEtaCut ) continue;
                 if( JetA.Perp() < jetPtCut_Jet   ) continue;
@@ -283,7 +283,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     TVector3 JetB;
                     JetB.SetPtEtaPhi((*genJetPt)[jjet],(*genJetEta)[jjet],(*genJetPhi)[jjet]);
-                    TLorentzVector JetB_4 = (JetB, JetB.Mag());
+                    TLorentzVector JetB_4 (JetB, JetB.Mag());
 
                     if( fabs(JetB.Eta()) > jetEtaCut ) continue;
                     if( JetB.Perp() < jetPtCut_Jet-200   ) continue;
@@ -463,6 +463,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
                         
+                        TVector3 dau_A0;
+                        dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
                         TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
                         
                         if((*genDau_chg)[ijet][A_trk] == 0) continue;
@@ -522,8 +524,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             dau_T0.SetPtEtaPhi((double)(*genDau_pt)[jjet][T_trk],(double)(*genDau_eta)[jjet][T_trk],(double)(*genDau_phi)[jjet][T_trk]);
                             TLorentzVector dau_T0_4 (dau_T0,dau_T0.Mag());     
                             
-                            T_jet_dau_pt    =  ptWRTJet(JetB, dau_T0);  
-                            if(T_jet_dau_pt >3.0) continue;
+                            double T_jet_dau_pt0    =  ptWRTJet(JetB, dau_T0);  
+                            if(T_jet_dau_pt0 >3.0) continue;
 
                             double T_jet_dau_eta0   = etaWRTJet(JetB, dau_T0);
                             
