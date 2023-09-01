@@ -280,10 +280,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 for(int jjet=ijet+1; (jjet< genJetPt->size()); jjet++){
 
 
-                    if( fabs(JetB.Eta()) > jetEtaCut ) continue;
-                    if( JetB.Perp() < jetPtCut_Jet-200   ) continue;
                     TVector3 JetB;
                     JetB.SetPtEtaPhi((*genJetPt)[jjet],(*genJetEta)[jjet],(*genJetPhi)[jjet]);
+                    if( fabs(JetB.Eta()) > jetEtaCut ) continue;
+                    if( JetB.Perp() < jetPtCut_Jet-200   ) continue;
+              
                     TVector3 Boost_to_CM = JetA + JetB;
                     TVector3 JetAA = BeamBoost(Boost_to_CM,JetA);
                     TVector3 JetBB = BeamBoost(Boost_to_CM,JetB);
@@ -299,7 +300,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
                     // hdeltaR -> Fill(deltaR);
 
-                   hJJT1D -> Fill(JetB.Perp()/JetA.Perp);
+                   hJJT1D -> Fill(JetB.Perp()/JetA.Perp());
                    hJJT   -> Fill(JetB.Perp()/JetA.Perp(), JetA.Perp()); 
                     
                     // Calculate the trks in jetB
