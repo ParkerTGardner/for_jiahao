@@ -283,7 +283,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     double deltaJetPhi =  fabs(JetA.Phi()-JetB.Phi());
 
                     if (fabs(M_PI-deltaJetPhi) > M_PI/6) continue;
-                    if (fabs(deltaJetEta)>0.15) continue;
+                    // if (fabs(deltaJetEta)>0.15) continue;
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
 
                     // hdeltaR -> Fill(deltaR);
