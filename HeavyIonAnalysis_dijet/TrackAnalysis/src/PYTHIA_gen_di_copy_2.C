@@ -333,6 +333,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         TVector3 dau_A0;
                         dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
 
+                        TVector3 dau_A = BeamBoost((double)(*genJetPt)[ijet],(double)(*genJetEta)[ijet],(double)(*genJetPhi)[ijet],(double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
                         
                         if((*genDau_chg)[ijet][A_trk] == 0) continue;
                         if(fabs(dau_A0.Eta()) > 2.4)        continue;
