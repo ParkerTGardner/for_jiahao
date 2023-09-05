@@ -158,6 +158,7 @@ void MyClass::Loop(int job, std::string fList){
     TH2D* hJJT              = new TH2D(Form("hJJT") ,Form("hJJT") , 120, 0, 1.2, 140, 550,700);
     TH1D* hMult_ratio_AB        = new TH1D("hMult_ratio_AB", "hMult_ratio_AB", 250, 0, 5);
     TH2D* hMult_AB              = new TH2D("hMult_AB", "hMult_AB", 140, 0, 140, 140, 0, 140);
+    TH2D* hJT_Mult_AB           = new TH2D("hJT_Mult_AB","hJT_Mult_AB",120, 0, 1.2, 200,0,2);
 
 
 
@@ -166,6 +167,11 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hPhiT = new TH1D("hPhiT","hPhiT",100,-M_PI,M_PI);
     TH1D* hJtT  = new TH1D("hJtT","hJtT",100,0,10);
     TH2D* hEtaPhiT = new TH2D("hEtaPhiT","hEtaPhiT", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
+
+    TH1D* hEtaTT = new TH1D("hEtaTT","hEtaTT",100,-5,5);
+    TH1D* hPhiTT = new TH1D("hPhiTT","hPhiTT",100,-M_PI,M_PI);
+    TH1D* hJtTT  = new TH1D("hJtTT","hJtTT",100,0,10);
+    TH2D* hEtaPhiTT = new TH2D("hEtaPhiTT","hEtaPhiTT", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
 
     TH2D* hEtaPhiA = new TH2D("hEtaPhiA","hEtaPhiA", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
     TH1D* hEtaA = new TH1D("hEtaA","hEtaA", 2*EPD_xb   , -EPD_xhi, EPD_xhi );
@@ -287,8 +293,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     if( fabs(JetB.Eta()) > jetEtaCut ) continue;
                     if( JetB.Perp() < jetPtCut_Jet-200 ) continue;
-                    if (n_G_ChargeMult_count1<40) continue;
-                    // if( JetB.Perp() < JetA.Perp()*0.9 ) continue;
+                    // if( JetB.Perp() < JetA.Perp()*0.95 ) continue;
               
                     TLorentzVector Boost_to_CM = JetA_4 + JetB_4;
                     TLorentzVector JetAA_4 = BeamBoost(Boost_to_CM,JetA_4);
@@ -308,7 +313,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
                     // hdeltaR -> Fill(deltaR);
 
-                  
+                   
                     
                     // Calculate the trks in jetB
                     int n_G_ChargeMult_count2 = 0;
@@ -323,13 +328,15 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
                     // n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
-                    
-                    if (n_G_ChargeMult_count<60) continue;
+                    // if (n_G_ChargeMult_count<60) continue;
+
 
                     hJJT1D -> Fill(JetB.Perp()/JetA.Perp());
                     hJJT   -> Fill(JetB.Perp()/JetA.Perp(), JetA.Perp()); 
+                    
                     hMult_AB -> Fill(n_G_ChargeMult_count1, n_G_ChargeMult_count2);
                     hMult_ratio_AB -> Fill((double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
+                    hJT_Mult_AB -> Fill (JetB.Perp()/JetA.Perp(),(double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
                     hBinDist_gen_single            ->Fill(n_G_ChargeMult_count);
 
                     //some useful bools 
@@ -548,10 +555,20 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             double T_jet_dau_phi   = phiWRTJet(JetAA, dau_T);
                             double T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
 
+                            //Boosted B wrt Boosted B
+                            double TT_jet_dau_eta   = etaWRTJet(JetBB, dau_T);
+                            double TT_jet_dau_phi   = phiWRTJet(JetBB, dau_T);
+                            double TT_jet_dau_pt    =  ptWRTJet(JetBB, dau_T);
+
                             hEtaPhiT->Fill(T_jet_dau_eta, T_jet_dau_phi, 1);
                             hEtaT -> Fill(T_jet_dau_eta,1);
                             hPhiT -> Fill(T_jet_dau_phi,1);
                             hJtT  -> Fill(T_jet_dau_pt, 1);
+
+                            hEtaPhiTT->Fill(TT_jet_dau_eta, TT_jet_dau_phi, 1);
+                            hEtaTT -> Fill(TT_jet_dau_eta,1);
+                            hPhiTT -> Fill(TT_jet_dau_phi,1);
+                            hJtTT  -> Fill(TT_jet_dau_pt, 1);
 
 
 
