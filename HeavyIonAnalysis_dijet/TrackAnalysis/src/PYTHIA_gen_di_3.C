@@ -732,6 +732,12 @@ std::cout<< "made 4" << endl;
                     hPhiA ->Write();
                     hJtA ->Write();
 
+                    hJT_Mult_AB->Write();
+                    hEtaPhiTT  ->Write();
+                    hEtaTT->Write();
+                    hPhiTT->Write();
+                    hJtTT->Write();
+
                     fS_tempA->Close();
                     }
 
