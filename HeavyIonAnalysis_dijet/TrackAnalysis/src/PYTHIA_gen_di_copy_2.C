@@ -265,8 +265,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                  //    count the trks of A  
-                int n_G_ChargeMult_count = 0;
-                int n_G_ChargeMult_count1 =0;
+                int n_G_ChargeMult_count  = 0;
+                int n_G_ChargeMult_count1 = 0;
                 
                 
                 for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
@@ -286,7 +286,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     TLorentzVector JetB_4 (JetB, JetB.Mag());
 
                     if( fabs(JetB.Eta()) > jetEtaCut ) continue;
-                    if( JetB.Perp() < jetPtCut_Jet-200   ) continue;
+                    if( JetB.Perp() < jetPtCut_Jet-200 ) continue;
+                    if( JetB.Perp() < JetA.Perp()*0.95 ) continue;
               
                     TLorentzVector Boost_to_CM = JetA_4 + JetB_4;
                     TLorentzVector JetAA_4 = BeamBoost(Boost_to_CM,JetA_4);
