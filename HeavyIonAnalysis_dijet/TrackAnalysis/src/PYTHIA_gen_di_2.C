@@ -295,7 +295,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // if( JetB.Perp() > JetA.Perp()*0.95 ) continue;
               
                     TLorentzVector Boost_to_CM = JetA_4 + JetB_4;
-                    TLorentzVector Boost_to_CM_Unit = -Boost_to_CM.BoostVector();
+                    TVector3 Boost_to_CM_Unit = -Boost_to_CM.BoostVector();
                     // TLorentzVector JetAA_4 = BeamBoost(Boost_to_CM,JetA_4);
                     // TLorentzVector JetBB_4 = BeamBoost(Boost_to_CM,JetB_4);
 
