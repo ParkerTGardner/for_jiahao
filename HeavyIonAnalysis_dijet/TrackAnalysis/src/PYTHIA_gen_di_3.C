@@ -156,7 +156,7 @@ void MyClass::Loop(int job, std::string fList){
 
     TH1D* hJJT1D                = new TH1D(Form("hJJT1D") ,Form("hJJT1D") , 120, 0, 1.2);
     TH2D* hJJT              = new TH2D(Form("hJJT") ,Form("hJJT") , 120, 0, 1.2, 140, 550,700);
-    TH1D* hMult_ratio_AB        = new TH1D("hMult_ratio_AB", "hMult_ratio_AB", 50, 0, 1.2);
+    TH1D* hMult_ratio_AB        = new TH1D("hMult_ratio_AB", "hMult_ratio_AB", 250, 0, 5);
     TH2D* hMult_AB              = new TH2D("hMult_AB", "hMult_AB", 140, 0, 140, 140, 0, 140);
 
 
@@ -275,7 +275,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
                     n_G_ChargeMult_count1 += 1;
                 }
-                if (n_G_ChargeMult_count1<20) continue;
+                if (n_G_ChargeMult_count1<40) continue;
                 
                 
                 for(int jjet=ijet+1; (jjet< genJetPt->size()); jjet++){
@@ -287,7 +287,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     if( fabs(JetB.Eta()) > jetEtaCut ) continue;
                     if( JetB.Perp() < jetPtCut_Jet-200 ) continue;
-                    if( JetB.Perp() < JetA.Perp()*0.9 ) continue;
+                    if (n_G_ChargeMult_count1<40) continue;
+                    // if( JetB.Perp() < JetA.Perp()*0.9 ) continue;
               
                     TLorentzVector Boost_to_CM = JetA_4 + JetB_4;
                     TLorentzVector JetAA_4 = BeamBoost(Boost_to_CM,JetA_4);
