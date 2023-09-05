@@ -307,8 +307,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
                     // hdeltaR -> Fill(deltaR);
 
-                   hJJT1D -> Fill(JetB.Perp()/JetA.Perp());
-                   hJJT   -> Fill(JetB.Perp()/JetA.Perp(), JetA.Perp()); 
+                  
                     
                     // Calculate the trks in jetB
                     int n_G_ChargeMult_count2 = 0;
@@ -318,7 +317,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         if(fabs((*genDau_eta)[jjet][G_trk2]) > 2.4)     continue;
                         n_G_ChargeMult_count2 += 1;
                     }
-
+                    if (n_G_ChargeMult_count2<20) continue;
+                    hJJT1D -> Fill(JetB.Perp()/JetA.Perp());
+                    hJJT   -> Fill(JetB.Perp()/JetA.Perp(), JetA.Perp()); 
                     hMult_AB -> Fill(n_G_ChargeMult_count1, n_G_ChargeMult_count2);
                     hMult_ratio_AB -> Fill((double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
 

@@ -308,8 +308,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
                     // hdeltaR -> Fill(deltaR);
 
-                   hJJT1D -> Fill(JetB.Perp()/JetA.Perp());
-                   hJJT   -> Fill(JetB.Perp()/JetA.Perp(), JetA.Perp()); 
+                  
                     
                     // Calculate the trks in jetB
                     int n_G_ChargeMult_count2 = 0;
@@ -320,11 +319,17 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         n_G_ChargeMult_count2 += 1;
                     }
 
-                    hMult_AB -> Fill(n_G_ChargeMult_count1, n_G_ChargeMult_count2);
-                    hMult_ratio_AB -> Fill((double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
+                    
 
                     n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
-                    n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
+                    // n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
+                    
+                    if (n_G_ChargeMult_count<60) continue;
+
+                    hJJT1D -> Fill(JetB.Perp()/JetA.Perp());
+                    hJJT   -> Fill(JetB.Perp()/JetA.Perp(), JetA.Perp()); 
+                    hMult_AB -> Fill(n_G_ChargeMult_count1, n_G_ChargeMult_count2);
+                    hMult_ratio_AB -> Fill((double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
                     hBinDist_gen_single            ->Fill(n_G_ChargeMult_count);
 
                     //some useful bools 
