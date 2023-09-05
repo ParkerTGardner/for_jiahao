@@ -300,8 +300,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // TLorentzVector JetBB_4 = BeamBoost(Boost_to_CM,JetB_4);
 
                     //Boost to Total CM frame, instead of z
-                    TLorentzVector JetAA_4 = JetA_4.Boost(Boost_to_CM_Unit);
-                    TLorentzVector JetBB_4 = JetB_4.Boost(Boost_to_CM_Unit);
+                    TLorentzVector JetAA_4 = JetA_4;
+                    JetAA_4.Boost(Boost_to_CM_Unit);
+                    TLorentzVector JetBB_4 = JetB_4;
+                    JetBB_4.Boost(Boost_to_CM_Unit);
 
                     TVector3 JetAA = JetAA_4.Vect();
                     TVector3 JetBB = JetBB_4.Vect();
@@ -378,7 +380,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         if(jet_dau_pt0 >3.0) continue;
 
-                        TLorentzVector dau_A_4 = dau_A0_4.Boost(Boost_to_CM_Unit);
+                        TLorentzVector dau_A_4 = dau_A0_4;
+                        dau_A_4.Boost(Boost_to_CM_Unit);
                         // TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
                         TVector3       dau_A   = dau_A_4.Vect();
 
@@ -432,7 +435,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         
                         if(T_jet_dau_eta0 > track_eta_lim) continue;
 
-                        TLorentzVector dau_T_4 = dau_T0_4.Boost(Boost_to_CM_Unit);
+                        TLorentzVector dau_T_4 = dau_T0_4;
+                        dau_T_4.Boost(Boost_to_CM_Unit);
                         // TLorentzVector dau_T_4 = BeamBoost(Boost_to_CM, dau_T0_4);
                         TVector3 dau_T = dau_T_4.Vect();
 
@@ -490,7 +494,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         if(jet_dau_pt0 >3.0) continue;
 
-                        TLorentzVector dau_A_4 = dau_A0_4.Boost(Boost_to_CM_Unit);
+                        TLorentzVector dau_A_4 = dau_A0_4;
+                        dau_A_4.Boost(Boost_to_CM_Unit);
                         // TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
                         TVector3       dau_A   = dau_A_4.Vect();
          
@@ -547,7 +552,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             if(T_jet_dau_eta0 > track_eta_lim) continue;
 
                             //boosted dau_T
-                            TLorentzVector dau_T_4 = dau_T0_4.Boost(Boost_to_CM_Unit);
+                            TLorentzVector dau_T_4 = dau_T0_4;
+                            dau_T_4.Boost(Boost_to_CM_Unit);
                             // TLorentzVector dau_T_4 = BeamBoost(Boost_to_CM, dau_T0_4);
                             TVector3 dau_T = dau_T_4.Vect();
 
