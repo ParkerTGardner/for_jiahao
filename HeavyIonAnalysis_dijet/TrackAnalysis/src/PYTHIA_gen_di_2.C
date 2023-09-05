@@ -158,7 +158,7 @@ void MyClass::Loop(int job, std::string fList){
     TH2D* hJJT              = new TH2D(Form("hJJT") ,Form("hJJT") , 120, 0, 1.2, 140, 550,700);
     TH1D* hMult_ratio_AB        = new TH1D("hMult_ratio_AB", "hMult_ratio_AB", 250, 0, 5);
     TH2D* hMult_AB              = new TH2D("hMult_AB", "hMult_AB", 140, 0, 140, 140, 0, 140);
-
+    TH2D* hJT_Mult_AB           = new TH2D("hJT_Mult_AB","hJT_Mult_AB",120, 0, 1.2, 200,0,2);
 
 
 
@@ -167,6 +167,11 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hJtT  = new TH1D("hJtT","hJtT",100,0,10);
     TH2D* hEtaPhiT = new TH2D("hEtaPhiT","hEtaPhiT", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
 
+    TH1D* hEtaTT = new TH1D("hEtaTT","hEtaTT",100,-5,5);
+    TH1D* hPhiTT = new TH1D("hPhiTT","hPhiTT",100,-M_PI,M_PI);
+    TH1D* hJtTT  = new TH1D("hJtTT","hJtTT",100,0,10);
+    TH2D* hEtaPhiTT = new TH2D("hEtaPhiTT","hEtaPhiTT", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
+    
     TH2D* hEtaPhiA = new TH2D("hEtaPhiA","hEtaPhiA", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
     TH1D* hEtaA = new TH1D("hEtaA","hEtaA", 2*EPD_xb   , -EPD_xhi, EPD_xhi );
     TH1D* hPhiA = new TH1D("hPhiA","hPhiA",EPD_yb      , EPD_ylo    , EPD_yhi);
@@ -327,7 +332,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     hJJT   -> Fill(JetB.Perp()/JetA.Perp(), JetA.Perp()); 
                     hMult_AB -> Fill(n_G_ChargeMult_count1, n_G_ChargeMult_count2);
                     hMult_ratio_AB -> Fill((double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
-
+                    hJT_Mult_AB -> Fill (JetB.Perp()/JetA.Perp(),(double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
                     n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
                     // n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
                     hBinDist_gen_single            ->Fill(n_G_ChargeMult_count);
@@ -557,6 +562,15 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             hPhiT -> Fill(T_jet_dau_phi,1);
                             hJtT  -> Fill(T_jet_dau_pt, 1);
 
+                            //Boosted B wrt Boosted B
+                            double TT_jet_dau_eta   = etaWRTJet(JetBB, dau_T);
+                            double TT_jet_dau_phi   = phiWRTJet(JetBB, dau_T);
+                            double TT_jet_dau_pt    =  ptWRTJet(JetBB, dau_T);
+
+                            hEtaPhiTT->Fill(TT_jet_dau_eta, TT_jet_dau_phi, 1);
+                            hEtaTT -> Fill(TT_jet_dau_eta,1);
+                            hPhiTT -> Fill(TT_jet_dau_phi,1);
+                            hJtTT  -> Fill(TT_jet_dau_pt, 1);
 
 
                             for(int i = 0; i < trackbin; i++){
@@ -718,6 +732,12 @@ std::cout<< "made 4" << endl;
                     hEtaA ->Write();
                     hPhiA ->Write();
                     hJtA ->Write();
+
+                    hJT_Mult_AB->Write();
+                    hEtaPhiTT  ->Write();
+                    hEtaTT->Write();
+                    hPhiTT->Write();
+                    hJtTT->Write();
 
                     fS_tempA->Close();
                     }
