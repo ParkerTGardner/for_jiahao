@@ -329,7 +329,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         if(fabs((*genDau_eta)[jjet][G_trk2]) > 2.4)     continue;
                         n_G_ChargeMult_count2 += 1;
                     }
-                    // if (n_G_ChargeMult_count2<20) continue;
+                    if (JetB.Perp()/JetA.Perp()>0.95) continue;
+                    if (n_G_ChargeMult_count2<20) continue;
+
                     hJJT1D -> Fill(JetB.Perp()/JetA.Perp());
                     hJJT   -> Fill(JetB.Perp()/JetA.Perp(), JetA.Perp()); 
                     hMult_AB -> Fill(n_G_ChargeMult_count1, n_G_ChargeMult_count2);
