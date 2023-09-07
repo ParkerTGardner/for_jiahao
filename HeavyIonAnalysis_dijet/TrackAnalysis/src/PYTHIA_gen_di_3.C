@@ -190,6 +190,8 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hBinDist_reco[trackbin];
     TH1D* hMult_AB_A[trackbin];
     TH2D* hMult_AB_AB[trackbin];
+    TH1D* hMult_AB_A_Inclusive[trackbin];
+    TH2D* hMult_AB_AB_Inclusive[trackbin];
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_gen[wtrk-1]    = new TH1D(Form("hBinDist_gen_%d",wtrk),Form("hBinDist_gen_%d",wtrk), bin360, bin0, bin120);
         hBinDist_reco[wtrk-1]   = new TH1D(Form("hBinDist_reco_%d",wtrk),Form("hBinewnDist_reco_%d",wtrk), bin360, bin0, bin120);
