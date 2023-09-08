@@ -256,6 +256,101 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
             hEvent_Pass->Fill(1);
 
+
+
+                        // I try to normalize to eliminate the effect by the Jet multiplicity distribution
+            for(int kjet=0; kjet < genJetPt->size(); kjet++){
+
+                int ijet = kjet;
+                int Gjet = kjet;
+                long int NNtrk1 = (genDau_pt->at(ijet)).size();
+
+                TVector3 JetA;
+                JetA.SetPtEtaPhi((*genJetPt)[ijet],(*genJetEta)[ijet],(*genJetPhi)[ijet]);
+                TLorentzVector JetA_4 (JetA, JetA.Mag());
+                
+                if( fabs(JetA.Eta()) > jetEtaCut ) continue;
+                if( JetA.Perp() < jetPtCut_Jet   ) continue;
+
+
+                 //    count the trks of A  
+                int n_G_ChargeMult_count  = 0;
+                int n_G_ChargeMult_count1 = 0;
+                
+                
+                for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
+                    if((*genDau_chg)[Gjet][G_trk] == 0) continue;
+                    if(fabs((*genDau_pt)[Gjet][G_trk])  < 0.3)     continue;
+                    if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
+                    n_G_ChargeMult_count1 += 1;
+                }
+                if (n_G_ChargeMult_count1<40) continue;
+                
+                
+                for(int jjet=ijet+1; (jjet< genJetPt->size()); jjet++){
+
+
+                    TVector3 JetB;
+                    JetB.SetPtEtaPhi((*genJetPt)[jjet],(*genJetEta)[jjet],(*genJetPhi)[jjet]);
+                    TLorentzVector JetB_4 (JetB, JetB.Mag());
+
+                    if( fabs(JetB.Eta()) > jetEtaCut ) continue;
+                    if( JetB.Perp() < jetPtCut_Jet-200 ) continue;
+                    // if( JetB.Perp() < JetA.Perp()*0.95 ) continue;
+              
+                    TLorentzVector Boost_to_CM = JetA_4 + JetB_4;
+                    TLorentzVector JetAA_4 = BeamBoost(Boost_to_CM,JetA_4);
+                    TLorentzVector JetBB_4 = BeamBoost(Boost_to_CM,JetB_4);
+
+                    TVector3 JetAA = JetAA_4.Vect();
+                    TVector3 JetBB = JetBB_4.Vect();
+
+                    // TVector3 JetAB = BeamBoost(JetA.Perp(),JetA.Eta(),JetA.Phi(),JetB.Perp(),JetB.Eta(),JetB.Phi());
+                    double deltaJetEta = JetAA.Eta() + JetBB.Eta();
+                    double deltaJetPhi =  fabs(JetA.Phi()-JetB.Phi());
+                    hdeltaJetPhi -> Fill(deltaJetPhi);
+                    hdeltaJetEta -> Fill(deltaJetEta);
+
+                    if (fabs(M_PI-deltaJetPhi) > 0.1) continue;
+                    // if (fabs(deltaJetEta)>0.15) continue;
+                    long int NNtrk2 = (genDau_pt->at(jjet)).size();
+                    // hdeltaR -> Fill(deltaR);
+
+                   
+                    
+                    // Calculate the trks in jetB
+                    int n_G_ChargeMult_count2 = 0;
+                    for(int G_trk2=0; G_trk2 < NNtrk2; G_trk2++ ){
+                        if((*genDau_chg)[jjet][G_trk2] == 0) continue;
+                        if(fabs((*genDau_pt)[jjet][G_trk2])  < 0.3)     continue;
+                        if(fabs((*genDau_eta)[jjet][G_trk2]) > 2.4)     continue;
+                        n_G_ChargeMult_count2 += 1;
+                    }
+
+                    
+
+                    // n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
+                    n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
+                    // if (n_G_ChargeMult_count<60) continue;
+                    // if (JetB.Perp()/JetA.Perp()>0.95) continue;
+                    
+                    if (n_G_ChargeMult_count2<20) continue;
+                    
+
+                    for(int i = 0; i < trackbin; i++){
+                    //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
+                        if(n_G_ChargeMult_count >= trackbinbounds[i] && n_G_ChargeMult_count < trackbinboundsUpper[i]){
+                            hBinDist_gen[i]         ->Fill(n_G_ChargeMult_count); 
+                        }
+                    }
+           
+                }
+            }
+
+
+
+
+
             //ENTERING JET LOOP
 
             //in this first loop I choose the jetA and count the trks of A 
@@ -364,7 +459,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         if(n_G_ChargeMult_count >= trackbinbounds[i] && n_G_ChargeMult_count < trackbinboundsUpper[i]){
                             tkBool[i] = 1;
                             hJet_Pass           ->Fill(i);
-                            hBinDist_gen[i]         ->Fill(n_G_ChargeMult_count);
+                            // hBinDist_gen[i]         ->Fill(n_G_ChargeMult_count);
                             hMult_AB_A[i]  -> Fill(n_G_ChargeMult_count1);
                             hMult_AB_AB[i] -> Fill (n_G_ChargeMult_count1, n_G_ChargeMult_count2); 
                         }
@@ -542,7 +637,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + T_ptBool[T_trk][j] == 2){
                                     int k_PU=0;
 
-                                    hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi ,  ((double)(1.0)/Ntrig[i][j]));
+                                    hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi ,  ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
                                 }
                             }
                         }
@@ -595,7 +690,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                     int k_PU=0;
 
-                                    hEPDrawA[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, ((double)(1.0)/Ntrig[i][j]));
+                                    hEPDrawA[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
                                 }
                             }
                         }
@@ -645,7 +740,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     if(tkBool[i] + T_ptBool[T_trk][j] == 2){
                                         int k_PU=0;
 
-                                        hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi ,  ((double)(1.0)/Ntrig[i][j]));
+                                        hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi ,  ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
                                     }
                                 }
                             }
@@ -669,12 +764,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     if(tkBool[i] + A_ptBool[A_trk][j] + T_ptBool[T_trk][j] == 3){
                                             hPairs->Fill(i,j);
                                             int k_PU=0;
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
+                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
+                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
                                             // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
 
                                     }
