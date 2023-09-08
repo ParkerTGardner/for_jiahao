@@ -680,6 +680,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     int k_PU=0;
 
                                     hEPDrawA[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
+                                }
                             }
                         }
 

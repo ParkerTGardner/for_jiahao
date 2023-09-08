@@ -735,17 +735,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             double T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
 
 
-                            for(int i = 0; i < trackbin; i++){
-                                for(int j = 0; j < ptbin; j++){
-                                    if(tkBool[i] + T_ptBool[T_trk][j] == 2){
-                                        int k_PU=0;
-
-                                        hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi ,  ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
-                                    }
-                                }
-                            }
-                            
-
                             //correlation function
                                              //A_trk(dau_A)  T_trk(dau_B)
                             double deltaEta = (jet_dau_eta - T_jet_dau_eta);
