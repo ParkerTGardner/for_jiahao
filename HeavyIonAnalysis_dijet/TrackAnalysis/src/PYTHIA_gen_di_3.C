@@ -335,8 +335,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     
 
-                    // n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
-                    n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
+                    n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
+                    // n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
                     // if (n_G_ChargeMult_count<60) continue;
                     // if (JetB.Perp()/JetA.Perp()>0.95) continue;
                     
