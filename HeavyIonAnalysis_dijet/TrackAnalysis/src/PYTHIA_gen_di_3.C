@@ -645,7 +645,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + T_ptBool[T_trk][j] == 2){
                                     int k_PU=0;
 
-                                    hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi ,  ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
+                                    hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi ,  ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
                                 }
                             }
                         }
@@ -693,7 +693,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                     int k_PU=0;
 
-                                    hEPDrawA[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
+                                    hEPDrawA[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
                                 }
                             }
                         }
@@ -754,12 +754,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     if(tkBool[i] + A_ptBool[A_trk][j] + T_ptBool[T_trk][j] == 3){
                                             hPairs->Fill(i,j);
                                             int k_PU=0;
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
-                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntry())));
+                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
+                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
+                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
                                             // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
 
                                     }
