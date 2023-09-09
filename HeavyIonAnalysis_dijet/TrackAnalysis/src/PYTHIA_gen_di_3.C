@@ -290,7 +290,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
                     n_G_ChargeMult_count1 += 1;
                 }
-                if (n_G_ChargeMult_count1<30) continue;
+                if (n_G_ChargeMult_count1<20) continue;
                 
                 
                 for(int jjet=ijet+1; (jjet< genJetPt->size()); jjet++){
@@ -334,13 +334,13 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     }
 
                     
+                    if (JetB.Perp()/JetA.Perp()<0.9) continue;
+                    if (n_G_ChargeMult_count2<20) continue;
 
-                    n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
-                    // n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
+                    // n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
+                    n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
                     // if (n_G_ChargeMult_count<60) continue;
-                    if (JetB.Perp()/JetA.Perp()>0.9) continue;
                     
-                    if (n_G_ChargeMult_count2<30) continue;
                     
 
                     for(int i = 0; i < trackbin; i++){
@@ -385,7 +385,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
                     n_G_ChargeMult_count1 += 1;
                 }
-                if (n_G_ChargeMult_count1<30) continue;
+                if (n_G_ChargeMult_count1<20) continue;
                 
                 
                 for(int jjet=ijet+1; (jjet< genJetPt->size()); jjet++){
@@ -450,8 +450,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     hMult_ratio_AB -> Fill((double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
                     hJT_Mult_AB -> Fill (JetB.Perp()/JetA.Perp(),(double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
                     
-                    if (JetB.Perp()/JetA.Perp()>0.9) continue;
-                    if (n_G_ChargeMult_count2<30) continue;
+                    if (JetB.Perp()/JetA.Perp()<0.9) continue;
+                    if (n_G_ChargeMult_count2<20) continue;
                     // if (JetB.Perp()/JetA.Perp()>0.95) continue;
 
 
