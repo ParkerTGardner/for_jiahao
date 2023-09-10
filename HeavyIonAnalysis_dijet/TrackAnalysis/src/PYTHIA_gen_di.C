@@ -181,8 +181,8 @@ void MyClass::Loop(int job, std::string fList){
     
    
 
-    TH2D* hSignalShifted[trackbin][ptbin][PUbin];
-    TH2D* hBckrndShifted[trackbin][ptbin][PUbin];
+    TH1D* hSignalShifted[trackbin][ptbin][PUbin];
+    TH1D* hBckrndShifted[trackbin][ptbin][PUbin];
     TH2D* hEPDrawA[trackbin][ptbin][PUbin];
     TH2D* hEPDrawT[trackbin][ptbin][PUbin];
 
@@ -195,11 +195,11 @@ void MyClass::Loop(int job, std::string fList){
         hBinDist_reco[wtrk-1]   = new TH1D(Form("hBinDist_reco_%d",wtrk),Form("hBinewnDist_reco_%d",wtrk), bin360, bin0, bin120);
         hMult_AB_A[wtrk-1]    = new TH1D(Form("hMult_AB_A_%d",wtrk),Form("hMult_AB_A_%d",wtrk), bin360, bin0, bin120);
         hMult_AB_AB[wtrk-1]   = new TH2D(Form("hMult_AB_AB_%d",wtrk),Form("hMult_AB_AB_%d",wtrk), bin360, bin0, bin120, bin360, bin0, bin120);
+        hBckrndShifted[wtrk-1][wppt-1][wpPU-1]      = new TH1D(Form("hBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
+        hSignalShifted[wtrk-1][wppt-1][wpPU-1]      = new TH1D(Form("hSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
         for(int wppt = 1; wppt<ptbin+1; wppt++){
             for(int wpPU = 1; wpPU<PUbin+1; wpPU++){
 
-                hBckrndShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hBckrndS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
-                hSignalShifted[wtrk-1][wppt-1][wpPU-1]      = new TH2D(Form("hSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form("hSignalS_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
                 hEPDrawA[wtrk-1][wppt-1][wpPU-1]             = new TH2D(Form("hEPDrawA_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hEPDrawA_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
                 hEPDrawT[wtrk-1][wppt-1][wpPU-1]             = new TH2D(Form("hEPDrawT_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) ,Form( "hEPDrawT_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU) , 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
 
@@ -291,7 +291,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
                     n_G_ChargeMult_count1 += 1;
                 }
-                if (n_G_ChargeMult_count1<20) continue;
+                if (n_G_ChargeMult_count1<30) continue;
                 
                 
                 for(int jjet=ijet+1; (jjet< genJetPt->size()); jjet++){
@@ -315,8 +315,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // TVector3 JetAB = BeamBoost(JetA.Perp(),JetA.Eta(),JetA.Phi(),JetB.Perp(),JetB.Eta(),JetB.Phi());
                     double deltaJetEta = JetAA.Eta() + JetBB.Eta();
                     double deltaJetPhi =  fabs(JetA.Phi()-JetB.Phi());
-                    hdeltaJetPhi -> Fill(deltaJetPhi);
-                    hdeltaJetEta -> Fill(deltaJetEta);
+                    // hdeltaJetPhi -> Fill(deltaJetPhi);
+                    // hdeltaJetEta -> Fill(deltaJetEta);
 
                     if (fabs(M_PI-deltaJetPhi) > 0.1) continue;
                     // if (fabs(deltaJetEta)>0.15) continue;
@@ -338,15 +338,15 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     // n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
                     n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
-                    if (n_G_ChargeMult_count2<20) continue;
+                    if (n_G_ChargeMult_count2<30) continue;
                     // if (JetB.Perp()/JetA.Perp()>0.95) continue;
 
-                    hJJT1D -> Fill(JetB.Perp()/JetA.Perp());
-                    hJJT   -> Fill(JetB.Perp()/JetA.Perp(), JetA.Perp()); 
+                    // hJJT1D -> Fill(JetB.Perp()/JetA.Perp());
+                    // hJJT   -> Fill(JetB.Perp()/JetA.Perp(), JetA.Perp()); 
                     
-                    hMult_AB -> Fill(n_G_ChargeMult_count1, n_G_ChargeMult_count2);
-                    hMult_ratio_AB -> Fill((double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
-                    hJT_Mult_AB -> Fill (JetB.Perp()/JetA.Perp(),(double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
+                    // hMult_AB -> Fill(n_G_ChargeMult_count1, n_G_ChargeMult_count2);
+                    // hMult_ratio_AB -> Fill((double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
+                    // hJT_Mult_AB -> Fill (JetB.Perp()/JetA.Perp(),(double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
                     
                     // if (n_G_ChargeMult_count2<20) continue;
                     hBinDist_gen_single            ->Fill(n_G_ChargeMult_count);
@@ -366,10 +366,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
                         if(n_G_ChargeMult_count >= trackbinbounds[i] && n_G_ChargeMult_count < trackbinboundsUpper[i]){
                             tkBool[i] = 1;
-                            hJet_Pass           ->Fill(i);
+                            // hJet_Pass           ->Fill(i);
                             hBinDist_gen[i]         ->Fill(n_G_ChargeMult_count);
-                            hMult_AB_A[i]  -> Fill(n_G_ChargeMult_count1);
-                            hMult_AB_AB[i] -> Fill (n_G_ChargeMult_count1, n_G_ChargeMult_count2); 
+                            // hMult_AB_A[i]  -> Fill(n_G_ChargeMult_count1);
+                            // hMult_AB_AB[i] -> Fill (n_G_ChargeMult_count1, n_G_ChargeMult_count2); 
                         }
                     }
 
@@ -518,19 +518,19 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         double T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
 
                         //Boosted B wrt Boosted B
-                        double TT_jet_dau_eta   = etaWRTJet(JetBB, dau_T);
-                        double TT_jet_dau_phi   = phiWRTJet(JetBB, dau_T);
-                        double TT_jet_dau_pt    =  ptWRTJet(JetBB, dau_T);
+                        // double TT_jet_dau_eta   = etaWRTJet(JetBB, dau_T);
+                        // double TT_jet_dau_phi   = phiWRTJet(JetBB, dau_T);
+                        // double TT_jet_dau_pt    =  ptWRTJet(JetBB, dau_T);
 
-                        hEtaPhiT->Fill(T_jet_dau_eta, T_jet_dau_phi, 1);
-                        hEtaT -> Fill(T_jet_dau_eta,1);
-                        hPhiT -> Fill(T_jet_dau_phi,1);
-                        hJtT  -> Fill(T_jet_dau_pt, 1);
+                        // hEtaPhiT->Fill(T_jet_dau_eta, T_jet_dau_phi, 1);
+                        // hEtaT -> Fill(T_jet_dau_eta,1);
+                        // hPhiT -> Fill(T_jet_dau_phi,1);
+                        // hJtT  -> Fill(T_jet_dau_pt, 1);
 
-                        hEtaPhiTT->Fill(TT_jet_dau_eta, TT_jet_dau_phi, 1);
-                        hEtaTT -> Fill(TT_jet_dau_eta,1);
-                        hPhiTT -> Fill(TT_jet_dau_phi,1);
-                        hJtTT  -> Fill(TT_jet_dau_pt, 1);
+                        // hEtaPhiTT->Fill(TT_jet_dau_eta, TT_jet_dau_phi, 1);
+                        // hEtaTT -> Fill(TT_jet_dau_eta,1);
+                        // hPhiTT -> Fill(TT_jet_dau_phi,1);
+                        // hJtTT  -> Fill(TT_jet_dau_pt, 1);
 
 
                         
@@ -578,10 +578,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
 
-                        hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1);
-                        hEtaA -> Fill(jet_dau_eta,1);
-                        hPhiA -> Fill(jet_dau_phi,1);
-                        hJtA  -> Fill(jet_dau_pt, 1);
+                        // hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1);
+                        // hEtaA -> Fill(jet_dau_eta,1);
+                        // hPhiA -> Fill(jet_dau_phi,1);
+                        // hJtA  -> Fill(jet_dau_pt, 1);
 
 
 
@@ -635,35 +635,120 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                             //correlation function
                                              //A_trk(dau_A)  T_trk(dau_B)
-                            double deltaEta = (jet_dau_eta + T_jet_dau_eta);
+                            double deltaEta = (jet_dau_eta - T_jet_dau_eta);
                                                                         //A_trk        T_trk
                             double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
 
-                            
-
-                            // double deltaJt  = fabs(jet_dau_pt - T_jet_dau_pt);
-                            
-                            for(        int i = 0; i < trackbin; i++){
-                                for(    int j = 0; j < ptbin;    j++){ 
-            
 
 
-                                    if(tkBool[i] + A_ptBool[A_trk][j] + T_ptBool[T_trk][j] == 3){
-                                            hPairs->Fill(i,j);
-                                            int k_PU=0;
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
-                                            // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
+                            for(int  A_trk2=A_trk+1; A_trk2 < NNtrk1; A_trk2++ ){
+                        
+                                TVector3 dau_A02;
+                                dau_A02.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk2],(double)(*genDau_eta)[ijet][A_trk2],(double)(*genDau_phi)[ijet][A_trk2]);
+                                TLorentzVector dau_A02_4(dau_A02,dau_A02.Mag());
+                                
+                                if((*genDau_chg)[ijet][A_trk2] == 0) continue;
+                                if(fabs(dau_A02.Eta()) > 2.4)        continue;
+                                if(fabs(dau_A02.Perp())  < 0.3)      continue;
 
+                                //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
+                                double jet_dau_pt02    =  ptWRTJet(JetA, dau_A02);
+
+                                if(jet_dau_pt02 >3.0) continue;
+
+                                TLorentzVector dau_A2_4 = BeamBoost(Boost_to_CM,dau_A02_4);
+                                TVector3       dau_A2   = dau_A2_4.Vect();
+                
+
+                                //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
+                                double jet_dau_eta2   = etaWRTJet(JetAA, dau_A2);
+                                //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
+                                double jet_dau_phi2   = phiWRTJet(JetAA, dau_A2);
+
+                                double jet_dau_pt2    =  ptWRTJet(JetAA, dau_A2);
+
+                                //A_trk is the first track from the first loop
+                                //T_trk is the second loop
+
+
+                                // This is for corr(dau_A, dau_B)
+                                for(long int T_trk2 = T_trk+1; T_trk2 < NNtrk2; T_trk2++ ){
+
+                                    if((*genDau_chg)[jjet][T_trk2] == 0) continue;
+                                    if(fabs((*genDau_eta)[jjet][T_trk2]) > 2.4) continue;
+                                    if(fabs((*genDau_pt)[jjet][T_trk2])  < 0.3)      continue;
+
+                                    //Unboosted dau_T0
+                                    TVector3 dau_T02;
+                                    dau_T02.SetPtEtaPhi((double)(*genDau_pt)[jjet][T_trk2],(double)(*genDau_eta)[jjet][T_trk2],(double)(*genDau_phi)[jjet][T_trk2]);
+                                    TLorentzVector dau_T02_4 (dau_T02,dau_T02.Mag());     
+                                    
+                                    double T_jet_dau_pt02    =  ptWRTJet(JetB, dau_T02);  
+                                    if(T_jet_dau_pt02 >3.0) continue;
+
+                                    double T_jet_dau_eta02   = etaWRTJet(JetB, dau_T02);
+                                    
+                                    if(T_jet_dau_eta02 > track_eta_lim) continue;
+
+                                    //boosted dau_T
+                                    TLorentzVector dau_T2_4 = BeamBoost(Boost_to_CM, dau_T02_4);
+                                    TVector3 dau_T2 = dau_T2_4.Vect();
+
+
+                                    //boosted B wrt old A   
+                                    double T_jet_dau_eta2   = etaWRTJet(JetAA, dau_T2);
+                                    double T_jet_dau_phi2   = phiWRTJet(JetAA, dau_T2);
+                                    double T_jet_dau_pt2    =  ptWRTJet(JetAA, dau_T2);
+                                    
+
+                                    //correlation function
+                                                    //A_trk(dau_A)  T_trk(dau_B)
+                                    double deltaEta2 = (jet_dau_eta2 - T_jet_dau_eta2);
+                                                                                //A_trk        T_trk
+                                    double deltaPhi2 = (TMath::ACos(TMath::Cos(jet_dau_phi2 - T_jet_dau_phi2)));
+
+                                    double deltaPhi0 = (TMath::ACos(TMath::Cos(deltaPhi - deltaPhi2)));
+
+                                    double deltaEta3 = (jet_dau_eta - T_jet_dau_eta2);
+
+                                    double deltaEta4 = (jet_dau_eta2 - T_jet_dau_eta);
+
+                                    if (fabs(deltaEta)<2) continue;
+                                    if (fabs(deltaEta2)<2) continue;
+                                    if (fabs(deltaEta3)<2) continue;
+                                    if (fabs(deltaEta4)<2) continue;
+
+                                    // double deltaJt  = fabs(jet_dau_pt - T_jet_dau_pt);
+                                    
+                                    for(        int i = 0; i < trackbin; i++){
+                                        for(    int j = 0; j < ptbin;    j++){ 
+                    
+
+
+                                            if(tkBool[i] + A_ptBool[A_trk][j] + T_ptBool[T_trk][j] + A_ptBool[A_trk2][j] + T_ptBool[T_trk2][j] == 5){
+                                                    hPairs->Fill(i,j);
+                                                    int k_PU=0;
+                                                    hSignalShifted[i][j][k_PU]->Fill(deltaPhi0,                 ((double)(1.0)/(Ntrig[i][j])));
+                                                    hSignalShifted[i][j][k_PU]->Fill(-deltaPhi0,                ((double)(1.0)/(Ntrig[i][j])));
+                                                    hSignalShifted[i][j][k_PU]->Fill(2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
+                                                    // hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
+                                                    // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
+
+                                            }
+
+                                
+                                        }
                                     }
 
                         
-                                }
+                                }//T_trk;  AB
+
+
                             }
+
+                            
+
+                                    
 
                 
                         }//T_trk;  AB
@@ -718,18 +803,38 @@ std::cout<< "made 4" << endl;
                                       for(long int i = 0; i < (XENT-1); i++){
                                           for(long int j = (i+1); j < XENT; j++){
 
-                                              double WdeltaEta = (A_ETA[i]+T_ETA[j]);
+                                              double WdeltaEta = (A_ETA[i]-T_ETA[j]);
                                               double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
-                                            //   double WdeltaJt  = fabs(A_Jt[i]-A_Jt[j]);
+                                            
+                                                for(long int k = i; k< (XENT-1); k++){
+                                                    for(long int l = (j+1); l < XENT; l++){
 
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, -WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
-                                            //   hMomBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaJt, 1);
+                                                        double WdeltaEta2 = (A_ETA[k]-T_ETA[l]);
+                                                        double WdeltaPhi2 = (TMath::ACos(TMath::Cos(A_PHI[k]-T_PHI[l])));
+                                                        double WdeltaPhi0 = (TMath::ACos(TMath::Cos(WdeltaPhi-WdeltaPhi2)));
+                                                        
+                                                        double WdeltaEta3 = (A_ETA[i]-T_ETA[l]);
+                                                        double WdeltaEta4 = (A_ETA[k]-T_ETA[j]);
 
+                                                        if (fabs(WdeltaEta)<2) continue;
+                                                        if (fabs(WdeltaEta2)<2) continue; 
+                                                        if (fabs(WdeltaEta3)<2) continue; 
+                                                        if (fabs(WdeltaEta4)<2) continue; 
+
+                                                        //   double WdeltaJt  = fabs(A_Jt[i]-A_Jt[j]);
+
+                                                        hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill( WdeltaPh0, 1);//./XENT);
+                                                        // hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
+                                                        hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill( -WdeltaPhi0, 1);//../XENT);
+                                                        // hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                                                        hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill( 2*TMath::Pi() - WdeltaPhi0, 1);//../XENT);
+                                                        // hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
+                                                        //   hMomBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaJt, 1);
+
+                                                    }
+                                                }
+                                          
+                                          
                                           }
                                       }
                                   }
@@ -762,33 +867,33 @@ std::cout<< "made 4" << endl;
                     }
 
 
-                    hJJT1D -> Write();
-                    hJJT   -> Write();
-                    hMult_ratio_AB -> Write();
-                    hMult_AB -> Write();
+                    // hJJT1D -> Write();
+                    // hJJT   -> Write();
+                    // hMult_ratio_AB -> Write();
+                    // hMult_AB -> Write();
 
                     hBinDist_gen_single->Write();
-                    hEvent_Pass   ->Write();
-                    hJet_Pass     ->Write();
-                    hdeltaR       ->Write();
-                    hdeltaJetEta->Write();
-                    hdeltaJetPhi->Write();
+                    // hEvent_Pass   ->Write();
+                    // hJet_Pass     ->Write();
+                    // hdeltaR       ->Write();
+                    // hdeltaJetEta->Write();
+                    // hdeltaJetPhi->Write();
 
-                    hEtaPhiT  ->Write();
-                    hEtaT->Write();
-                    hPhiT->Write();
-                    hJtT->Write();
+                    // hEtaPhiT  ->Write();
+                    // hEtaT->Write();
+                    // hPhiT->Write();
+                    // hJtT->Write();
                         
-                    hEtaPhiA->Write();
-                    hEtaA ->Write();
-                    hPhiA ->Write();
-                    hJtA ->Write();
+                    // hEtaPhiA->Write();
+                    // hEtaA ->Write();
+                    // hPhiA ->Write();
+                    // hJtA ->Write();
 
-                    hJT_Mult_AB->Write();
-                    hEtaPhiTT  ->Write();
-                    hEtaTT->Write();
-                    hPhiTT->Write();
-                    hJtTT->Write();
+                    // hJT_Mult_AB->Write();
+                    // hEtaPhiTT  ->Write();
+                    // hEtaTT->Write();
+                    // hPhiTT->Write();
+                    // hJtTT->Write();
 
                     fS_tempA->Close();
                     }
