@@ -518,12 +518,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         //boosted B wrt old A   
                         double T_jet_dau_eta   = etaWRTJet(JetAA, dau_T);
-                        double T_jet_dau_phi   = phiWRTJet(JetAA, dau_T -randomphase);
+                        double T_jet_dau_phi   = phiWRTJet(JetAA, dau_T) -randomphase;
                         double T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
 
                         //Boosted B wrt Boosted B
                         double TT_jet_dau_eta   = etaWRTJet(JetBB, dau_T);
-                        double TT_jet_dau_phi   = phiWRTJet(JetBB, dau_T -randomphase);
+                        double TT_jet_dau_phi   = phiWRTJet(JetBB, dau_T)-randomphase;
                         double TT_jet_dau_pt    =  ptWRTJet(JetBB, dau_T);
 
                         hEtaPhiT->Fill(T_jet_dau_eta, T_jet_dau_phi, 1);
@@ -578,7 +578,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
                         double jet_dau_eta   = etaWRTJet(JetAA, dau_A);
                         //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                        double jet_dau_phi   = phiWRTJet(JetAA, dau_A + randomphase);
+                        double jet_dau_phi   = phiWRTJet(JetAA, dau_A) + randomphase;
 
                         double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
 
@@ -633,7 +633,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                             //boosted B wrt old A   
                             double T_jet_dau_eta   = etaWRTJet(JetAA, dau_T);
-                            double T_jet_dau_phi   = phiWRTJet(JetAA, dau_T-randomphase);
+                            double T_jet_dau_phi   = phiWRTJet(JetAA, dau_T) -randomphase;
                             double T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
                             
 
