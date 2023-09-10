@@ -190,15 +190,11 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hBinDist_reco[trackbin];
     TH1D* hMult_AB_A[trackbin];
     TH2D* hMult_AB_AB[trackbin];
-    TH1D* hMult_AB_A_Inclusive[trackbin];
-    TH2D* hMult_AB_AB_Inclusive[trackbin];
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_gen[wtrk-1]    = new TH1D(Form("hBinDist_gen_%d",wtrk),Form("hBinDist_gen_%d",wtrk), bin360, bin0, bin120);
         hBinDist_reco[wtrk-1]   = new TH1D(Form("hBinDist_reco_%d",wtrk),Form("hBinewnDist_reco_%d",wtrk), bin360, bin0, bin120);
         hMult_AB_A[wtrk-1]    = new TH1D(Form("hMult_AB_A_%d",wtrk),Form("hMult_AB_A_%d",wtrk), bin360, bin0, bin120);
         hMult_AB_AB[wtrk-1]   = new TH2D(Form("hMult_AB_AB_%d",wtrk),Form("hMult_AB_AB_%d",wtrk), bin360, bin0, bin120, bin360, bin0, bin120);
-        hMult_AB_A_Inclusive[wtrk-1]    = new TH1D(Form("hMult_AB_A_Inclusive_%d",wtrk),Form("hMult_AB_A_Inclusive_%d",wtrk), bin360, bin0, bin120);
-        hMult_AB_AB_Inclusive[wtrk-1]   = new TH2D(Form("hMult_AB_AB_Inclusive_%d",wtrk),Form("hMult_AB_AB_Inclusive_%d",wtrk), bin360, bin0, bin120, bin360, bin0, bin120);
         for(int wppt = 1; wppt<ptbin+1; wppt++){
             for(int wpPU = 1; wpPU<PUbin+1; wpPU++){
 
@@ -262,101 +258,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
             hEvent_Pass->Fill(1);
 
 
-
-
-            // I try to normalize to eliminate the effect by the Jet multiplicity distribution
-            for(int kjet=0; kjet < genJetPt->size(); kjet++){
-
-                int ijet = kjet;
-                int Gjet = kjet;
-                long int NNtrk1 = (genDau_pt->at(ijet)).size();
-
-                TVector3 JetA;
-                JetA.SetPtEtaPhi((*genJetPt)[ijet],(*genJetEta)[ijet],(*genJetPhi)[ijet]);
-                TLorentzVector JetA_4 (JetA, JetA.Mag());
-                
-                if( fabs(JetA.Eta()) > jetEtaCut ) continue;
-                if( JetA.Perp() < jetPtCut_Jet   ) continue;
-
-
-                 //    count the trks of A  
-                int n_G_ChargeMult_count  = 0;
-                int n_G_ChargeMult_count1 = 0;
-                
-                
-                for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
-                    if((*genDau_chg)[Gjet][G_trk] == 0) continue;
-                    if(fabs((*genDau_pt)[Gjet][G_trk])  < 0.3)     continue;
-                    if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
-                    n_G_ChargeMult_count1 += 1;
-                }
-                if (n_G_ChargeMult_count1<20) continue;
-                
-                
-                for(int jjet=ijet+1; (jjet< genJetPt->size()); jjet++){
-
-
-                    TVector3 JetB;
-                    JetB.SetPtEtaPhi((*genJetPt)[jjet],(*genJetEta)[jjet],(*genJetPhi)[jjet]);
-                    TLorentzVector JetB_4 (JetB, JetB.Mag());
-
-                    if( fabs(JetB.Eta()) > jetEtaCut ) continue;
-                    if( JetB.Perp() < jetPtCut_Jet-200 ) continue;
-                    // if( JetB.Perp() < JetA.Perp()*0.95 ) continue;
-              
-                    TLorentzVector Boost_to_CM = JetA_4 + JetB_4;
-                    TLorentzVector JetAA_4 = BeamBoost(Boost_to_CM,JetA_4);
-                    TLorentzVector JetBB_4 = BeamBoost(Boost_to_CM,JetB_4);
-
-                    TVector3 JetAA = JetAA_4.Vect();
-                    TVector3 JetBB = JetBB_4.Vect();
-
-                    // TVector3 JetAB = BeamBoost(JetA.Perp(),JetA.Eta(),JetA.Phi(),JetB.Perp(),JetB.Eta(),JetB.Phi());
-                    double deltaJetEta = JetAA.Eta() + JetBB.Eta();
-                    double deltaJetPhi =  fabs(JetA.Phi()-JetB.Phi());
-                    hdeltaJetPhi -> Fill(deltaJetPhi);
-                    hdeltaJetEta -> Fill(deltaJetEta);
-
-                    if (fabs(M_PI-deltaJetPhi) > 0.1) continue;
-                    // if (fabs(deltaJetEta)>0.15) continue;
-                    long int NNtrk2 = (genDau_pt->at(jjet)).size();
-                    // hdeltaR -> Fill(deltaR);
-
-                   
-                    
-                    // Calculate the trks in jetB
-                    int n_G_ChargeMult_count2 = 0;
-                    for(int G_trk2=0; G_trk2 < NNtrk2; G_trk2++ ){
-                        if((*genDau_chg)[jjet][G_trk2] == 0) continue;
-                        if(fabs((*genDau_pt)[jjet][G_trk2])  < 0.3)     continue;
-                        if(fabs((*genDau_eta)[jjet][G_trk2]) > 2.4)     continue;
-                        n_G_ChargeMult_count2 += 1;
-                    }
-
-                    
-                    if (JetB.Perp()/JetA.Perp()<0.9) continue;
-                    if (n_G_ChargeMult_count2<20) continue;
-
-                    // n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
-                    n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
-                    // if (n_G_ChargeMult_count<60) continue;
-                    
-                    
-
-                    for(int i = 0; i < trackbin; i++){
-                    //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
-                        if(n_G_ChargeMult_count >= trackbinbounds[i] && n_G_ChargeMult_count < trackbinboundsUpper[i]){
-                            hBinDist_gen[i]         ->Fill(n_G_ChargeMult_count); 
-                        }
-                    }
-           
-                }
-            }
-
-
-
-
-
+            
+            
+            
+            
+            
             //ENTERING JET LOOP
 
             //in this first loop I choose the jetA and count the trks of A 
@@ -413,7 +319,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     hdeltaJetEta -> Fill(deltaJetEta);
 
                     if (fabs(M_PI-deltaJetPhi) > 0.1) continue;
-                    
                     // if (fabs(deltaJetEta)>0.15) continue;
                     long int NNtrk2 = (genDau_pt->at(jjet)).size();
                     // hdeltaR -> Fill(deltaR);
@@ -432,17 +337,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     
 
                     // n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
-                    
                     n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
+                    if (n_G_ChargeMult_count2<20) continue;
+                    // if (JetB.Perp()/JetA.Perp()>0.95) continue;
 
-                    for(int i = 0; i < trackbin; i++){
-                    //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
-                        if(n_G_ChargeMult_count >= trackbinbounds[i] && n_G_ChargeMult_count < trackbinboundsUpper[i]){
-                            hMult_AB_A_Inclusive[i]  -> Fill(n_G_ChargeMult_count1);
-                            hMult_AB_AB_Inclusive[i] -> Fill (n_G_ChargeMult_count1, n_G_ChargeMult_count2); 
-                        }
-                    }
-                    
                     hJJT1D -> Fill(JetB.Perp()/JetA.Perp());
                     hJJT   -> Fill(JetB.Perp()/JetA.Perp(), JetA.Perp()); 
                     
@@ -450,12 +348,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     hMult_ratio_AB -> Fill((double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
                     hJT_Mult_AB -> Fill (JetB.Perp()/JetA.Perp(),(double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
                     
-                    if (JetB.Perp()/JetA.Perp()<0.9) continue;
-                    if (n_G_ChargeMult_count2<20) continue;
-                    // if (JetB.Perp()/JetA.Perp()>0.95) continue;
-
-
-                   
+                    // if (n_G_ChargeMult_count2<20) continue;
                     hBinDist_gen_single            ->Fill(n_G_ChargeMult_count);
 
                     //some useful bools 
@@ -474,7 +367,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         if(n_G_ChargeMult_count >= trackbinbounds[i] && n_G_ChargeMult_count < trackbinboundsUpper[i]){
                             tkBool[i] = 1;
                             hJet_Pass           ->Fill(i);
-                            // hBinDist_gen[i]         ->Fill(n_G_ChargeMult_count);
+                            hBinDist_gen[i]         ->Fill(n_G_ChargeMult_count);
                             hMult_AB_A[i]  -> Fill(n_G_ChargeMult_count1);
                             hMult_AB_AB[i] -> Fill (n_G_ChargeMult_count1, n_G_ChargeMult_count2); 
                         }
@@ -595,6 +488,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
 
+
                     for(long int T_trk = 0; T_trk < NNtrk2; T_trk++ ){
 
                         if((*genDau_chg)[jjet][T_trk] == 0) continue;
@@ -648,7 +542,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + T_ptBool[T_trk][j] == 2){
                                     int k_PU=0;
 
-                                    hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi ,  ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
+                                    hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi ,  ((double)(1.0)/(Ntrig[i][j])));
                                 }
                             }
                         }
@@ -696,7 +590,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                     int k_PU=0;
 
-                                    hEPDrawA[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
+                                    hEPDrawA[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, ((double)(1.0)/(Ntrig[i][j])));
                                 }
                             }
                         }
@@ -741,9 +635,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                             //correlation function
                                              //A_trk(dau_A)  T_trk(dau_B)
-                            double deltaEta = (jet_dau_eta - T_jet_dau_eta);
+                            double deltaEta = (jet_dau_eta + T_jet_dau_eta);
                                                                         //A_trk        T_trk
-                            double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
+                            double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi + T_jet_dau_phi)));
 
                             
 
@@ -757,12 +651,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     if(tkBool[i] + A_ptBool[A_trk][j] + T_ptBool[T_trk][j] == 3){
                                             hPairs->Fill(i,j);
                                             int k_PU=0;
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
-                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j]*hBinDist_gen[i]->GetEntries())));
+                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
                                             // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
 
                                     }
@@ -824,8 +718,8 @@ std::cout<< "made 4" << endl;
                                       for(long int i = 0; i < (XENT-1); i++){
                                           for(long int j = (i+1); j < XENT; j++){
 
-                                              double WdeltaEta = (A_ETA[i]-T_ETA[j]);
-                                              double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
+                                              double WdeltaEta = (A_ETA[i]+T_ETA[j]);
+                                              double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]+T_PHI[j])));
                                             //   double WdeltaJt  = fabs(A_Jt[i]-A_Jt[j]);
 
                                               hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
@@ -854,8 +748,6 @@ std::cout<< "made 4" << endl;
                         hBinDist_gen[wtrk-1]         ->Write();
                         hMult_AB_A[wtrk-1]           ->Write();
                         hMult_AB_AB[wtrk-1]           ->Write();
-                        hMult_AB_A_Inclusive[wtrk-1]           ->Write();
-                        hMult_AB_AB_Inclusive[wtrk-1]           ->Write();
                         for(int wppt =1; wppt <ptbin+1; wppt++){
                             for(int wpPU =1; wpPU<PUbin+1; wpPU++){
 
