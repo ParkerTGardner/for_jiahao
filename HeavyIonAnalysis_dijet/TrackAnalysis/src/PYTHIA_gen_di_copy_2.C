@@ -258,6 +258,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
             hEvent_Pass->Fill(1);
 
 
+            gRandom->SetSeed(0);
+            double randomphase = gRandom->Rndm() * (M_PI/12);
+
+
             
             
             
@@ -291,7 +295,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
                     n_G_ChargeMult_count1 += 1;
                 }
-                if (n_G_ChargeMult_count1<20) continue;
+                if (n_G_ChargeMult_count1<30) continue;
                 
                 
                 for(int jjet=ijet+1; (jjet< genJetPt->size()); jjet++){
@@ -338,7 +342,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     // n_G_ChargeMult_count = n_G_ChargeMult_count1 + n_G_ChargeMult_count2 ;
                     n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
-                    if (n_G_ChargeMult_count2<20) continue;
+                    if (n_G_ChargeMult_count2<30) continue;
                     // if (JetB.Perp()/JetA.Perp()>0.95) continue;
 
                     hJJT1D -> Fill(JetB.Perp()/JetA.Perp());
@@ -514,12 +518,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         //boosted B wrt old A   
                         double T_jet_dau_eta   = etaWRTJet(JetAA, dau_T);
-                        double T_jet_dau_phi   = phiWRTJet(JetAA, dau_T);
+                        double T_jet_dau_phi   = phiWRTJet(JetAA, dau_T -randomphase);
                         double T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
 
                         //Boosted B wrt Boosted B
                         double TT_jet_dau_eta   = etaWRTJet(JetBB, dau_T);
-                        double TT_jet_dau_phi   = phiWRTJet(JetBB, dau_T);
+                        double TT_jet_dau_phi   = phiWRTJet(JetBB, dau_T -randomphase);
                         double TT_jet_dau_pt    =  ptWRTJet(JetBB, dau_T);
 
                         hEtaPhiT->Fill(T_jet_dau_eta, T_jet_dau_phi, 1);
@@ -574,7 +578,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
                         double jet_dau_eta   = etaWRTJet(JetAA, dau_A);
                         //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                        double jet_dau_phi   = phiWRTJet(JetAA, dau_A);
+                        double jet_dau_phi   = phiWRTJet(JetAA, dau_A + randomphase);
 
                         double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
 
@@ -629,7 +633,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                             //boosted B wrt old A   
                             double T_jet_dau_eta   = etaWRTJet(JetAA, dau_T);
-                            double T_jet_dau_phi   = phiWRTJet(JetAA, dau_T);
+                            double T_jet_dau_phi   = phiWRTJet(JetAA, dau_T-randomphase);
                             double T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
                             
 
@@ -637,7 +641,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                              //A_trk(dau_A)  T_trk(dau_B)
                             double deltaEta = (jet_dau_eta - T_jet_dau_eta);
                                                                         //A_trk        T_trk
-                            double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi + T_jet_dau_phi)));
+                            double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
+
+                            
 
                             
 
@@ -719,7 +725,7 @@ std::cout<< "made 4" << endl;
                                           for(long int j = (i+1); j < XENT; j++){
 
                                               double WdeltaEta = (A_ETA[i]-T_ETA[j]);
-                                              double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]+T_PHI[j])));
+                                              double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
                                             //   double WdeltaJt  = fabs(A_Jt[i]-A_Jt[j]);
 
                                               hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
