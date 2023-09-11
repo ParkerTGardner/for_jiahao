@@ -379,63 +379,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     // calculate the A_ptbool pile up Ntrig in jetA first,
                     //and then we do this in jetB so that we can get the complete Ntrig
-                    for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
-                    
-                        TVector3 dau_A0;
-                        dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
-                        TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
-                        
-                        if((*genDau_chg)[ijet][A_trk] == 0) continue;
-                        if(fabs(dau_A0.Eta()) > 2.4)        continue;
-                        if(fabs(dau_A0.Perp())  < 0.3)      continue;
-
-                        //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                        double jet_dau_pt0    =  ptWRTJet(JetA, dau_A0);
-
-                        if(jet_dau_pt0 >3.0) continue;
-
-                        TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
-                        TVector3       dau_A   = dau_A_4.Vect();
-
-                        // boosted:
-                        double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
-
-                        // find A_trk in i ptbin
-                        for(int i = 0; i < ptbin; i++){
-                            if(jet_dau_pt >= ptbinbounds_lo[i] && jet_dau_pt < ptbinbounds_hi[i]){
-                                A_ptBool[A_trk][i] = 1;
-                            }
-                        }
-
-                        // for ith trkbin and jth ptbin, pile up the Ntrig of jetA
-
-                        for(int i = 0; i < trackbin; i++){
-                            for(int j = 0; j < ptbin; j++){
-                                if(tkBool[i] + A_ptBool[A_trk][j] == 2){
-                                    Ntrig[i][j] += 1;
-                                    if((*genDau_chg)[ijet][A_trk] > 0){
-                                        NtrigP[i][j] += 1;
-                                    }
-                                    if((*genDau_chg)[ijet][A_trk] < 0){
-                                        NtrigM[i][j] += 1;
-                                    }
-                                }
-                            }
-                        }    
-                    }
-
-                    
-
-                    // Here should be the final Ntrig for jetAB
-
-                    for(int i = 0; i < trackbin; i++){
-                        for(int j = 0; j < ptbin; j++){
-                            hNtrig->Fill(i,j,Ntrig[i][j]);
-                        }
-                    }
-
-
-
 
                     for(long int T_trk = 0; T_trk < NNtrk2; T_trk++ ){
 
@@ -490,14 +433,27 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         for(int i = 0; i < trackbin; i++){
                             for(int j = 0; j < ptbin; j++){
                                 if(tkBool[i] + T_ptBool[T_trk][j] == 2){
-                                    int k_PU=0;
-
-                                    hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi ,  ((double)(1.0)/(Ntrig[i][j])));
+                                    Ntrig[i][j] += 1;
+                                    if((*genDau_chg)[jjet][T_trk] > 0){
+                                        NtrigP[i][j] += 1;
+                                    }
+                                    if((*genDau_chg)[jjet][T_trk] < 0){
+                                        NtrigM[i][j] += 1;
+                                    }
                                 }
                             }
                         }
                 
                     }//T_trk;  AB
+
+                    // Here should be the final Ntrig for jetAB
+
+                    for(int i = 0; i < trackbin; i++){
+                        for(int j = 0; j < ptbin; j++){
+                            hNtrig->Fill(i,j,Ntrig[i][j]);
+                        }
+                    }
+
 
 
 
@@ -527,6 +483,16 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         double jet_dau_phi   = phiWRTJet(JetAA, dau_A) ;
 
                         double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
+
+                        for(int i = 0; i < trackbin; i++){
+                            for(int j = 0; j < ptbin; j++){
+                                if(tkBool[i] + T_ptBool[A_trk][j] == 2){
+                                    int k_PU=0;
+
+                                    hEPDrawT[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi ,  ((double)(1.0)/(Ntrig[i][j])));
+                                }
+                            }
+                        }
 
 
                         //A_trk is the first track from the first loop
