@@ -424,6 +424,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         }    
                     }
 
+                    
 
                     // Here should be the final Ntrig for jetAB
 
@@ -480,9 +481,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         hJtTT  -> Fill(TT_jet_dau_pt, 1);
 
 
-                        
-
-
+                        for(int i = 0; i < ptbin; i++){
+                            if(T_jet_dau_pt >= ptbinbounds_lo[i] && T_jet_dau_pt < ptbinbounds_hi[i]){
+                                T_ptBool[T_trk][i] = 1;
+                            }
+                        }
 
                         for(int i = 0; i < trackbin; i++){
                             for(int j = 0; j < ptbin; j++){
