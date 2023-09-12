@@ -493,6 +493,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             for(int j = 0; j < ptbin; j++){
                                 if(tkBool[i] + T_ptBool[T_trk][j] == 2){
                                     int k_PU=0;
+                                    if ((Ntrig[i][j])==0) continue;
 
                                     hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi ,  ((double)(1.0)/(Ntrig[i][j])));
                                 }
@@ -541,6 +542,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             for(int j = 0; j < ptbin; j++){
                                 if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                     int k_PU=0;
+                                    if ((Ntrig[i][j])==0) continue;
 
                                     hEPDrawA[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, ((double)(1.0)/(Ntrig[i][j])));
                                 }
@@ -605,6 +607,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     if(tkBool[i] + A_ptBool[A_trk][j] + T_ptBool[T_trk][j] == 3){
                                             hPairs->Fill(i,j);
                                             int k_PU=0;
+                                            if ((Ntrig[i][j])==0) continue;
                                             hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
                                             hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
                                             hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
