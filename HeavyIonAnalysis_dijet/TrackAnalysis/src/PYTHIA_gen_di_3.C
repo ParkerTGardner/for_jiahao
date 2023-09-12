@@ -209,8 +209,12 @@ void MyClass::Loop(int job, std::string fList){
 
 
     const int nBins = 7;
-    double binEdges[nBins+1] = {0, 30, 40, 50, 60, 66, 75, mm};
+    double binEdges[nBins+1] = {0, 20, 30, 35, 40, 45, 50, 60};
     TProfile* pMult_AB = new TProfile("pMult_AB", "pMult_AB", nBins, binEdges);
+
+    const int nBins2 = 4;
+    double binEdges2[nBins2+1] = {60,65,70,80,100};
+    TProfile* pMult_AB_2 = new TProfile("pMult_AB_2", "pMult_AB_2", nBins2, binEdges2);
 
   
 
@@ -355,8 +359,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     hJT_Mult_AB -> Fill (JetB.Perp()/JetA.Perp(),(double)(n_G_ChargeMult_count2)/(double)(n_G_ChargeMult_count1));
                     
                     // if (n_G_ChargeMult_count2<20) continue;
+                    if (n_G_ChargeMult_count1<60) pMult_AB->Fill(n_G_ChargeMult_count1, n_G_ChargeMult_count2);
+                    else pMult_AB_2->Fill(n_G_ChargeMult_count1, n_G_ChargeMult_count2);
                     
-                    pMult_AB->Fill(n_G_ChargeMult_count1, n_G_ChargeMult_count2);
                     
                     
                     hBinDist_gen_single            ->Fill(n_G_ChargeMult_count1);
@@ -648,58 +653,58 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     //
 
 std::cout<< "made 4" << endl;
-                    for(int wtrk = 1; wtrk < trackbin+1; wtrk++){
-                              std::cout << wtrk << "/" << trackbin << std::endl;
-                              for(int wppt = 1; wppt < ptbin+1; wppt++){
-                                  std::cout << wppt << "/" << ptbin << std::endl;
-                                  for(int wpPU = 1; wpPU < PUbin+1; wpPU++){
-                                      std::cout << wpPU << "/" << PUbin << std::endl;
-                                      //Nent is the number of pairs in the signal which we will try to 10x
-                                      //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
-                                      //us 10 times as many pairs as we have in the signal histogrm.
+                    // for(int wtrk = 1; wtrk < trackbin+1; wtrk++){
+                    //           std::cout << wtrk << "/" << trackbin << std::endl;
+                    //           for(int wppt = 1; wppt < ptbin+1; wppt++){
+                    //               std::cout << wppt << "/" << ptbin << std::endl;
+                    //               for(int wpPU = 1; wpPU < PUbin+1; wpPU++){
+                    //                   std::cout << wpPU << "/" << PUbin << std::endl;
+                    //                   //Nent is the number of pairs in the signal which we will try to 10x
+                    //                   //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
+                    //                   //us 10 times as many pairs as we have in the signal histogrm.
 
-                                      long int NENT =  hPairs->GetBinContent(wtrk, wppt);
-                                      long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
-                                      double A_ETA[XENT] = {0};
-                                      double A_PHI[XENT] = {0};
-                                      double T_ETA[XENT] = {0};
-                                      double T_PHI[XENT] = {0};
-				                    //   float A_Jt[XENT]  = {0};
+                    //                   long int NENT =  hPairs->GetBinContent(wtrk, wppt);
+                    //                   long int XENT =  ((1+floor(sqrt(1+(4*2*backMult*NENT))))/2) ;
+                    //                   double A_ETA[XENT] = {0};
+                    //                   double A_PHI[XENT] = {0};
+                    //                   double T_ETA[XENT] = {0};
+                    //                   double T_PHI[XENT] = {0};
+				    //                 //   float A_Jt[XENT]  = {0};
 
-                                      for(int x = 0; x<XENT; x++){
-                                          gRandom->SetSeed(0);
-                                          double WEtaA, WPhiA;//making the pseudoparticles
-                                          double WEtaT, WPhiT;
-                                          hEPDrawA[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEtaA, WPhiA);
+                    //                   for(int x = 0; x<XENT; x++){
+                    //                       gRandom->SetSeed(0);
+                    //                       double WEtaA, WPhiA;//making the pseudoparticles
+                    //                       double WEtaT, WPhiT;
+                    //                       hEPDrawA[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEtaA, WPhiA);
 
-                                          gRandom->SetSeed(gRandom->GetSeed() + 1);
-                                          hEPDrawT[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEtaT, WPhiT);
-                                          A_ETA[x] = WEtaA;
-                                          A_PHI[x] = WPhiA;
-                                          T_ETA[x] = WEtaT;
-                                          T_PHI[x] = WPhiT;
-                                        //   A_Jt[x]  = WJt1;
-                                      }
-                                      for(long int i = 0; i < XENT; i++){
-                                          for(long int j = 0; j < XENT; j++){
+                    //                       gRandom->SetSeed(gRandom->GetSeed() + 1);
+                    //                       hEPDrawT[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEtaT, WPhiT);
+                    //                       A_ETA[x] = WEtaA;
+                    //                       A_PHI[x] = WPhiA;
+                    //                       T_ETA[x] = WEtaT;
+                    //                       T_PHI[x] = WPhiT;
+                    //                     //   A_Jt[x]  = WJt1;
+                    //                   }
+                    //                   for(long int i = 0; i < XENT; i++){
+                    //                       for(long int j = 0; j < XENT; j++){
 
-                                              double WdeltaEta = (A_ETA[i]-T_ETA[j]);
-                                              double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
-                                            //   double WdeltaJt  = fabs(A_Jt[i]-A_Jt[j]);
+                    //                           double WdeltaEta = (A_ETA[i]-T_ETA[j]);
+                    //                           double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
+                    //                         //   double WdeltaJt  = fabs(A_Jt[i]-A_Jt[j]);
 
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, -WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
-                                            //   hMomBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaJt, 1);
+                    //                           hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
+                    //                           hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
+                    //                           hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                    //                           hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                    //                           hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
+                    //                           hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
+                    //                         //   hMomBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaJt, 1);
 
-                                          }
-                                      }
-                                  }
-                              }
-                          }
+                    //                       }
+                    //                   }
+                    //               }
+                    //           }
+                    //       }
                       //}}}
 
 
@@ -709,24 +714,25 @@ std::cout<< "made 4" << endl;
 
                     TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_3/dijob_%s.root",subList.c_str()), "recreate");
                     
-                    for(int wtrk =1; wtrk <trackbin+1; wtrk++){
-                        hBinDist_gen[wtrk-1]         ->Write();
-                        hMult_AB_A[wtrk-1]           ->Write();
-                        hMult_AB_AB[wtrk-1]           ->Write();
-                        for(int wppt =1; wppt <ptbin+1; wppt++){
-                            for(int wpPU =1; wpPU<PUbin+1; wpPU++){
+                    // for(int wtrk =1; wtrk <trackbin+1; wtrk++){
+                    //     hBinDist_gen[wtrk-1]         ->Write();
+                    //     hMult_AB_A[wtrk-1]           ->Write();
+                    //     hMult_AB_AB[wtrk-1]           ->Write();
+                    //     for(int wppt =1; wppt <ptbin+1; wppt++){
+                    //         for(int wpPU =1; wpPU<PUbin+1; wpPU++){
 
-                                hSignalShifted             [wtrk-1][wppt-1][wpPU-1]->Write(Form("hSigS_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU    ));
-                                hBckrndShifted             [wtrk-1][wppt-1][wpPU-1]->Write(Form("hBckS_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU    ));
-                                // hEPDraw                    [wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPD_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU     ));
-                                hEPDrawA                   [wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPDA_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU     ));
-                                hEPDrawT                   [wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPDT_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU     ));
+                    //             hSignalShifted             [wtrk-1][wppt-1][wpPU-1]->Write(Form("hSigS_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU    ));
+                    //             hBckrndShifted             [wtrk-1][wppt-1][wpPU-1]->Write(Form("hBckS_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU    ));
+                    //             // hEPDraw                    [wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPD_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU     ));
+                    //             hEPDrawA                   [wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPDA_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU     ));
+                    //             hEPDrawT                   [wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPDT_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU     ));
                                 
-                            }
-                        }
-                    }
+                    //         }
+                    //     }
+                    // }
 
                     pMult_AB->Write();
+                    pMult_AB_2->Write();
                     hJJT1D -> Write();
                     hJJT   -> Write();
                     hMult_ratio_AB -> Write();
