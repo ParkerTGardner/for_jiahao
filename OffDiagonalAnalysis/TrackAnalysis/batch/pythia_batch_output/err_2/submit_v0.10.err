@@ -1,0 +1,10 @@
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LC_CTYPE = "UTF-8",
+	LANG = "C"
+    are supported and installed on your system.
+perl: warning: Falling back to the standard locale ("C").
+condor_exec.exe: line 11: cd: /afs/cern.ch/user/j/jiahaoy/second_checkout/for_jiahao/HeavyIonAnalysis_dijet/TrackAnalysis/batch/: No such file or directory
+condor_exec.exe: line 13: ../bin/PYTHIA_gen_bi_2.exe: No such file or directory
