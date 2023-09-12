@@ -515,11 +515,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
 
+
                         for(int i = 0; i < trackbin; i++){
                             for(int j = 0; j < ptbin; j++){
                                 if(tkBool[i] + T_ptBool[A_trk][j] == 2){
                                     int k_PU=0;
-
+                                    if ((Ntrig[i][j])==0) continue;
                                     hEPDrawT[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi ,  ((double)(1.0)/(Ntrig[i][j])));
                                 }
                             }
@@ -580,6 +581,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     if(tkBool[i] + T_ptBool[A_trk][j] + T_ptBool[T_trk][j] == 3){
                                             hPairs->Fill(i,j);
                                             int k_PU=0;
+                                            if ((Ntrig[i][j])==0) continue;
                                             hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
                                             hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
                                             hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
