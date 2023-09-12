@@ -407,11 +407,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         dau_T.SetPtEtaPhi((double)(*genDau_pt)[ijet][T_trk],(double)(*genDau_eta)[ijet][T_trk],(double)(*genDau_phi)[ijet][T_trk]);    
                         
                         double T_jet_dau_pt    =  ptWRTJet(JetA, dau_T);  
-                        if(T_jet_dau_pt0 >3.0) continue;
+                        if(T_jet_dau_pt >3.0) continue;
 
                         double T_jet_dau_eta   = etaWRTJet(JetA, dau_T);
                         
-                        if(T_jet_dau_eta0 > track_eta_lim) continue;
+                        if(T_jet_dau_eta > track_eta_lim) continue;
 
 
                         //boosted B wrt old A   
