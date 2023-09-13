@@ -713,7 +713,7 @@ std::cout<< "made 4" << endl;
                                       for(int x = 0; x<XENT_A; x++){
                                           gRandom->SetSeed(0);
                                           double WEtaA, WPhiA;//making the pseudoparticles
-                                          hEPDrawA[wtrk-1][wppt-1]->GetRandom2(WEtaA, WPhiA);
+                                          hEPDrawA[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEtaA, WPhiA);
                                           A_ETA[x] = WEtaA;
                                           A_PHI[x] = WPhiA;   
 
@@ -723,7 +723,7 @@ std::cout<< "made 4" << endl;
                                       for(int x = 0; x<XENT_T; x++){
                                           gRandom->SetSeed(0);
                                           double WEtaT, WPhiT;
-                                          hEPDrawT[wtrk-1][wppt-1]->GetRandom2(WEtaT, WPhiT);
+                                          hEPDrawT[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEtaT, WPhiT);
                                           T_ETA[x] = WEtaT;
                                           T_PHI[x] = WPhiT;
                                       }
@@ -735,12 +735,12 @@ std::cout<< "made 4" << endl;
                                               double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
                     //                         //   double WdeltaJt  = fabs(A_Jt[i]-A_Jt[j]);
 
-                                              hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(WdeltaEta, -WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
                     //                         //   hMomBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaJt, 1);
 
                                           }
