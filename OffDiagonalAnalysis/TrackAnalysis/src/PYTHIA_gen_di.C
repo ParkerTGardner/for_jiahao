@@ -442,7 +442,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         
                         for(        int i = 0; i < trackbin; i++){
                             for(    int j = 0; j < ptbin;    j++){ 
-                                for(int k = 0; j < ptbin;    j++){ 
+                                for(int k = 0; k < ptbin;    j++){ 
         
 
 
