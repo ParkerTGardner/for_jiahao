@@ -306,7 +306,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     for(int i = 0; i < trackbin; i++){
                         for(int j = 0; j < ptbin; j++){
                             if(tkBool[i] + (jet_dau_pt >= ptbinbounds_lo[j] && jet_dau_pt < ptbinbounds_hi[j]) == 2){
-                                hJtA[i][j]->Fill(jet_dau_pt);
+                                hJtA[i][j][0]->Fill(jet_dau_pt);
                             }
                         }
                     }
