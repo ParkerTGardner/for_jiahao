@@ -555,7 +555,7 @@ std::cout<< "made 4" << endl;
                                       for(int x = 0; x<XENT; x++){
                                           gRandom->SetSeed(0);
                                           double WEtaA, WPhiA;//making the pseudoparticles
-                                          double WEtaT, WPhiT;
+                                          
                                           hEPDrawA[wtrk-1][wppt-1]->GetRandom2(WEtaA, WPhiA);
                                           A_ETA[x] = WEtaA;
                                           A_PHI[x] = WPhiA; 
@@ -563,7 +563,7 @@ std::cout<< "made 4" << endl;
 
                                           double WEtaT, WPhiT;  
                                           gRandom->SetSeed(gRandom->GetSeed() + 1);
-                                          hEPDrawT[wtrk-1][wppt2-1]->GetRandom2(WEtaT, WPhiT);
+                                          hEPDrawA[wtrk-1][wppt2-1]->GetRandom2(WEtaT, WPhiT);
                                           T_ETA[x] = WEtaT;
                                           T_PHI[x] = WPhiT;
                                         //   A_Jt[x]  = WJt1;
