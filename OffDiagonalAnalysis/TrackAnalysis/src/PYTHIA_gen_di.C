@@ -167,7 +167,7 @@ void MyClass::Loop(int job, std::string fList){
 
     TH1D* hBinDist_gen[trackbin];
     TH1D* hBinDist_reco[trackbin];
-    TH1D* hJt[trackbin][ptbin][ptbin]; 
+    TH1D* hJt[trackbin][ptbin]; 
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_gen[wtrk-1]    = new TH1D(Form("hBinDist_gen_%d",wtrk),Form("hBinDist_gen_%d",wtrk), bin360, bin0, bin120);
         hBinDist_reco[wtrk-1]   = new TH1D(Form("hBinDist_reco_%d",wtrk),Form("hBinewnDist_reco_%d",wtrk), bin360, bin0, bin120);
