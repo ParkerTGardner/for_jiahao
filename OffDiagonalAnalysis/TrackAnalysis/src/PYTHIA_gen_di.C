@@ -175,7 +175,7 @@ void MyClass::Loop(int job, std::string fList){
         for(int wppt = 1; wppt<ptbin+1; wppt++){
             hEPDrawA[wtrk-1][wppt-1]            = new TH2D(Form("hEPDrawA_trk_%d_ppt_%d",wtrk,wppt) ,Form( "hEPDrawA_trk_%d_ppt_%d",wtrk,wppt) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
             hJt[wtrk-1][wppt-1]     = new TH1D(Form("hJt_trk_%d_ppt_%d",wtrk,wppt),Form("hJt_trk_%d_ppt_%d",wtrk,wppt),60,0,3);
-            for(int wppt2 = 1; wppt2<ptbin+1; wppt2++){
+            for(int wppt2 = wppt; wppt2<ptbin+1; wppt2++){
 
                 hBckrndShifted[wtrk-1][wppt-1][wppt2-1]      = new TH2D(Form("hBckrndS_trk_%d_ppt_%d_pt_%d",wtrk,wppt,wppt2) ,Form("hBckrndS_trk_%d_ppt_%d_pt_%d",wtrk,wppt,wppt2) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
                 hSignalShifted[wtrk-1][wppt-1][wppt2-1]      = new TH2D(Form("hSignalS_trk_%d_ppt_%d_pt_%d",wtrk,wppt,wppt2) ,Form("hSignalS_trk_%d_ppt_%d_pt_%d",wtrk,wppt,wppt2) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
@@ -402,8 +402,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     
 
-                    for(long int T_trk = 0; T_trk < NNtrk1; T_trk++ ){
+                    for(long int T_trk = A_trk+1; T_trk < NNtrk1; T_trk++ ){
 
+                       
                         if((*genDau_chg)[ijet][T_trk] == 0) continue;
                         if(fabs((*genDau_eta)[ijet][T_trk]) > 2.4) continue;
                         if(fabs((*genDau_pt)[ijet][T_trk])  < 0.3)      continue;
@@ -442,7 +443,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         
                         for(        int i = 0; i < trackbin; i++){
                             for(    int j = 0; j < ptbin;    j++){ 
-                                for(int k = 0; k < ptbin;    k++){ 
+                                for(int k = j; k < ptbin;    k++){ 
         
 
 
@@ -483,45 +484,93 @@ std::cout<< "made 4" << endl;
                               std::cout << wtrk << "/" << trackbin << std::endl;
                               for(int wppt = 1; wppt < ptbin+1; wppt++){
                                   std::cout << wppt << "/" << ptbin << std::endl;
-                                  for(int wppt2 = 1; wppt2 < ptbin+1; wppt2++){
+                            
+
+                                  
+                                      
+                                      //Nent is the number of pairs in the signal which we will try to 10x
+                                      //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
+                                      //us 10 times as many pairs as we have in the signal histogrm.
+
+                                      long int NENT0 =  hPairs->GetBinContent(wtrk, wppt, wppt);
+                                      long int XENT0 =  ((1+floor(sqrt(1+(4*2*backMult*NENT0))))/2) ;
+                                      double A_ETA0[XENT0] = {0};
+                                      double A_PHI0[XENT0] = {0};
+                                      
+
+
+                                      
+				                    //   float A_Jt[XENT]  = {0};
+
+                                      for(int x = 0; x<XENT0; x++){
+                                          gRandom->SetSeed(0);
+                                          double WEtaA, WPhiA;//making the pseudoparticles
+                                          double WEtaT, WPhiT;
+                                          hEPDrawA[wtrk-1][wppt-1]->GetRandom2(WEtaA, WPhiA);
+                                          A_ETA0[x] = WEtaA;
+                                          A_PHI0[x] = WPhiA; 
+                                        //   A_Jt[x]  = WJt1;
+                                      }
+                                      
+                                      for(long int i = 0; i < XENT0; i++){
+                                          for(long int j = i+1; j < XENT0; j++){
+
+                                              double WdeltaEta = (A_ETA0[i]-T_ETA0[j]);
+                                              double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI0[i]-T_PHI0[j])));
+                    //                         //   double WdeltaJt  = fabs(A_Jt[i]-A_Jt[j]);
+
+                                              hBckrndShifted[wtrk-1][wppt-1][wppt-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wppt-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wppt-1]->Fill(WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wppt-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wppt-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wppt-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
+                    //                         //   hMomBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaJt, 1);
+
+                                          }
+                                      }
+                                  }
+                              
+
+
+
+
+                                  for(int wppt2 = wppt+1; wppt2 < ptbin+1; wppt2++){
                                       std::cout << wppt2 << "/" << ptbin << std::endl;
                                       //Nent is the number of pairs in the signal which we will try to 10x
                                       //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
                                       //us 10 times as many pairs as we have in the signal histogrm.
 
-                                      long int NENT_A =  hPairs->GetBinContent(wtrk, wppt, wppt2);
-                                      long int XENT_A =  floor(sqrt(10)*NENT_A);
-                                      double A_ETA[XENT_A] = {0};
-                                      double A_PHI[XENT_A] = {0};
+                                      long int NENT =  hPairs->GetBinContent(wtrk, wppt, wppt2);
+                                      long int XENT =  floor(sqrt(10*NENT));
+                                      double A_ETA[XENT] = {0};
+                                      double A_PHI[XENT] = {0};
+                                      double T_ETA[XENT] = {0};
+                                      double T_PHI[XENT] = {0};
 
 
-                                      long int NENT_T =  hPairs->GetBinContent(wtrk, wppt2, wppt);
-                                      long int XENT_T =  floor(sqrt(10)*NENT_T);
-                                      double T_ETA[XENT_T] = {0};
-                                      double T_PHI[XENT_T] = {0};
+                                      
 				                    //   float A_Jt[XENT]  = {0};
 
-                                      for(int x = 0; x<XENT_A; x++){
+                                      for(int x = 0; x<XENT; x++){
                                           gRandom->SetSeed(0);
                                           double WEtaA, WPhiA;//making the pseudoparticles
                                           double WEtaT, WPhiT;
                                           hEPDrawA[wtrk-1][wppt-1]->GetRandom2(WEtaA, WPhiA);
                                           A_ETA[x] = WEtaA;
-                                          A_PHI[x] = WPhiA;   
+                                          A_PHI[x] = WPhiA; 
 
-                                      }
 
-                                    
-                                      for(int x = 0; x<XENT_T; x++){
-                                          gRandom->SetSeed(0);
-                                          double WEtaT, WPhiT;
-                                          hEPDrawA[wtrk-1][wppt2-1]->GetRandom2(WEtaT, WPhiT);
+                                          double WEtaT, WPhiT;  
+                                          gRandom->SetSeed(gRandom->GetSeed() + 1);
+                                          hEPDrawT[wtrk-1][wppt2-1]->GetRandom2(WEtaT, WPhiT);
                                           T_ETA[x] = WEtaT;
                                           T_PHI[x] = WPhiT;
+                                        //   A_Jt[x]  = WJt1;
                                       }
                                       
-                                      for(long int i = 0; i < XENT_A; i++){
-                                          for(long int j = 0; j < XENT_T; j++){
+                                      for(long int i = 0; i < XENT; i++){
+                                          for(long int j = 0; j < XENT; j++){
 
                                               double WdeltaEta = (A_ETA[i]-T_ETA[j]);
                                               double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
@@ -538,9 +587,12 @@ std::cout<< "made 4" << endl;
                                           }
                                       }
                                   }
-                              }
-                          }
+                         }
+                        
                       //}}}
+
+
+                      
 
 
 
@@ -554,7 +606,7 @@ std::cout<< "made 4" << endl;
                         for(int wppt =1; wppt <ptbin+1; wppt++){
                             hEPDrawA                   [wtrk-1][wppt-1]->Write(Form("hEPDA_%d_to_%d_and_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1])));
                             hJt[wtrk-1][wppt-1] ->Write(Form("hJt_%d_to_%d_and_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1])));
-                            for(int wppt2 =1; wppt2 <ptbin+1; wppt2++){
+                            for(int wppt2 = wppt; wppt2 <ptbin+1; wppt2++){
 
                                 hSignalShifted             [wtrk-1][wppt-1][wppt2-1]->Write(Form("hSigS_%d_to_%d_pt_%d_to_%d_pt_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1])    ));
                                 hBckrndShifted             [wtrk-1][wppt-1][wppt2-1]->Write(Form("hBckS_%d_to_%d_pt_%d_to_%d_pt_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1])    ));
