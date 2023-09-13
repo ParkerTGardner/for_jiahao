@@ -167,6 +167,7 @@ void MyClass::Loop(int job, std::string fList){
 
     TH1D* hBinDist_gen[trackbin];
     TH1D* hBinDist_reco[trackbin];
+    TH1D* hJt[trackbin][ptbin][ptbin]; 
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_gen[wtrk-1]    = new TH1D(Form("hBinDist_gen_%d",wtrk),Form("hBinDist_gen_%d",wtrk), bin360, bin0, bin120);
         hBinDist_reco[wtrk-1]   = new TH1D(Form("hBinDist_reco_%d",wtrk),Form("hBinewnDist_reco_%d",wtrk), bin360, bin0, bin120);
@@ -483,7 +484,7 @@ std::cout<< "made 4" << endl;
                               for(int wppt = 1; wppt < ptbin+1; wppt++){
                                   std::cout << wppt << "/" << ptbin << std::endl;
                                   for(int wppt2 = 1; wppt2 < ptbin+1; wppt2++){
-                                      std::cout << wpPU << "/" << PUbin << std::endl;
+                                      std::cout << wppt2 << "/" << ptbin << std::endl;
                                       //Nent is the number of pairs in the signal which we will try to 10x
                                       //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
                                       //us 10 times as many pairs as we have in the signal histogrm.
@@ -514,7 +515,7 @@ std::cout<< "made 4" << endl;
                                       for(int x = 0; x<XENT_T; x++){
                                           gRandom->SetSeed(0);
                                           double WEtaT, WPhiT;
-                                          hEPDrawT[wtrk-1][wppt2-1]->GetRandom2(WEtaT, WPhiT);
+                                          hEPDrawA[wtrk-1][wppt2-1]->GetRandom2(WEtaT, WPhiT);
                                           T_ETA[x] = WEtaT;
                                           T_PHI[x] = WPhiT;
                                       }
