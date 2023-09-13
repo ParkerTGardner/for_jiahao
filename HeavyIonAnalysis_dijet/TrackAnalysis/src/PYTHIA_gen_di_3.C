@@ -651,7 +651,7 @@ std::cout<< "made 4" << endl;
                                       //us 10 times as many pairs as we have in the signal histogrm.
 
                                       long int NENT =  hPairs->GetBinContent(wtrk, wppt);
-                                      long int XENT =  (floor(sqrt(10)*NENT)) ;
+                                      long int XENT =  (floor(sqrt(10*NENT))) ;
                                       double A_ETA[XENT] = {0};
                                       double A_PHI[XENT] = {0};
                                       double T_ETA[XENT] = {0};
