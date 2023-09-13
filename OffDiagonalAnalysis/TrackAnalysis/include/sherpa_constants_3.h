@@ -1,8 +1,8 @@
 const int   trackbin                    =1 ;
 const int   ktbin = 8;
 const int ptbin =4;
-const float ptbinbounds_lo[ptbin] = {0.0,0.3,1.0,2.0};
-const float ptbinbounds_hi[ptbin] = {0.3,1.0,2.0,3.0};
+const float ptbinbounds_lo[ptbin] = {0.0,0.5,1.2,2.0};
+const float ptbinbounds_hi[ptbin] = {0.5,1.2,2.0,3.0};
 const int mm = 1000;
 const int   trackbinbounds[trackbin]         = {0 };
 const int   trackbinboundsUpper[trackbin]    = {mm};
