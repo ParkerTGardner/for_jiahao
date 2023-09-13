@@ -139,8 +139,7 @@ void MyClass::Loop(int job, std::string fList){
 
     //Initializing Histograms
 
-    TH2D* hPairs_A        = new TH2D("hPairs_A","hPairs_A",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
-    TH2D* hPairs_B        = new TH2D("hPairs_B","hPairs_B",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
+    TH2D* hPairs        = new TH2D("hPairs","hPairs",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
 
     TH2D* hNtrig        = new TH2D("hNtrig","hNtrig",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
 
@@ -380,7 +379,38 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
 
+                    // calculate the A_ptbool pile up Ntrig in jetA first,
+                    //and then we do this in jetB so that we can get the complete Ntrig
+                    for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
                     
+                        TVector3 dau_A0;
+                        dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
+                        TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
+                        
+                        if((*genDau_chg)[ijet][A_trk] == 0) continue;
+                        if(fabs(dau_A0.Eta()) > 2.4)        continue;
+                        if(fabs(dau_A0.Perp())  < 0.3)      continue;
+
+                        //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
+                        double jet_dau_pt0    =  ptWRTJet(JetA, dau_A0);
+
+                        if(jet_dau_pt0 >3.0) continue;
+
+                        TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
+                        TVector3       dau_A   = dau_A_4.Vect();
+
+                        // boosted:
+                        double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
+
+                        // find A_trk in i ptbin
+                        for(int i = 0; i < ptbin; i++){
+                            if(jet_dau_pt >= ptbinbounds_lo[i] && jet_dau_pt < ptbinbounds_hi[i]){
+                                A_ptBool[A_trk][i] = 1;
+                            }
+                        }
+
+                            
+                    }
 
                     for(long int T_trk = 0; T_trk < NNtrk2; T_trk++ ){
 
@@ -442,8 +472,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                     if((*genDau_chg)[jjet][T_trk] < 0){
                                         NtrigM[i][j] += 1;
                                     }
-
-                                    hPairs_B->Fill(i,j);
                                 }
                             }
                         }
@@ -459,51 +487,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         for(int j = 0; j < ptbin; j++){
                             hNtrig->Fill(i,j,Ntrig[i][j]);
                         }
-                    }
-
-
-
-                    // calculate the A_ptbool pile up Ntrig in jetA first,
-                    //and then we do this in jetB so that we can get the complete Ntrig
-                    for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
-                    
-                        TVector3 dau_A0;
-                        dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
-                        TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
-                        
-                        if((*genDau_chg)[ijet][A_trk] == 0) continue;
-                        if(fabs(dau_A0.Eta()) > 2.4)        continue;
-                        if(fabs(dau_A0.Perp())  < 0.3)      continue;
-
-                        //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                        double jet_dau_pt0    =  ptWRTJet(JetA, dau_A0);
-
-                        if(jet_dau_pt0 >3.0) continue;
-
-                        TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
-                        TVector3       dau_A   = dau_A_4.Vect();
-
-                        // boosted:
-                        double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
-
-                        // find A_trk in i ptbin
-                        for(int i = 0; i < ptbin; i++){
-                            if(jet_dau_pt >= ptbinbounds_lo[i] && jet_dau_pt < ptbinbounds_hi[i]){
-                                A_ptBool[A_trk][i] = 1;
-                            }
-                        }
-                        
-                        
-                        for(int i = 0; i < trackbin; i++){
-                            for(int j = 0; j < ptbin; j++){
-                                if(tkBool[i] + A_ptBool[A_trk][j] == 2){
-                                    hPairs_A->Fill(i,j);
-                                }
-                            }
-                        }
-
-
-                            
                     }
 
 
@@ -653,7 +636,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 for(    int j = 0; j < ptbin;    j++){ 
             
                                     if(tkBool[i] + A_ptBool[A_trk][j] + T_ptBool[T_trk][j] == 3){
-                                            // hPairs->Fill(i,j);
+                                            hPairs->Fill(i,j);
                                             if ((Ntrig[i][j])==0) continue;
                                             int k_PU=0;
                                             hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
@@ -697,43 +680,34 @@ std::cout<< "made 4" << endl;
                                       //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
                                       //us 10 times as many pairs as we have in the signal histogrm.
 
-
-                                      long int NENT_A =  hPairs_A->GetBinContent(wtrk, wppt);
-                                      long int XENT_A =  floor(sqrt(10)*NENT_A);
-                                      double A_ETA[XENT_A] = {0};
-                                      double A_PHI[XENT_A] = {0};
-
-
-                                      long int NENT_T =  hPairs_B->GetBinContent(wtrk, wppt);
-                                      long int XENT_T =  floor(sqrt(10)*NENT_T);
-                                      double T_ETA[XENT_T] = {0};
-                                      double T_PHI[XENT_T] = {0};
+                                      long int NENT =  hPairs->GetBinContent(wtrk, wppt);
+                                      long int XENT =  (floor(sqrt(10)*NENT)) ;
+                                      double A_ETA[XENT] = {0};
+                                      double A_PHI[XENT] = {0};
+                                      double T_ETA[XENT] = {0};
+                                      double T_PHI[XENT] = {0};
 				                    //   float A_Jt[XENT]  = {0};
 
-                                      for(int x = 0; x<XENT_A; x++){
+                                      for(int x = 0; x<XENT; x++){
                                           gRandom->SetSeed(0);
                                           double WEtaA, WPhiA;//making the pseudoparticles
-                                          hEPDrawA[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEtaA, WPhiA);
-                                          A_ETA[x] = WEtaA;
-                                          A_PHI[x] = WPhiA;   
-
-                                      }
-
-                                    
-                                      for(int x = 0; x<XENT_T; x++){
-                                          gRandom->SetSeed(0);
                                           double WEtaT, WPhiT;
+                                          hEPDrawA[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEtaA, WPhiA);
+
+                                          gRandom->SetSeed(gRandom->GetSeed() + 1);
                                           hEPDrawT[wtrk-1][wppt-1][wpPU-1]->GetRandom2(WEtaT, WPhiT);
+                                          A_ETA[x] = WEtaA;
+                                          A_PHI[x] = WPhiA;
                                           T_ETA[x] = WEtaT;
                                           T_PHI[x] = WPhiT;
+                                        //   A_Jt[x]  = WJt1;
                                       }
-                                      
-                                      for(long int i = 0; i < XENT_A; i++){
-                                          for(long int j = 0; j < XENT_T; j++){
+                                      for(long int i = 0; i < XENT; i++){
+                                          for(long int j = 0; j < XENT; j++){
 
                                               double WdeltaEta = (A_ETA[i]-T_ETA[j]);
                                               double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
-                    //                         //   double WdeltaJt  = fabs(A_Jt[i]-A_Jt[j]);
+                                            //   double WdeltaJt  = fabs(A_Jt[i]-A_Jt[j]);
 
                                               hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
                                               hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
@@ -741,18 +715,10 @@ std::cout<< "made 4" << endl;
                                               hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
                                               hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
                                               hBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
-                    //                         //   hMomBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaJt, 1);
+                                            //   hMomBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaJt, 1);
 
                                           }
                                       }
-                                  
-
-
-
-
-
-
-
                                   }
                               }
                           }
