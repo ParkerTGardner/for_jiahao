@@ -504,19 +504,19 @@ std::cout<< "made 4" << endl;
 
                                       for(int x = 0; x<XENT0; x++){
                                           gRandom->SetSeed(0);
-                                          double WEtaA, WPhiA;//making the pseudoparticles
-                                          double WEtaT, WPhiT;
-                                          hEPDrawA[wtrk-1][wppt-1]->GetRandom2(WEtaA, WPhiA);
-                                          A_ETA0[x] = WEtaA;
-                                          A_PHI0[x] = WPhiA; 
+                                          double WEtaA0, WPhiA0;//making the pseudoparticles
+                                          
+                                          hEPDrawA[wtrk-1][wppt-1]->GetRandom2(WEtaA0, WPhiA0);
+                                          A_ETA0[x] = WEtaA0;
+                                          A_PHI0[x] = WPhiA0; 
                                         //   A_Jt[x]  = WJt1;
                                       }
                                       
                                       for(long int i = 0; i < XENT0; i++){
                                           for(long int j = i+1; j < XENT0; j++){
 
-                                              double WdeltaEta = (A_ETA0[i]-T_ETA0[j]);
-                                              double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI0[i]-T_PHI0[j])));
+                                              double WdeltaEta = (A_ETA0[i]-A_ETA0[j]);
+                                              double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI0[i]-A_PHI0[j])));
                     //                         //   double WdeltaJt  = fabs(A_Jt[i]-A_Jt[j]);
 
                                               hBckrndShifted[wtrk-1][wppt-1][wppt-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
@@ -529,7 +529,7 @@ std::cout<< "made 4" << endl;
 
                                           }
                                       }
-                                  }
+                                  
                               
 
 
@@ -588,6 +588,7 @@ std::cout<< "made 4" << endl;
                                       }
                                   }
                          }
+                    }
                         
                       //}}}
 
