@@ -169,7 +169,7 @@ void MyClass::Loop(int job, std::string fList){
         for(int wppt = 1; wppt<ptbin+1; wppt++){
             for(int wpPU = 1; wpPU<PUbin+1; wpPU++){
 
-                hJtA[wtrk-1][wppt-1][wpPU-1]      = = new TH1D(Form("hJtA_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU),Form("hJtA_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU),60,0,3);
+                hJtA[wtrk-1][wppt-1][wpPU-1]     = new TH1D(Form("hJtA_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU),Form("hJtA_trk_%d_ppt_%d_PU_%d",wtrk,wppt,wpPU),60,0,3);
             }
         }
     }
