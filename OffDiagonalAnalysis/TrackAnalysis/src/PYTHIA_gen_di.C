@@ -246,7 +246,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
             for(int kjet=0; kjet < genJetPt->size(); kjet++){
 
                 dau_sub[kjet] = NNtrk0;
-                NNtrk0 += (genDau_pt->at(ijet)).size();
+                NNtrk0 += (genDau_pt->at(kjet)).size();
             }
                 
             long int A_ptBool[NNtrk0][ptbin] = {0};
@@ -428,42 +428,43 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                             T_jet_dau_phi   = dau_T.Phi();
                         
-                        }
-
-                        double deltaEta = (jet_dau_eta - T_jet_dau_eta);
-                                                                //A_trk        T_trk
-                        double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
-
                         
 
-                        
+                            double deltaEta = (jet_dau_eta - T_jet_dau_eta);
+                                                                    //A_trk        T_trk
+                            double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
 
-                        // double deltaJt  = fabs(jet_dau_pt - T_jet_dau_pt);
-                        
-                        for(        int i = 0; i < trackbin; i++){
-                            for(    int j = 0; j < ptbin;    j++){ 
-                                for(int k = j; k < ptbin;    k++){ 
-        
+                            
+
+                            
+
+                            // double deltaJt  = fabs(jet_dau_pt - T_jet_dau_pt);
+                            
+                            for(        int i = 0; i < trackbin; i++){
+                                for(    int j = 0; j < ptbin;    j++){ 
+                                    for(int k = j; k < ptbin;    k++){ 
+            
 
 
-                                    if(tkBool[i] + A_ptBool[A_trk+dau_sub[ijet]][j] + A_ptBool[T_trk+dau_sub[ijet]][k] == 3){
-                                            hPairs->Fill(i,j,k);
-                                            if ((Ntrig[i][j])==0) continue;
-                                            
-                                            hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
-                                            // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
+                                        if(tkBool[i] + A_ptBool[A_trk+dau_sub[ijet]][j] + A_ptBool[T_trk+dau_sub[ijet]][k] == 3){
+                                                hPairs->Fill(i,j,k);
+                                                if ((Ntrig[i][j])==0) continue;
+                                                
+                                                hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
+                                                hSignalShifted[i][j][k]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
+                                                hSignalShifted[i][j][k]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
+                                                hSignalShifted[i][j][k]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j])));
+                                                hSignalShifted[i][j][k]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
+                                                hSignalShifted[i][j][k]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
+                                                // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
+
+                                        }
 
                                     }
 
                                 }
-
                             }
-                        } 
+                        }å 
                 
                     }
 
@@ -536,42 +537,43 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                                 T_jet_dau_phi   = dau_T.Phi();
                             
-                            }
-
-                            double deltaEta = (jet_dau_eta - T_jet_dau_eta);
-                                                                    //A_trk        T_trk
-                            double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
-
                             
 
-                            
+                                double deltaEta = (jet_dau_eta - T_jet_dau_eta);
+                                                                        //A_trk        T_trk
+                                double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
 
-                            // double deltaJt  = fabs(jet_dau_pt - T_jet_dau_pt);
-                            
-                            for(        int i = 0; i < trackbin; i++){
-                                for(    int j = 0; j < ptbin;    j++){ 
-                                    for(int k = j; k < ptbin;    k++){ 
-            
+                                
+
+                                
+
+                                // double deltaJt  = fabs(jet_dau_pt - T_jet_dau_pt);
+                                
+                                for(        int i = 0; i < trackbin; i++){
+                                    for(    int j = 0; j < ptbin;    j++){ 
+                                        for(int k = j; k < ptbin;    k++){ 
+                
 
 
-                                        if(tkBool[i] + A_ptBool[A_trk+dau_sub[jjet]][j] + A_ptBool[T_trk+dau_sub[jjet]][k] == 3){
-                                                hPairs->Fill(i,j,k);
-                                                if ((Ntrig[i][j])==0) continue;
-                                                
-                                                hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
-                                                hSignalShifted[i][j][k]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
-                                                hSignalShifted[i][j][k]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
-                                                hSignalShifted[i][j][k]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j])));
-                                                hSignalShifted[i][j][k]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
-                                                hSignalShifted[i][j][k]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
-                                                // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
+                                            if(tkBool[i] + A_ptBool[A_trk+dau_sub[jjet]][j] + A_ptBool[T_trk+dau_sub[jjet]][k] == 3){
+                                                    hPairs->Fill(i,j,k);
+                                                    if ((Ntrig[i][j])==0) continue;
+                                                    
+                                                    hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
+                                                    hSignalShifted[i][j][k]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
+                                                    hSignalShifted[i][j][k]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
+                                                    hSignalShifted[i][j][k]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j])));
+                                                    hSignalShifted[i][j][k]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
+                                                    hSignalShifted[i][j][k]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
+                                                    // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
+
+                                            }
 
                                         }
 
                                     }
-
                                 }
-                            } 
+                            }
                     
                         }
 
@@ -616,40 +618,41 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                                 T_jet_dau_phi   = dau_T.Phi();
                             
-                            }
-
-                            double deltaEta = (jet_dau_eta - T_jet_dau_eta);
-                                                                    //A_trk        T_trk
-                            double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
-
                             
 
-                            
+                                double deltaEta = (jet_dau_eta - T_jet_dau_eta);
+                                                                        //A_trk        T_trk
+                                double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
 
-                            // double deltaJt  = fabs(jet_dau_pt - T_jet_dau_pt);
-                            
-                            for(        int i = 0; i < trackbin; i++){
-                                for(    int j = 0; j < ptbin;    j++){ 
-                                    for(int k = j; k < ptbin;    k++){ 
-            
+                                
+
+                                
+
+                                // double deltaJt  = fabs(jet_dau_pt - T_jet_dau_pt);
+                                
+                                for(        int i = 0; i < trackbin; i++){
+                                    for(    int j = 0; j < ptbin;    j++){ 
+                                        for(int k = j; k < ptbin;    k++){ 
+                
 
 
-                                        if(tkBool[i] + A_ptBool[A_trk+dau_sub[ijet]][j] + A_ptBool[T_trk+dau_sub[jjet]][k] == 3){
-                                                hPairs->Fill(i,j,k);
-                                                if ((Ntrig[i][j])==0) continue;
-                                                
-                                                hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
-                                                hSignalShifted[i][j][k]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
-                                                hSignalShifted[i][j][k]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
-                                                hSignalShifted[i][j][k]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j])));
-                                                hSignalShifted[i][j][k]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
-                                                hSignalShifted[i][j][k]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
-                                                // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
+                                            if(tkBool[i] + A_ptBool[A_trk+dau_sub[ijet]][j] + A_ptBool[T_trk+dau_sub[jjet]][k] == 3){
+                                                    hPairs->Fill(i,j,k);
+                                                    if ((Ntrig[i][j])==0) continue;
+                                                    
+                                                    hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
+                                                    hSignalShifted[i][j][k]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
+                                                    hSignalShifted[i][j][k]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
+                                                    hSignalShifted[i][j][k]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j])));
+                                                    hSignalShifted[i][j][k]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
+                                                    hSignalShifted[i][j][k]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
+                                                    // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
+
+                                            }
 
                                         }
 
                                     }
-
                                 }
                             } 
                     
