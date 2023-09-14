@@ -18,10 +18,10 @@ const int bin_Eta             = 60;
 const int low_Eta_Bin       = -3;
 const int high_Eta_Bin      = 3;
 
-const int EPD_xb  = 150;
+const int EPD_xb  = 300;
 const int EPD_yb  = 120;
 const int EPD_xhi = 10;
-const int EPD_xlo = 0;
+const int EPD_xlo = -10;
 const int EPD_yhi = 4;
 const int EPD_ylo = -4;
 
