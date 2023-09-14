@@ -156,7 +156,7 @@ void MyClass::Loop(int job, std::string fList){
     TH2D* hEtaPhiA = new TH2D("hEtaPhiA","hEtaPhiA", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
     TH1D* hEtaA = new TH1D("hEtaA","hEtaA", 2*EPD_xb   , -EPD_xhi, EPD_xhi );
     TH1D* hPhiA = new TH1D("hPhiA","hPhiA",EPD_yb      , EPD_ylo    , EPD_yhi);
-    TH1D* hJtA = new TH1D("hJtA","hJtA",60,0,3);
+    TH1D* hPtA = new TH1D("hPtA","hPtA",60,0,3);
     // TH1D* hEtaJetA =new TH1D("hEtaJetA","hEtaJetA",50,-1,1);
     
    
@@ -167,14 +167,14 @@ void MyClass::Loop(int job, std::string fList){
 
     TH1D* hBinDist_gen[trackbin];
     TH1D* hBinDist_reco[trackbin];
-    TH1D* hJt[trackbin][ptbin]; 
+    TH1D* hPt[trackbin][ptbin]; 
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_gen[wtrk-1]    = new TH1D(Form("hBinDist_gen_%d",wtrk),Form("hBinDist_gen_%d",wtrk), bin360, bin0, bin120);
         hBinDist_reco[wtrk-1]   = new TH1D(Form("hBinDist_reco_%d",wtrk),Form("hBinewnDist_reco_%d",wtrk), bin360, bin0, bin120);
         
         for(int wppt = 1; wppt<ptbin+1; wppt++){
             hEPDrawA[wtrk-1][wppt-1]            = new TH2D(Form("hEPDrawA_trk_%d_ppt_%d",wtrk,wppt) ,Form( "hEPDrawA_trk_%d_ppt_%d",wtrk,wppt) , EPD_xb   , EPD_xlo, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
-            hJt[wtrk-1][wppt-1]     = new TH1D(Form("hJt_trk_%d_ppt_%d",wtrk,wppt),Form("hJt_trk_%d_ppt_%d",wtrk,wppt),60,0,3);
+            hPt[wtrk-1][wppt-1]     = new TH1D(Form("hPt_trk_%d_ppt_%d",wtrk,wppt),Form("hPt_trk_%d_ppt_%d",wtrk,wppt),60,0,3);
             for(int wppt2 = wppt; wppt2<ptbin+1; wppt2++){
 
                 hBckrndShifted[wtrk-1][wppt-1][wppt2-1]      = new TH2D(Form("hBckrndS_trk_%d_ppt_%d_pt_%d",wtrk,wppt,wppt2) ,Form("hBckrndS_trk_%d_ppt_%d_pt_%d",wtrk,wppt,wppt2) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
@@ -307,7 +307,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(fabs(dau_A.Perp())  < 0.3)      continue;
 
                     //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                    double jet_dau_pt    =  ptWRTJet(JetA, dau_A);
+                    double jet_dau_pt    =  dau_A.Perp();
 
                     if(jet_dau_pt >3.0) continue;
 
@@ -358,21 +358,21 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(fabs(dau_A.Perp())  < 0.3)      continue;
 
                     //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                    double jet_dau_pt    =  ptWRTJet(JetA, dau_A);
+                    double jet_dau_pt    =  dau_A.Perp();
 
                     if(jet_dau_pt >3.0) continue;
 
         
 
                     //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
-                    double jet_dau_eta   = etaWRTJet(JetA, dau_A);
+                    double jet_dau_eta   = dau_A.Eta();
                     //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                    double jet_dau_phi   = phiWRTJet(JetA, dau_A) ;
+                    double jet_dau_phi   = dau_A.Phi() ;
 
                     for(int i = 0; i < trackbin; i++){
                         for(int j = 0; j < ptbin; j++){
                             if(tkBool[i] + (jet_dau_pt >= ptbinbounds_lo[j] && jet_dau_pt < ptbinbounds_hi[j]) == 2){
-                                hJt[i][j]->Fill(jet_dau_pt);
+                                hPt[i][j]->Fill(jet_dau_pt);
                             }
                         }
                     }
@@ -383,7 +383,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1);
                     hEtaA -> Fill(jet_dau_eta,1);
                     hPhiA -> Fill(jet_dau_phi,1);
-                    hJtA  -> Fill(jet_dau_pt, 1);
+                    hPtA  -> Fill(jet_dau_pt, 1);
 
 
 
@@ -413,10 +413,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         TVector3 dau_T;
                         dau_T.SetPtEtaPhi((double)(*genDau_pt)[ijet][T_trk],(double)(*genDau_eta)[ijet][T_trk],(double)(*genDau_phi)[ijet][T_trk]);    
                         
-                        double T_jet_dau_pt    =  ptWRTJet(JetA, dau_T);  
+                        double T_jet_dau_pt    =  dau_T.Perp();  
                         if(T_jet_dau_pt >3.0) continue;
 
-                        double T_jet_dau_eta   = etaWRTJet(JetA, dau_T);
+                        double T_jet_dau_eta   = dau_T.Eta();
                         
                         if(T_jet_dau_eta > track_eta_lim) continue;
 
@@ -425,7 +425,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         //boosted B wrt old A   
                         // double T_jet_dau_eta   = etaWRTJet(JetA, dau_T);
-                        double T_jet_dau_phi   = phiWRTJet(JetA, dau_T);
+                        double T_jet_dau_phi   = dau_T.Phi();
                         // double T_jet_dau_pt    =  ptWRTJet(JetA, dau_T);
                         
 
@@ -606,7 +606,7 @@ std::cout<< "made 4" << endl;
                         hBinDist_gen[wtrk-1]         ->Write();
                         for(int wppt =1; wppt <ptbin+1; wppt++){
                             hEPDrawA                   [wtrk-1][wppt-1]->Write(Form("hEPDA_%d_to_%d_and_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1])));
-                            hJt[wtrk-1][wppt-1] ->Write(Form("hJt_%d_to_%d_and_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1])));
+                            hPt[wtrk-1][wppt-1] ->Write(Form("hPt_%d_to_%d_and_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1])));
                             for(int wppt2 = wppt; wppt2 <ptbin+1; wppt2++){
 
                                 hSignalShifted             [wtrk-1][wppt-1][wppt2-1]->Write(Form("hSigS_%d_to_%d_pt_%d_to_%d_pt_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),(int)(10*ptbinbounds_lo[wppt2-1]),(int)(10*ptbinbounds_hi[wppt2-1])    ));
@@ -628,7 +628,7 @@ std::cout<< "made 4" << endl;
                     hEtaPhiA->Write();
                     hEtaA ->Write();
                     hPhiA ->Write();
-                    hJtA ->Write();
+                    hPtA ->Write();
 
                     fS_tempA->Close();
                     }
