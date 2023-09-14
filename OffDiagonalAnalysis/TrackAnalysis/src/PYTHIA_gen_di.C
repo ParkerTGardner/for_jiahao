@@ -464,7 +464,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                                 }
                             }
-                        }å 
+                        }
                 
                     }
 
