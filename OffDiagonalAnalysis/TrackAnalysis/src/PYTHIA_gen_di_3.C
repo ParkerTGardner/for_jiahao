@@ -451,12 +451,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                             hPairs->Fill(i,j,j);
                                             if ((Ntrig[i][j])==0) continue;
                                             
-                                            hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][j]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][j]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][j]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][j]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][j]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][j]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
                                             // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
 
                                     }
