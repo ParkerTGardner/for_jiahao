@@ -443,12 +443,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         
                         for(        int i = 0; i < trackbin; i++){
                             for(    int j = 0; j < ptbin;    j++){ 
-                                for(int k = j; k < ptbin;    k++){ 
+                                // for(int k = j; k < ptbin;    k++){ 
         
 
 
-                                    if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][k] == 3){
-                                            hPairs->Fill(i,j,k);
+                                    if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][j] == 3){
+                                            hPairs->Fill(i,j,j);
                                             if ((Ntrig[i][j])==0) continue;
                                             
                                             hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
@@ -461,7 +461,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                                     }
 
-                                }
+                                // }
 
                     
                             }
