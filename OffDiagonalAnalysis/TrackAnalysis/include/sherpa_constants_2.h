@@ -1,11 +1,11 @@
 const int   trackbin                    =8 ;
 const int   ktbin = 8;
-const int ptbin =3;
-const float ptbinbounds_lo[ptbin] = {0.0,0.3,0.5};
-const float ptbinbounds_hi[ptbin] = {3.0,3.0,3.0};
+const int ptbin = 6;
+const float ptbinbounds_lo[ptbin] = {0.3,0.7,1.0,1.5,2.0,2.5};
+const float ptbinbounds_hi[ptbin] = {0.7,1.0,1.5,2.0,2.5,3.0};
 const int mm = 1000;
-const int   trackbinbounds[trackbin]         = {0 ,0 ,30,40,50,58,66,75};
-const int   trackbinboundsUpper[trackbin]    = {mm,30,40,50,58,66,75,mm};
+const int   trackbinbounds[trackbin]         = {0 ,0 ,30,40,50,60,68,75};
+const int   trackbinboundsUpper[trackbin]    = {mm,30,40,50,60,68,75,mm};
 const float ktbinbounds_lo[ktbin] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8};
 const float ktbinbounds_hi[ktbin] = {0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 1.0};
 const double        PI = 3.14159265359;
@@ -18,10 +18,10 @@ const int bin_Eta             = 60;
 const int low_Eta_Bin       = -3;
 const int high_Eta_Bin      = 3;
 
-const int EPD_xb  = 150;
+const int EPD_xb  = 300;
 const int EPD_yb  = 120;
 const int EPD_xhi = 10;
-const int EPD_xlo = 0;
+const int EPD_xlo = -10;
 const int EPD_yhi = 4;
 const int EPD_ylo = -4;
 
