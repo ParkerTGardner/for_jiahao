@@ -443,25 +443,25 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         
                         for(        int i = 0; i < trackbin; i++){
                             for(    int j = 0; j < ptbin;    j++){ 
-                                // for(int k = j; k < ptbin;    k++){ 
+                                for(int k = j; k < ptbin;    k++){ 
         
 
 
-                                    if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][j] == 3){
-                                            hPairs->Fill(i,j,j);
+                                    if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][k] == 3){
+                                            hPairs->Fill(i,j,k);
                                             if ((Ntrig[i][j])==0) continue;
                                             
-                                            hSignalShifted[i][j][j]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][j]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][j]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][j]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][j]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
-                                            hSignalShifted[i][j][j]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][k]->Fill(-deltaEta, deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][k]->Fill(deltaEta, -deltaPhi,                ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][k]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][k]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
+                                            hSignalShifted[i][j][k]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0)/(Ntrig[i][j])));
                                             // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
 
                                     }
 
-                                // }
+                                }
 
                     
                             }
@@ -535,58 +535,58 @@ std::cout<< "made 4" << endl;
 
 
 
-                    //               for(int wppt2 = wppt+1; wppt2 < ptbin+1; wppt2++){
-                    //                   std::cout << wppt2 << "/" << ptbin << std::endl;
-                    //                   //Nent is the number of pairs in the signal which we will try to 10x
-                    //                   //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
-                    //                   //us 10 times as many pairs as we have in the signal histogrm.
+                                  for(int wppt2 = wppt+1; wppt2 < ptbin+1; wppt2++){
+                                      std::cout << wppt2 << "/" << ptbin << std::endl;
+                                      //Nent is the number of pairs in the signal which we will try to 10x
+                                      //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
+                                      //us 10 times as many pairs as we have in the signal histogrm.
 
-                    //                   long int NENT =  hPairs->GetBinContent(wtrk, wppt, wppt2);
-                    //                   long int XENT =  floor(sqrt(10*NENT));
-                    //                   double A_ETA[XENT] = {0};
-                    //                   double A_PHI[XENT] = {0};
-                    //                   double T_ETA[XENT] = {0};
-                    //                   double T_PHI[XENT] = {0};
+                                      long int NENT =  hPairs->GetBinContent(wtrk, wppt, wppt2);
+                                      long int XENT =  floor(sqrt(10*NENT));
+                                      double A_ETA[XENT] = {0};
+                                      double A_PHI[XENT] = {0};
+                                      double T_ETA[XENT] = {0};
+                                      double T_PHI[XENT] = {0};
 
 
                                       
-				    //                 //   float A_Jt[XENT]  = {0};
+				                    //   float A_Jt[XENT]  = {0};
 
-                    //                   for(int x = 0; x<XENT; x++){
-                    //                       gRandom->SetSeed(0);
-                    //                       double WEtaA, WPhiA;//making the pseudoparticles
+                                      for(int x = 0; x<XENT; x++){
+                                          gRandom->SetSeed(0);
+                                          double WEtaA, WPhiA;//making the pseudoparticles
                                           
-                    //                       hEPDrawA[wtrk-1][wppt-1]->GetRandom2(WEtaA, WPhiA);
-                    //                       A_ETA[x] = WEtaA;
-                    //                       A_PHI[x] = WPhiA; 
+                                          hEPDrawA[wtrk-1][wppt-1]->GetRandom2(WEtaA, WPhiA);
+                                          A_ETA[x] = WEtaA;
+                                          A_PHI[x] = WPhiA; 
 
 
-                    //                       double WEtaT, WPhiT;  
-                    //                       gRandom->SetSeed(gRandom->GetSeed() + 1);
-                    //                       hEPDrawA[wtrk-1][wppt2-1]->GetRandom2(WEtaT, WPhiT);
-                    //                       T_ETA[x] = WEtaT;
-                    //                       T_PHI[x] = WPhiT;
-                    //                     //   A_Jt[x]  = WJt1;
-                    //                   }
+                                          double WEtaT, WPhiT;  
+                                          gRandom->SetSeed(gRandom->GetSeed() + 1);
+                                          hEPDrawA[wtrk-1][wppt2-1]->GetRandom2(WEtaT, WPhiT);
+                                          T_ETA[x] = WEtaT;
+                                          T_PHI[x] = WPhiT;
+                                        //   A_Jt[x]  = WJt1;
+                                      }
                                       
-                    //                   for(long int i = 0; i < XENT; i++){
-                    //                       for(long int j = 0; j < XENT; j++){
+                                      for(long int i = 0; i < XENT; i++){
+                                          for(long int j = 0; j < XENT; j++){
 
-                    //                           double WdeltaEta = (A_ETA[i]-T_ETA[j]);
-                    //                           double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
-                    // //                         //   double WdeltaJt  = fabs(A_Jt[i]-A_Jt[j]);
+                                              double WdeltaEta = (A_ETA[i]-T_ETA[j]);
+                                              double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
+                    //                         //   double WdeltaJt  = fabs(A_Jt[i]-A_Jt[j]);
 
-                    //                           hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
-                    //                           hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
-                    //                           hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(WdeltaEta, -WdeltaPhi, 1);//../XENT);
-                    //                           hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
-                    //                           hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
-                    //                           hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
-                    // //                         //   hMomBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaJt, 1);
+                                              hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
+                                              hBckrndShifted[wtrk-1][wppt-1][wppt2-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
+                    //                         //   hMomBckrndShifted[wtrk-1][wppt-1][wpPU-1]->Fill(WdeltaJt, 1);
 
-                    //                       }
-                    //                   }
-                    //               }
+                                          }
+                                      }
+                                  }
                          }
                     }
                         
