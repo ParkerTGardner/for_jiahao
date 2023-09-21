@@ -297,7 +297,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
                     
                     n_G_ChargeMult_count = n_G_ChargeMult_count1;
-                    hBinDist_gen_single            ->Fill(n_G_ChargeMult_count1);
+                    // hBinDist_gen_single            ->Fill(n_G_ChargeMult_count1);
 
 
                     int tkBool[trackbin] = {0};
@@ -570,7 +570,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // n_G_ChargeMult_count = ((1+floor(sqrt(1+(4*2*n_G_ChargeMult_count1*n_G_ChargeMult_count2))))/2) ;
                     
                     n_G_ChargeMult_count = n_G_ChargeMult_count1;
-                    hBinDist_gen_single            ->Fill(n_G_ChargeMult_count1);
+                    // hBinDist_gen_single            ->Fill(n_G_ChargeMult_count1);
 
 
                     int tkBool[trackbin] = {0};
@@ -628,7 +628,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         gRandom->SetSeed(0);
                         double phi;
-                        phi = hPhiDraw->GetRandom();
+                        phi = hPhiDrawA->GetRandom();
 
 
                         
