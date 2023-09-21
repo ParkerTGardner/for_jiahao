@@ -368,6 +368,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                     int M = n_G_ChargeMult_count ;
+                    if (M<5) continue;
 
                     double Q_all_abs = std::abs(Q_all2);
                     double Q_all_sqr = Q_all_abs * Q_all_abs;
@@ -649,6 +650,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                     int M = n_G_ChargeMult_count ;
+                    if (M<5) continue;
 
                     double Q_all_abs = std::abs(Q_all2);
                     double Q_all_sqr = Q_all_abs * Q_all_abs;
