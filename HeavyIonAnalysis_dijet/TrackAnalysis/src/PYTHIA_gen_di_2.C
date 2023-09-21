@@ -478,12 +478,13 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
         hv22->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, v22[i]);
         hv24->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, v24[i]);
     }
+    string subList = fList.substr(fList.size() - 3);
     TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_2/dijob_%s.root",subList.c_str()), "recreate");
     hc22->Write();
     hc24->Write();
     hv22->Write();
     hv24->Write();
-    fS_temp->Close();
+    fS_tempA->Close();
                     
     long double Rand_jet_avg_numerator_two[trackbin] = {0};
     long double Rand_jet_avg_denominat_two[trackbin] = {0};
@@ -493,10 +494,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
     long double Rand_jet_avg_denominat_four[trackbin] = {0};
     double Rand_mult_bin_avg_four[trackbin] = {0};
 
-    TH1D* hRand_c22    = new TH1D("hRand_c22", "hRand_c22" ,trackbin-1 , mult_binsA);
-    TH1D* hRand_c24    = new TH1D("hRand_c24", "hRand_c24" ,trackbin-1 , mult_binsA);
-    TH1D* hRand_v22    = new TH1D("hRand_v22", "hRand_c22" ,trackbin-1 , mult_binsA);
-    TH1D* hRand_v24    = new TH1D("hRand_v24", "hRand_c24" ,trackbin-1 , mult_binsA);
+    TH1D* hRand_c22    = new TH1D("hRand_c22", "hRand_c22" ,trackbin-1 , trackbinEdge);
+    TH1D* hRand_c24    = new TH1D("hRand_c24", "hRand_c24" ,trackbin-1 , trackbinEdge);
+    TH1D* hRand_v22    = new TH1D("hRand_v22", "hRand_c22" ,trackbin-1 , trackbinEdge);
+    TH1D* hRand_v24    = new TH1D("hRand_v24", "hRand_c24" ,trackbin-1 , trackbinEdge);
 
    for(int f = 0; f<fileList.size(); f++){
 //processing data from CMS
@@ -647,7 +648,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         gRandom->SetSeed(0);
                         double phi;
-                        phi = hPhiDraw->GetRandom();
+                        phi = hPhiDrawA->GetRandom();
 
 
                         
