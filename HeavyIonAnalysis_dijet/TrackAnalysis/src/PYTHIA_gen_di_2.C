@@ -559,12 +559,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     double phi;
                     if (jet_dau_eta>0.86 && jet_dau_eta<1.75){
 
-                        phi = hPhiDrawA->GetRandom->();
+                        phi = hPhiDrawA->GetRandom();
                     }
 
                     else if (jet_dau_eta>2.75 && jet_dau_eta<5.00){
 
-                        phi = hPhiDrawT->GetRandom->();
+                        phi = hPhiDrawT->GetRandom();
                     }
                     else continue;
                         
@@ -671,7 +671,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
     hRand_v22->Write();
     hRand_v24->Write();
 
-    for(int i=0, i<trackbin; i++){
+    for(int i=0; i<trackbin; i++){
         hBinDist_gen[i]->Write();
     }
     fS_tempA->Close();
