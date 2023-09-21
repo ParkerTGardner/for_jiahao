@@ -145,7 +145,7 @@ void MyClass::Loop(int job, std::string fList){
 
 
     // int hist_bins = mult_bins.size();
-    double mult_binsA[trackbin]; 
+    // double mult_binsA[trackbin]; 
 
     long double jet_avg_numerator_two[trackbin] = {0};
     long double jet_avg_denominat_two[trackbin] = {0};
@@ -157,10 +157,10 @@ void MyClass::Loop(int job, std::string fList){
 
     TH1D* hPhiDrawA = new TH1D("hPhiDrawA", "hPhiDrawA", 1000, -TMath::Pi(), TMath::Pi());
 
-    TH1D* hc22    = new TH1D("hc22", "hc22" ,trackbin-1 , mult_binsA);
-    TH1D* hc24    = new TH1D("hc24", "hc24" ,trackbin-1 , mult_binsA);
-    TH1D* hv22    = new TH1D("hv22", "hc22" ,trackbin-1 , mult_binsA);
-    TH1D* hv24    = new TH1D("hv24", "hc24" ,trackbin-1 , mult_binsA);
+    TH1D* hc22    = new TH1D("hc22", "hc22" ,trackbin-1 , trackbinEdge);
+    TH1D* hc24    = new TH1D("hc24", "hc24" ,trackbin-1 , trackbinEdge);
+    TH1D* hv22    = new TH1D("hv22", "hc22" ,trackbin-1 , trackbinEdge);
+    TH1D* hv24    = new TH1D("hv24", "hc24" ,trackbin-1 , trackbinEdge);
 
     TH2D* hPairs        = new TH2D("hPairs","hPairs",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
 
@@ -473,10 +473,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
         v24[i] = std::real(std::pow(std::complex<double>(-c24[i]),.25));
 
 
-        hc22->Fill(mult_bins[i]+.5, c22[i]);
-        hc24->Fill(mult_bins[i]+.5, c24[i]);
-        hv22->Fill(mult_bins[i]+.5, v22[i]);
-        hv24->Fill(mult_bins[i]+.5, v24[i]);
+        hc22->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, c22[i]);
+        hc24->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, c24[i]);
+        hv22->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, v22[i]);
+        hv24->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, v24[i]);
     }
     TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_2/dijob_%s.root",subList.c_str()), "recreate");
     hc22->Write();
@@ -731,10 +731,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 //std::real(std::pow(std::complex<double>(-Rand_c24[i]),.25))
 
-        hRand_c22->Fill(mult_bins[i]+.5, Rand_c22[i]);
-        hRand_c24->Fill(mult_bins[i]+.5, Rand_c24[i]);
-        hRand_v22->Fill(mult_bins[i]+.5, Rand_v22[i]);
-        hRand_v24->Fill(mult_bins[i]+.5, Rand_v24[i]);
+        hRand_c22->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, Rand_c22[i]);
+        hRand_c24->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, Rand_c24[i]);
+        hRand_v22->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, Rand_v22[i]);
+        hRand_v24->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, Rand_v24[i]);
     }
     TFile* fS_2_temp = new TFile(Form("pythia_batch_output/root_out_2/rand_dijob_%s.root",subList.c_str()), "recreate");
     hRand_c22->Write();
