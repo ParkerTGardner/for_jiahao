@@ -728,7 +728,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
         hRand_v24->Fill(x, Rand_v24[i]);
     }
     string subList = fList.substr(fList.size() - 3);
-    TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_2/dijob_%s.root",subList.c_str()), "recreate");
+    TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_copy/dijob_%s.root",subList.c_str()), "recreate");
     hc22->Write();
     hc24->Write();
     hv22->Write();
