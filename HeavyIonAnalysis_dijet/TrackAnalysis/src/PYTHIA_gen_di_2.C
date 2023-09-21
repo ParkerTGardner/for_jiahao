@@ -433,7 +433,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
         c24[i] = mult_bin_avg_four[i] - (2* mult_bin_avg_two[i] * mult_bin_avg_two[i]);
 
         v22[i] = std::pow(c22[i],.50);
-        v24[i] = std::pow(std::complex<double>(-c24[i],.25));
+        v24[i] = std::pow(-c24[i],.25);
 
         double x = hBinDist_gen[i]->GetMean();
 
@@ -713,7 +713,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
         Rand_c22[i] = Rand_mult_bin_avg_two[i];
         Rand_c24[i] = Rand_mult_bin_avg_four[i] - (2* Rand_mult_bin_avg_two[i] * Rand_mult_bin_avg_two[i]);
         Rand_v22[i] = std::pow(Rand_c22[i],.50);
-        Rand_v24[i] = std::pow(std::complex<double>(-Rand_c24[i],.25));
+        Rand_v24[i] = std::pow(-Rand_c24[i],.25);
 
         double x = hBinDist_gen[i]->GetMean();
 
