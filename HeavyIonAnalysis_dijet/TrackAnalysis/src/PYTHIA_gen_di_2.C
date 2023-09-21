@@ -157,10 +157,10 @@ void MyClass::Loop(int job, std::string fList){
 
     TH1D* hPhiDrawA = new TH1D("hPhiDrawA", "hPhiDrawA", 1000, -TMath::Pi(), TMath::Pi());
 
-    TH1D* hc22    = new TH1D("hc22", "hc22" ,trackbin-1 , trackbinEdge);
-    TH1D* hc24    = new TH1D("hc24", "hc24" ,trackbin-1 , trackbinEdge);
-    TH1D* hv22    = new TH1D("hv22", "hc22" ,trackbin-1 , trackbinEdge);
-    TH1D* hv24    = new TH1D("hv24", "hc24" ,trackbin-1 , trackbinEdge);
+    TH1D* hc22    = new TH1D("hc22", "hc22" ,trackbin , trackbinEdge);
+    TH1D* hc24    = new TH1D("hc24", "hc24" ,trackbin , trackbinEdge);
+    TH1D* hv22    = new TH1D("hv22", "hv22" ,trackbin , trackbinEdge);
+    TH1D* hv24    = new TH1D("hv24", "hv24" ,trackbin , trackbinEdge);
 
     TH2D* hPairs        = new TH2D("hPairs","hPairs",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
 
@@ -384,10 +384,13 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         double jet_dau_pt0    =  ptWRTJet(JetA, dau_A0);
 
                         if(jet_dau_pt0 >3.0) continue;
-                        if(jet_dau_pt0 <0.3) continue;
+                        // if(jet_dau_pt0 <0.3) continue;
 
                         TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
                         TVector3       dau_A   = dau_A_4.Vect();
+
+                        if(dau_A.Perp() >3.0) continue;
+                        if(dau_A.Perp()  <0.3) continue;
 
                         double phi = dau_A.Phi();
 
@@ -407,7 +410,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     }
 
 
-                    int M = NNtrk1;
+                    int M = n_G_ChargeMult_count ;
 
                     double Q_all_abs = std::abs(Q_all2);
                     double Q_all_sqr = Q_all_abs * Q_all_abs;
@@ -462,7 +465,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
     long double v22[trackbin] = {0};
     long double v24[trackbin] = {0};
 
-    for(int i = 1; i < trackbin; i++){
+    for(int i = 0; i < trackbin; i++){
         mult_bin_avg_two[i]  =jet_avg_numerator_two[i]/jet_avg_denominat_two[i];
         mult_bin_avg_four[i] =jet_avg_numerator_four[i]/jet_avg_denominat_four[i];
 
@@ -473,10 +476,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
         v24[i] = std::real(std::pow(std::complex<double>(-c24[i]),.25));
 
 
-        hc22->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, c22[i]);
-        hc24->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, c24[i]);
-        hv22->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, v22[i]);
-        hv24->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, v24[i]);
+        hc22->Fill((trackbinEdge[i]+trackbinEdge[i+1])/2, c22[i]);
+        hc24->Fill((trackbinEdge[i]+trackbinEdge[i+1])/2, c24[i]);
+        hv22->Fill((trackbinEdge[i]+trackbinEdge[i+1])/2, v22[i]);
+        hv24->Fill((trackbinEdge[i]+trackbinEdge[i+1])/2, v24[i]);
     }
     string subList = fList.substr(fList.size() - 3);
     TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_2/dijob_%s.root",subList.c_str()), "recreate");
@@ -494,10 +497,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
     long double Rand_jet_avg_denominat_four[trackbin] = {0};
     double Rand_mult_bin_avg_four[trackbin] = {0};
 
-    TH1D* hRand_c22    = new TH1D("hRand_c22", "hRand_c22" ,trackbin-1 , trackbinEdge);
-    TH1D* hRand_c24    = new TH1D("hRand_c24", "hRand_c24" ,trackbin-1 , trackbinEdge);
-    TH1D* hRand_v22    = new TH1D("hRand_v22", "hRand_c22" ,trackbin-1 , trackbinEdge);
-    TH1D* hRand_v24    = new TH1D("hRand_v24", "hRand_c24" ,trackbin-1 , trackbinEdge);
+    TH1D* hRand_c22    = new TH1D("hRand_c22", "hRand_c22" ,trackbin , trackbinEdge);
+    TH1D* hRand_c24    = new TH1D("hRand_c24", "hRand_c24" ,trackbin , trackbinEdge);
+    TH1D* hRand_v22    = new TH1D("hRand_v22", "hRand_v22" ,trackbin , trackbinEdge);
+    TH1D* hRand_v24    = new TH1D("hRand_v24", "hRand_v24" ,trackbin , trackbinEdge);
 
    for(int f = 0; f<fileList.size(); f++){
 //processing data from CMS
@@ -677,8 +680,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     for(int i = 0; i < trackbin; i++){
                         if(tkBool[i] == 1){
 
-                        jet_avg_numerator_two[i] = jet_avg_numerator_two[i] + ((weight_two)*(particle_two)); 
-                        jet_avg_denominat_two[i] = jet_avg_denominat_two[i] + (weight_two);
+                        Rand_jet_avg_numerator_two[i] = Rand_jet_avg_numerator_two[i] + ((weight_two)*(particle_two)); 
+                        Rand_jet_avg_denominat_two[i] = Rand_jet_avg_denominat_two[i] + (weight_two);
                         }
                     }
 
@@ -703,8 +706,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     for(int i = 0; i < trackbin; i++){
                         if(tkBool[i] == 1){
 
-                        jet_avg_numerator_four[i] = jet_avg_numerator_four[i] + ((weight_four)*(particle_four));
-                        jet_avg_denominat_four[i] = jet_avg_denominat_four[i] + (weight_four);
+                        Rand_jet_avg_numerator_four[i] = Rand_jet_avg_numerator_four[i] + ((weight_four)*(particle_four));
+                        Rand_jet_avg_denominat_four[i] = Rand_jet_avg_denominat_four[i] + (weight_four);
                         }
                     }
 
