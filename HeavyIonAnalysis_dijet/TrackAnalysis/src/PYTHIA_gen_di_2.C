@@ -162,45 +162,6 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hv22    = new TH1D("hv22", "hv22" ,trackbin , trackbinEdge);
     TH1D* hv24    = new TH1D("hv24", "hv24" ,trackbin , trackbinEdge);
 
-    TH2D* hPairs        = new TH2D("hPairs","hPairs",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
-
-    TH2D* hNtrig        = new TH2D("hNtrig","hNtrig",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
-
-
-    TH1D* hEvent_Pass   = new TH1D("hEvent_Pass","hEvent_Pass", trackbin,bin0,trackbin);
-    TH1D* hJet_Pass     = new TH1D("hJet_Pass"  ,"hJet_Pass"  , trackbin,bin0,trackbin);
-    TH1D* hJetPt = new TH1D("hJetPt"  ,"hJetPt" ,i150,i100,i3500);
-    TH1D* hBinDist_gen_single = new TH1D("hBinDist_gen_single","hBinDist_gen_single",bin360,bin0, bin120);
-    TH1D* hBinDist_reco_single = new TH1D("hBinDist_reco_single","hBinDist_reco_single",bin360,bin0,bin120);
-    TH1D* hdeltaR = new TH1D("hdeltaR", "hdeltaR", 240,0,2.4);
-    TH1D* hdeltaJetPhi = new TH1D("hdeltaJetPhi", "hdeltaJetPhi",50,3.0/4.0*M_PI,M_PI);
-    TH1D* hdeltaJetTheta = new TH1D("hdeltaJetTheta", "hdeltaJetTheta",50,-M_PI,M_PI);
-    TH1D* hdeltaJetEta = new TH1D("hdeltaJetEta", "hdeltaJetEta",50,-4,4);
-
-    TH1D* hJJT1D                = new TH1D(Form("hJJT1D") ,Form("hJJT1D") , 120, 0, 1.2);
-    TH2D* hJJT              = new TH2D(Form("hJJT") ,Form("hJJT") , 120, 0, 1.2, 140, 550,700);
-    TH1D* hMult_ratio_AB        = new TH1D("hMult_ratio_AB", "hMult_ratio_AB", 250, 0, 5);
-    TH2D* hMult_AB              = new TH2D("hMult_AB", "hMult_AB", 140, 0, 140, 140, 0, 140);
-    TH2D* hJT_Mult_AB           = new TH2D("hJT_Mult_AB","hJT_Mult_AB",120, 0, 1.2, 200,0,2);
-
-
-
-
-    TH1D* hEtaT = new TH1D("hEtaT","hEtaT",100,-5,5);
-    TH1D* hPhiT = new TH1D("hPhiT","hPhiT",100,-M_PI,M_PI);
-    TH1D* hJtT  = new TH1D("hJtT","hJtT",100,0,10);
-    TH2D* hEtaPhiT = new TH2D("hEtaPhiT","hEtaPhiT", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
-
-    TH1D* hEtaTT = new TH1D("hEtaTT","hEtaTT",100,-5,5);
-    TH1D* hPhiTT = new TH1D("hPhiTT","hPhiTT",100,-M_PI,M_PI);
-    TH1D* hJtTT  = new TH1D("hJtTT","hJtTT",100,0,10);
-    TH2D* hEtaPhiTT = new TH2D("hEtaPhiTT","hEtaPhiTT", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
-
-    TH2D* hEtaPhiA = new TH2D("hEtaPhiA","hEtaPhiA", 2*EPD_xb   , -EPD_xhi, EPD_xhi , EPD_yb      , EPD_ylo    , EPD_yhi);
-    TH1D* hEtaA = new TH1D("hEtaA","hEtaA", 2*EPD_xb   , -EPD_xhi, EPD_xhi );
-    TH1D* hPhiA = new TH1D("hPhiA","hPhiA",EPD_yb      , EPD_ylo    , EPD_yhi);
-    TH1D* hJtA = new TH1D("hJtA","hJtA",100,0,10);
-    // TH1D* hEtaJetA =new TH1D("hEtaJetA","hEtaJetA",50,-1,1);
     
    
 
@@ -258,13 +219,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                   }
                   int gjN = genJetPhi->size();
 
-
-            hEvent_Pass->Fill(1);
-
-
-            
-            
-            
             
             
             //ENTERING JET LOOP
@@ -319,8 +273,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // TVector3 JetAB = BeamBoost(JetA.Perp(),JetA.Eta(),JetA.Phi(),JetB.Perp(),JetB.Eta(),JetB.Phi());
                     double deltaJetEta = JetAA.Eta() + JetBB.Eta();
                     double deltaJetPhi =  fabs(JetA.Phi()-JetB.Phi());
-                    hdeltaJetPhi -> Fill(deltaJetPhi);
-                    hdeltaJetEta -> Fill(deltaJetEta);
+                    
 
                     if (fabs(M_PI-deltaJetPhi) > 0.1) continue;
                     // if (fabs(deltaJetEta)>0.15) continue;
@@ -348,11 +301,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                     int tkBool[trackbin] = {0};
-                    int Ntrig[trackbin][ptbin] = {0};
-                    int NtrigM[trackbin][ptbin] = {0};
-                    int NtrigP[trackbin][ptbin] = {0};
-                    int A_ptBool[NNtrk1][ptbin] = {0};    //
-                    int T_ptBool[NNtrk2][ptbin]     = {0};// This is for the AB
+                    
 
                     for(int i = 0; i < trackbin; i++){
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
@@ -389,10 +338,18 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
                         TVector3       dau_A   = dau_A_4.Vect();
 
-                        if(dau_A.Perp() >3.0) continue;
-                        if(dau_A.Perp()  <0.3) continue;
+                        double jet_dau_eta   = etaWRTJet(JetAA, dau_A);
+                        //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
+                        double jet_dau_phi   = phiWRTJet(JetAA, dau_A) ;
 
-                        double phi = dau_A.Phi();
+                        double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
+
+
+
+                        if(jet_dau_pt >3.0) continue;
+                        if(jet_dau_pt  <0.3) continue;
+
+                        double phi = jet_dau_phi;
 
 
                         
@@ -474,12 +431,13 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
         v22[i] = std::real(std::pow(std::complex<double>(c22[i]),.50));
         v24[i] = std::real(std::pow(std::complex<double>(-c24[i]),.25));
+        double x = hBinDist_gen[i]->GetMean();
 
 
-        hc22->Fill((trackbinEdge[i]+trackbinEdge[i+1])/2, c22[i]);
-        hc24->Fill((trackbinEdge[i]+trackbinEdge[i+1])/2, c24[i]);
-        hv22->Fill((trackbinEdge[i]+trackbinEdge[i+1])/2, v22[i]);
-        hv24->Fill((trackbinEdge[i]+trackbinEdge[i+1])/2, v24[i]);
+        hc22->Fill(x, c22[i]);
+        hc24->Fill(x, c24[i]);
+        hv22->Fill(x, v22[i]);
+        hv24->Fill(x, v24[i]);
     }
     string subList = fList.substr(fList.size() - 3);
     TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_2/dijob_%s.root",subList.c_str()), "recreate");
@@ -502,7 +460,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
     TH1D* hRand_v22    = new TH1D("hRand_v22", "hRand_v22" ,trackbin , trackbinEdge);
     TH1D* hRand_v24    = new TH1D("hRand_v24", "hRand_v24" ,trackbin , trackbinEdge);
 
-   for(int f = 0; f<fileList.size(); f++){
+    for(int f = 0; f<fileList.size(); f++){
 //processing data from CMS
         fFile = TFile::Open(fileList.at(f).c_str(),"read");
         TTree *tree = (TTree*)fFile->Get("trackTree");
@@ -534,13 +492,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                   }
                   int gjN = genJetPhi->size();
 
-
-            hEvent_Pass->Fill(1);
-
-
-            
-            
-            
             
             
             //ENTERING JET LOOP
@@ -595,8 +546,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // TVector3 JetAB = BeamBoost(JetA.Perp(),JetA.Eta(),JetA.Phi(),JetB.Perp(),JetB.Eta(),JetB.Phi());
                     double deltaJetEta = JetAA.Eta() + JetBB.Eta();
                     double deltaJetPhi =  fabs(JetA.Phi()-JetB.Phi());
-                    hdeltaJetPhi -> Fill(deltaJetPhi);
-                    hdeltaJetEta -> Fill(deltaJetEta);
+                    
 
                     if (fabs(M_PI-deltaJetPhi) > 0.1) continue;
                     // if (fabs(deltaJetEta)>0.15) continue;
@@ -635,7 +585,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         if(n_G_ChargeMult_count >= trackbinbounds[i] && n_G_ChargeMult_count < trackbinboundsUpper[i]){
                             tkBool[i] = 1;
                             // hJet_Pass           ->Fill(i);
-                            hBinDist_gen[i]         ->Fill(n_G_ChargeMult_count);
+                            // hBinDist_gen[i]         ->Fill(n_G_ChargeMult_count);
                         }
                     }
 
@@ -648,10 +598,37 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     //and then we do this in jetB so that we can get the complete Ntrig
                     for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
                     
+                        TVector3 dau_A0;
+                        dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
+                        TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
+                        
+                        if((*genDau_chg)[ijet][A_trk] == 0) continue;
+                        if(fabs(dau_A0.Eta()) > 2.4)        continue;
+                        if(fabs(dau_A0.Perp())  < 0.3)      continue;
+
+                        //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
+                        double jet_dau_pt0    =  ptWRTJet(JetA, dau_A0);
+
+                        if(jet_dau_pt0 >3.0) continue;
+                        // if(jet_dau_pt0 <0.3) continue;
+
+                        TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
+                        TVector3       dau_A   = dau_A_4.Vect();
+
+                        double jet_dau_eta   = etaWRTJet(JetAA, dau_A);
+                        //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
+                        double jet_dau_phi   = phiWRTJet(JetAA, dau_A) ;
+
+                        double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
+
+
+
+                        if(jet_dau_pt >3.0) continue;
+                        if(jet_dau_pt  <0.3) continue;
 
                         gRandom->SetSeed(0);
                         double phi;
-                        phi = hPhiDrawA->GetRandom();
+                        phi = hPhiDraw->GetRandom();
 
 
                         
@@ -669,7 +646,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     }
 
 
-                    int M = NNtrk1;
+                    int M = n_G_ChargeMult_count ;
 
                     double Q_all_abs = std::abs(Q_all2);
                     double Q_all_sqr = Q_all_abs * Q_all_abs;
@@ -733,12 +710,14 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
         Rand_v22[i] = std::real(std::pow(std::complex<double>(Rand_c22[i]),.50));
         Rand_v24[i] = std::real(std::pow(std::complex<double>(-Rand_c24[i]),.25));
 
+        double x = hBinDist_gen[i]->GetMean();
+
 //std::real(std::pow(std::complex<double>(-Rand_c24[i]),.25))
 
-        hRand_c22->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, Rand_c22[i]);
-        hRand_c24->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, Rand_c24[i]);
-        hRand_v22->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, Rand_v22[i]);
-        hRand_v24->Fill((trackbinEdge[i-1]+trackbinEdge[i])/2, Rand_v24[i]);
+        hRand_c22->Fill(x, Rand_c22[i]);
+        hRand_c24->Fill(x, Rand_c24[i]);
+        hRand_v22->Fill(x, Rand_v22[i]);
+        hRand_v24->Fill(x, Rand_v24[i]);
     }
     TFile* fS_2_temp = new TFile(Form("pythia_batch_output/root_out_2/rand_dijob_%s.root",subList.c_str()), "recreate");
     hRand_c22->Write();
