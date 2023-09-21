@@ -423,6 +423,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
     long double v24[trackbin] = {0};
 
     for(int i = 0; i < trackbin; i++){
+        if(jet_avg_denominat_two[i]==0) continue;
+        if(jet_avg_denominat_four[i]==0) continue;
         mult_bin_avg_two[i]  =jet_avg_numerator_two[i]/jet_avg_denominat_two[i];
         mult_bin_avg_four[i] =jet_avg_numerator_four[i]/jet_avg_denominat_four[i];
 
