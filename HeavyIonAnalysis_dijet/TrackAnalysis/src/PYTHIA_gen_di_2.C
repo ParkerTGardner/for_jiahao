@@ -240,7 +240,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                 TVector3 JetA;
                 JetA.SetPtEtaPhi((*genJetPt)[ijet],(*genJetEta)[ijet],(*genJetPhi)[ijet]);
-                TLorentzVector JetA_4 (JetA, JetA.Mag());
+                // TLorentzVector JetA_4 (JetA, JetA.Mag());
                 
                 if( fabs(JetA.Eta()) > jetEtaCut ) continue;
                 if( JetA.Perp() < jetPtCut_Jet   ) continue;
@@ -294,30 +294,30 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 
                     TVector3 dau_A0;
                     dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
-                    TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
+                    // TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
                     
                     if((*genDau_chg)[ijet][A_trk] == 0) continue;
                     if(fabs(dau_A0.Eta()) > 2.4)        continue;
                     if(fabs(dau_A0.Perp())  < 0.3)      continue;
 
                     //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                    double jet_dau_pt0    =  ptWRTJet(JetA, dau_A0);
-
-                    if(jet_dau_pt0 >3.0) continue;
-                    // if(jet_dau_pt0 <0.3) continue;
-
-                    TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
-                    TVector3       dau_A   = dau_A_4.Vect();
-
-                    double jet_dau_eta   = etaWRTJet(JetAA, dau_A);
-                    //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                    double jet_dau_phi   = phiWRTJet(JetAA, dau_A) ;
-
-                    double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
-
-
+                    double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);
 
                     if(jet_dau_pt >3.0) continue;
+                    // if(jet_dau_pt0 <0.3) continue;
+
+                    // TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
+                    // TVector3       dau_A   = dau_A_4.Vect();
+
+                    double jet_dau_eta   = etaWRTJet(JetA, dau_A0);
+                    //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
+                    double jet_dau_phi   = phiWRTJet(JetA, dau_A0) ;
+
+                    // double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);
+
+
+
+                    // if(jet_dau_pt >3.0) continue;
                     if(jet_dau_pt  <0.3) continue;
 
                     double phi = jet_dau_phi;
@@ -328,15 +328,15 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     std::complex<double> Q_part4 (TMath::Cos(2.0*n_harm*phi) , TMath::Sin(2.0*n_harm*phi));
                     if (jet_dau_eta>0.86 && jet_dau_eta<1.75){
 
-                        Q_all2A = Q_all2A + Q_part2A;
-                        Q_all4A = Q_all4A + Q_part4A;
+                        Q_all2A = Q_all2A + Q_part2;
+                        Q_all4A = Q_all4A + Q_part4;
                         M++;
                     }
 
                     if (jet_dau_eta>2.75 && jet_dau_eta<5.00){
 
-                        Q_all2T = Q_all2T + Q_part2T;
-                        Q_all4T = Q_all4T + Q_part4T;
+                        Q_all2T = Q_all2T + Q_part2;
+                        Q_all4T = Q_all4T + Q_part4;
                         N++;
                     }
                         
@@ -366,7 +366,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
 
-                    jet_avg_numerator_two[i] = jet_avg_numerator_two[i] + ((weight_two)*(particle_two)); 
+                    jet_avg_numerator_two[i] = jet_avg_numerator_two[i] + ((weight_two)*(particle_twoAT)); 
                     jet_avg_denominat_two[i] = jet_avg_denominat_two[i] + (weight_two);
                     }
                 }
@@ -475,7 +475,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                 TVector3 JetA;
                 JetA.SetPtEtaPhi((*genJetPt)[ijet],(*genJetEta)[ijet],(*genJetPhi)[ijet]);
-                TLorentzVector JetA_4 (JetA, JetA.Mag());
+                // TLorentzVector JetA_4 (JetA, JetA.Mag());
                 
                 if( fabs(JetA.Eta()) > jetEtaCut ) continue;
                 if( JetA.Perp() < jetPtCut_Jet   ) continue;
@@ -529,42 +529,42 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 
                     TVector3 dau_A0;
                     dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
-                    TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
+                    // TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
                     
                     if((*genDau_chg)[ijet][A_trk] == 0) continue;
                     if(fabs(dau_A0.Eta()) > 2.4)        continue;
                     if(fabs(dau_A0.Perp())  < 0.3)      continue;
 
                     //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                    double jet_dau_pt0    =  ptWRTJet(JetA, dau_A0);
-
-                    if(jet_dau_pt0 >3.0) continue;
-                    // if(jet_dau_pt0 <0.3) continue;
-
-                    TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
-                    TVector3       dau_A   = dau_A_4.Vect();
-
-                    double jet_dau_eta   = etaWRTJet(JetAA, dau_A);
-                    //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                    double jet_dau_phi   = phiWRTJet(JetAA, dau_A) ;
-
-                    double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
-
-
+                    double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);
 
                     if(jet_dau_pt >3.0) continue;
+                    // if(jet_dau_pt0 <0.3) continue;
+
+                    // TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
+                    // TVector3       dau_A   = dau_A_4.Vect();
+
+                    double jet_dau_eta   = etaWRTJet(JetA, dau_A0);
+                    //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
+                    double jet_dau_phi   = phiWRTJet(JetA, dau_A0) ;
+
+                    // double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
+
+
+
+                    // if(jet_dau_pt >3.0) continue;
                     if(jet_dau_pt <0.3) continue;
 
                     gRandom->SetSeed(0);
                     double phi;
                     if (jet_dau_eta>0.86 && jet_dau_eta<1.75){
 
-                        phi = hPhiDrawA->GetRandom();
+                        phi = hPhiDrawA->GetRandom->();
                     }
 
                     else if (jet_dau_eta>2.75 && jet_dau_eta<5.00){
 
-                        phi = hPhiDrawT->GetRandom();
+                        phi = hPhiDrawT->GetRandom->();
                     }
                     else continue;
                         
@@ -577,26 +577,19 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     std::complex<double> Q_part4 (TMath::Cos(2.0*n_harm*phi) , TMath::Sin(2.0*n_harm*phi));
                     if (jet_dau_eta>0.86 && jet_dau_eta<1.75){
 
-                        Q_all2A = Q_all2A + Q_part2A;
-                        Q_all4A = Q_all4A + Q_part4A;
+                        Q_all2A = Q_all2A + Q_part2;
+                        Q_all4A = Q_all4A + Q_part4;
                         M++;
                     }
 
                     if (jet_dau_eta>2.75 && jet_dau_eta<5.00){
 
-                        Q_all2T = Q_all2T + Q_part2T;
-                        Q_all4T = Q_all4T + Q_part4T;
+                        Q_all2T = Q_all2T + Q_part2;
+                        Q_all4T = Q_all4T + Q_part4;
                         N++;
                     }
                         
 
-                    // for(int i = 0; i < trackbin; i++){
-                    // //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
-                    //     if(tkBool[i] == 1){
-                    //         if (jet_dau_eta>0.86 && jet_dau_eta<1.75) hPhiDrawA[i]->Fill(phi);
-                    //         if (jet_dau_eta>2.75 && jet_dau_eta<5.00) hPhiDrawT[i]->Fill(phi);
-                    //     }
-                    // }
 
                         
                 }
@@ -615,7 +608,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
 
-                    Rand_jet_avg_numerator_two[i] = Rand_jet_avg_numerator_two[i] + ((weight_two)*(particle_two)); 
+                    Rand_jet_avg_numerator_two[i] = Rand_jet_avg_numerator_two[i] + ((weight_two)*(particle_twoAT)); 
                     Rand_jet_avg_denominat_two[i] = Rand_jet_avg_denominat_two[i] + (weight_two);
                     }
                 }
@@ -678,7 +671,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
     hRand_v22->Write();
     hRand_v24->Write();
 
-    for(i=0, i<trackbin; i++){
+    for(int i=0, i<trackbin; i++){
         hBinDist_gen[i]->Write();
     }
     fS_tempA->Close();
