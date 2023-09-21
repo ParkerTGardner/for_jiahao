@@ -559,12 +559,22 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     double phi;
                     if (jet_dau_eta>0.86 && jet_dau_eta<1.75){
 
-                        phi = hPhiDrawA->GetRandom();
+                        for(int i = 0; i < trackbin; i++){
+                            if(tkBool[i] == 1){
+                                phi = hPhiDrawA[i]->GetRandom();
+                            }
+                        }
+
+                        
                     }
 
                     else if (jet_dau_eta>2.75 && jet_dau_eta<5.00){
 
-                        phi = hPhiDrawT->GetRandom();
+                        for(int i = 0; i < trackbin; i++){
+                            if(tkBool[i] == 1){
+                                phi = hPhiDrawT[i]->GetRandom();
+                            }
+                        }
                     }
                     else continue;
                         
