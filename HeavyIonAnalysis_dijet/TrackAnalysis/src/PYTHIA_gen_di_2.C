@@ -405,8 +405,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
         c22[i] = mult_bin_avg_two[i];
         c24[i] = mult_bin_avg_four[i] - (2* mult_bin_avg_two[i] * mult_bin_avg_two[i]);
 
-        v22[i] = std::pow(c22[i],.50);
-        v24[i] = std::pow(-c24[i],.25);
+        v22[i] = std::pow(fabs(c22[i]),.50);
+        v24[i] = std::pow(fabs(-c24[i]),.25);
 
         double x = hBinDist_gen[i]->GetMean();
 
@@ -677,10 +677,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
     hv24->Write();
     
     // TFile* fS_2_temp = new TFile(Form("pythia_batch_output/root_out_2/rand_dijob_%s.root",subList.c_str()), "recreate");
-    // hRand_c22->Write();
-    // hRand_c24->Write();
-    // hRand_v22->Write();
-    // hRand_v24->Write();
+    hRand_c22->Write();
+    hRand_c24->Write();
+    hRand_v22->Write();
+    hRand_v24->Write();
 
     for(int i=0; i<trackbin; i++){
         hBinDist_gen[i]->Write();
