@@ -486,11 +486,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                 int tkBool[trackbin] = {0};
-                int Ntrig[trackbin][ptbin] = {0};
-                int NtrigM[trackbin][ptbin] = {0};
-                int NtrigP[trackbin][ptbin] = {0};
-                int A_ptBool[NNtrk1][ptbin] = {0};    //
-                int T_ptBool[NNtrk2][ptbin]     = {0};// This is for the AB
+                
 
                 for(int i = 0; i < trackbin; i++){
                 //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
@@ -519,9 +515,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(fabs(dau_A0.Perp())  < 0.3)      continue;
 
                     //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                    double jet_dau_pt0    =  ptWRTJet(JetA, dau_A0);
+                    double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);
 
-                    if(jet_dau_pt0 >3.0) continue;
+                    if(jet_dau_pt >3.0) continue;
                     // if(jet_dau_pt0 <0.3) continue;
 
                     double jet_dau_eta   = etaWRTJet(JetA, dau_A0);
@@ -532,7 +528,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
 
-                    if(jet_dau_pt >3.0) continue;
+                    // if(jet_dau_pt >3.0) continue;
                     if(jet_dau_pt  <0.3) continue;
 
                     gRandom->SetSeed(0);
