@@ -278,30 +278,27 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 
                     TVector3 dau_A0;
                     dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
-                    TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
+                    // TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
                     
                     if((*genDau_chg)[ijet][A_trk] == 0) continue;
                     if(fabs(dau_A0.Eta()) > 2.4)        continue;
                     if(fabs(dau_A0.Perp())  < 0.3)      continue;
 
                     //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                    double jet_dau_pt0    =  ptWRTJet(JetA, dau_A0);
-
-                    if(jet_dau_pt0 >3.0) continue;
-                    // if(jet_dau_pt0 <0.3) continue;
-
-                    TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
-                    TVector3       dau_A   = dau_A_4.Vect();
-
-                    double jet_dau_eta   = etaWRTJet(JetAA, dau_A);
-                    //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                    double jet_dau_phi   = phiWRTJet(JetAA, dau_A) ;
-
-                    double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
-
-
+                    double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);
 
                     if(jet_dau_pt >3.0) continue;
+                    // if(jet_dau_pt0 <0.3) continue;
+
+
+                    double jet_dau_eta   = etaWRTJet(JetA, dau_A0);
+                    //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
+                    double jet_dau_phi   = phiWRTJet(JetA, dau_A0) ;
+
+
+
+
+                    // if(jet_dau_pt >3.0) continue;
                     if(jet_dau_pt  <0.3) continue;
 
                     double phi = jet_dau_phi;
@@ -515,7 +512,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 
                     TVector3 dau_A0;
                     dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
-                    TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
+                    // TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
                     
                     if((*genDau_chg)[ijet][A_trk] == 0) continue;
                     if(fabs(dau_A0.Eta()) > 2.4)        continue;
@@ -527,14 +524,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(jet_dau_pt0 >3.0) continue;
                     // if(jet_dau_pt0 <0.3) continue;
 
-                    TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
-                    TVector3       dau_A   = dau_A_4.Vect();
-
-                    double jet_dau_eta   = etaWRTJet(JetAA, dau_A);
+                    double jet_dau_eta   = etaWRTJet(JetA, dau_A0);
                     //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                    double jet_dau_phi   = phiWRTJet(JetAA, dau_A) ;
+                    double jet_dau_phi   = phiWRTJet(JetA, dau_A0) ;
 
-                    double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
+                    double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);
 
 
 
