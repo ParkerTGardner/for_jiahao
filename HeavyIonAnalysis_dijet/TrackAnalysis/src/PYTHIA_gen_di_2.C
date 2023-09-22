@@ -648,7 +648,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
     double Rand_v22[trackbin] = {0};
     double Rand_v24[trackbin] = {0};
 
-    for(int i = 1; i < trackbin; i++){
+    for(int i = 0; i < trackbin; i++){
         if(Rand_jet_avg_denominat_two[i]==0) continue;
         if(Rand_jet_avg_denominat_four[i]==0) continue;
         

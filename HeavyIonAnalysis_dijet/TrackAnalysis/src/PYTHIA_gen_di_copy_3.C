@@ -172,7 +172,7 @@ void MyClass::Loop(int job, std::string fList){
         
 
         hPhiDrawA[wtrk-1] = new TH1D(Form("hPhiDrawA_%d",wtrk),Form("hPhiDrawA_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
-        hPhiDrawA[wtrk-1] = new TH1D(Form("hPhiDrawT_%d",wtrk),Form("hPhiDrawT_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
+        hPhiDrawT[wtrk-1] = new TH1D(Form("hPhiDrawT_%d",wtrk),Form("hPhiDrawT_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
 
         
         
@@ -326,19 +326,20 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     
                     std::complex<double> Q_part2 (TMath::Cos(n_harm*phi) , TMath::Sin(n_harm*phi));
                     std::complex<double> Q_part4 (TMath::Cos(2.0*n_harm*phi) , TMath::Sin(2.0*n_harm*phi));
-                    if (jet_dau_eta>0.86 && jet_dau_eta<1.75){
+                    if ((jet_dau_eta>0.86) && (jet_dau_eta<1.75)){
 
                         Q_all2A = Q_all2A + Q_part2;
                         Q_all4A = Q_all4A + Q_part4;
                         M++;
                     }
 
-                    if (jet_dau_eta>3.25 && jet_dau_eta<5.00){
+                    else if ((jet_dau_eta>3.25) && (jet_dau_eta<5.00)){
 
                         Q_all2T = Q_all2T + Q_part2;
                         Q_all4T = Q_all4T + Q_part4;
                         N++;
                     }
+                    else continue;
                         
 
                     for(int i = 0; i < trackbin; i++){
@@ -404,8 +405,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
         c22[i] = mult_bin_avg_two[i];
         c24[i] = mult_bin_avg_four[i] - (2* mult_bin_avg_two[i] * mult_bin_avg_two[i]);
 
-        v22[i] = std::pow(c22[i],.50);
-        v24[i] = std::pow(-c24[i],.25);
+        v22[i] = std::pow(fabs(c22[i]),.50);
+        v24[i] = std::pow(fabs(-c24[i]),.25);
 
         double x = hBinDist_gen[i]->GetMean();
 
@@ -568,7 +569,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         
                     }
 
-                    else if (jet_dau_eta>2.75 && jet_dau_eta<5.00){
+                    else if (jet_dau_eta>3.25 && jet_dau_eta<5.00){
 
                         for(int i = 0; i < trackbin; i++){
                             if(tkBool[i] == 1){
@@ -647,7 +648,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
     double Rand_v22[trackbin] = {0};
     double Rand_v24[trackbin] = {0};
 
-    for(int i = 1; i < trackbin; i++){
+    for(int i = 0; i < trackbin; i++){
         if(Rand_jet_avg_denominat_two[i]==0) continue;
         if(Rand_jet_avg_denominat_four[i]==0) continue;
         
