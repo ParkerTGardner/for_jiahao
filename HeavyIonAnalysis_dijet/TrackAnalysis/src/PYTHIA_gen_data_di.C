@@ -19,6 +19,8 @@
 #include <fstream>
 #include <algorithm>
 #include <iterator>
+#include <complex>
+#include <cmath>
 
 #include <TStyle.h>
 #include "TH1D.h"
@@ -35,6 +37,8 @@
 #include "TCutG.h"
 #include "TRandom3.h"
 #include "TVector3.h"
+#include "TComplex.h"
+
 
 using TMath::ATan;
 using TMath::ACos;
@@ -235,7 +239,7 @@ void MyClass::Loop(int job, std::string fList){
         era_vec.push_back("2016H_"); matched_cor_table_vec.push_back("16_v2");
         int i_keep=999;
         for(int i=0; i<era_vec.size(); i++){
-            if(isSubstring(era_vec[i],fileList.at(f).c_str())){
+            if(fileList.at(f).find(era_vec[i]) != std::string::npos){
                 i_keep=i;
                 continue;
             }
@@ -259,17 +263,17 @@ void MyClass::Loop(int job, std::string fList){
                   nb = fChain->GetEntry(ievent);   nbytes += nb;
 
 //what is the def of genDau_pt, genJetPt
-                  if(genJetPt->size()==0) continue;
-                  if(genJetChargedMultiplicity->size()==0) continue;
+                  if(jetEta->size()==0) continue;
+                  if(chargedMultiplicity->size()==0) continue;
 
 
-                  if(!F_eventpass(genJetPt, genJetPt->size(), jetPtCut_Event)){
+                  if(!F_eventpass(jetPt, jetPt->size(), jetPtCut_Event)){
                       continue;
                   }
-                  int gjN = genJetPhi->size();
+                  int gjN = jetPhi->size();
 
 
-            hEvent_Pass->Fill(1);
+            // hEvent_Pass->Fill(1);
 
 
             
@@ -280,14 +284,14 @@ void MyClass::Loop(int job, std::string fList){
             //ENTERING JET LOOP
 
             //in this first loop I choose the jetA and count the trks of A 
-            for(int kjet=0; kjet < genJetPt->size(); kjet++){
+            for(int kjet=0; kjet < jetPt->size(); kjet++){
 
                 int ijet = kjet;
                 int Gjet = kjet;
-                long int NNtrk1 = (genDau_pt->at(ijet)).size();
+                long int NNtrk1 = (dau_pt->at(ijet)).size();
 
                 TVector3 JetA;
-                JetA.SetPtEtaPhi((*genJetPt)[ijet],(*genJetEta)[ijet],(*genJetPhi)[ijet]);
+                JetA.SetPtEtaPhi((*jetPt)[ijet],(*jetEta)[ijet],(*jetPhi)[ijet]);
                 // TLorentzVector JetA_4 (JetA, JetA.Mag());
                 
                 if( fabs(JetA.Eta()) > jetEtaCut ) continue;
@@ -305,14 +309,14 @@ void MyClass::Loop(int job, std::string fList){
                 
                 
                 for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
-                    if((*genDau_chg)[Gjet][G_trk] == 0) continue;
-                    if(fabs((*genDau_pt)[Gjet][G_trk])  < 0.3)     continue;
-                    if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
+                    if((*dau_chg)[Gjet][G_trk] == 0) continue;
+                    if(fabs((*dau_pt)[Gjet][G_trk])  < 0.3)     continue;
+                    if(fabs((*dau_eta)[Gjet][G_trk]) > 2.4)     continue;
                     n_G_ChargeMult_count += 1;
-                    double nUnc_weight = i
+                    double nUnc_weight = 
                     (hReco2D[thisEffTable]->GetBinContent(
                         hReco2D[thisEffTable]->FindBin(
-                            (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk]
+                            (*dau_pt)[ijet][G_trk] , (*dau_eta)[ijet][G_trk]
                                         )));
                     n_G_ChargeMult_count_corrected += (1.0/nUnc_weight);
                 }
@@ -354,10 +358,10 @@ void MyClass::Loop(int job, std::string fList){
                 for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
                 
                     TVector3 dau_A0;
-                    dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
+                    dau_A0.SetPtEtaPhi((double)(*dau_pt)[ijet][A_trk],(double)(*dau_eta)[ijet][A_trk],(double)(*dau_phi)[ijet][A_trk]);
                     // TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
                     
-                    if((*genDau_chg)[ijet][A_trk] == 0) continue;
+                    if((*dau_chg)[ijet][A_trk] == 0) continue;
                     if(fabs(dau_A0.Eta()) > 2.4)        continue;
                     if(fabs(dau_A0.Perp())  < 0.3)      continue;
 
@@ -391,22 +395,22 @@ void MyClass::Loop(int job, std::string fList){
 
                         Q_all2A = Q_all2A + Q_part2;
                         Q_all4A = Q_all4A + Q_part4;
-                        double nUnc_weight = i
+                        double nUnc_weight = 
                         (hReco2D[thisEffTable]->GetBinContent(
                             hReco2D[thisEffTable]->FindBin(
-                                (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk]
+                                dau_A0.Perp() , dau_A0.Eta()
                                             )));
                         M += (1.0* jet_HLT_weight/nUnc_weight);
                     }
 
                     else if ((jet_dau_eta>2.75) && (jet_dau_eta<5.00)){
 
-                        Q_all2T = Q_all2T + Q_part2;
-                        Q_all4T = Q_all4T + Q_part4;
-                        double nUnc_weight = i
+                        Q_all2A = Q_all2A + Q_part2;
+                        Q_all4A = Q_all4A + Q_part4;
+                        double nUnc_weight = 
                         (hReco2D[thisEffTable]->GetBinContent(
                             hReco2D[thisEffTable]->FindBin(
-                                (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk]
+                                dau_A0.Perp() , dau_A0.Eta()
                                             )));
                         N += (1.0* jet_HLT_weight/nUnc_weight);
                     }
@@ -536,7 +540,7 @@ void MyClass::Loop(int job, std::string fList){
         era_vec.push_back("2016H_"); matched_cor_table_vec.push_back("16_v2");
         int i_keep=999;
         for(int i=0; i<era_vec.size(); i++){
-            if(isSubstring(era_vec[i],fileList.at(f).c_str())){
+            if(fileList.at(f).find(era_vec[i]) != std::string::npos){
                 i_keep=i;
                 continue;
             }
@@ -560,28 +564,35 @@ void MyClass::Loop(int job, std::string fList){
                   nb = fChain->GetEntry(ievent);   nbytes += nb;
 
 //what is the def of genDau_pt, genJetPt
-                  if(genJetPt->size()==0) continue;
-                  if(genJetChargedMultiplicity->size()==0) continue;
+                  if(jetEta->size()==0) continue;
+                  if(chargedMultiplicity->size()==0) continue;
 
 
-                  if(!F_eventpass(genJetPt, genJetPt->size(), jetPtCut_Event)){
+                  if(!F_eventpass(jetPt, jetPt->size(), jetPtCut_Event)){
                       continue;
                   }
-                  int gjN = genJetPhi->size();
+                  int gjN = jetPhi->size();
 
+
+            // hEvent_Pass->Fill(1);
+
+
+            
+            
+            
             
             
             //ENTERING JET LOOP
 
             //in this first loop I choose the jetA and count the trks of A 
-            for(int kjet=0; kjet < genJetPt->size(); kjet++){
+            for(int kjet=0; kjet < jetPt->size(); kjet++){
 
                 int ijet = kjet;
                 int Gjet = kjet;
-                long int NNtrk1 = (genDau_pt->at(ijet)).size();
+                long int NNtrk1 = (dau_pt->at(ijet)).size();
 
                 TVector3 JetA;
-                JetA.SetPtEtaPhi((*genJetPt)[ijet],(*genJetEta)[ijet],(*genJetPhi)[ijet]);
+                JetA.SetPtEtaPhi((*jetPt)[ijet],(*jetEta)[ijet],(*jetPhi)[ijet]);
                 // TLorentzVector JetA_4 (JetA, JetA.Mag());
                 
                 if( fabs(JetA.Eta()) > jetEtaCut ) continue;
@@ -599,17 +610,20 @@ void MyClass::Loop(int job, std::string fList){
                 
                 
                 for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
-                    if((*genDau_chg)[Gjet][G_trk] == 0) continue;
-                    if(fabs((*genDau_pt)[Gjet][G_trk])  < 0.3)     continue;
-                    if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
+                    if((*dau_chg)[Gjet][G_trk] == 0) continue;
+                    if(fabs((*dau_pt)[Gjet][G_trk])  < 0.3)     continue;
+                    if(fabs((*dau_eta)[Gjet][G_trk]) > 2.4)     continue;
                     n_G_ChargeMult_count += 1;
-                    double nUnc_weight = i
+                    double nUnc_weight = 
                     (hReco2D[thisEffTable]->GetBinContent(
                         hReco2D[thisEffTable]->FindBin(
-                            (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk]
+                            (*dau_pt)[ijet][G_trk] , (*dau_eta)[ijet][G_trk]
                                         )));
                     n_G_ChargeMult_count_corrected += (1.0/nUnc_weight);
                 }
+
+                hBinDist_corrected           ->Fill(n_G_ChargeMult_count_corrected, 1.0*jet_HLT_weight);
+                hBinDist_unccorrected        ->Fill(n_G_ChargeMult_count, 1.0*jet_HLT_weight);
                 
                 int tkBool[trackbin] = {0};
                 
@@ -638,10 +652,10 @@ void MyClass::Loop(int job, std::string fList){
                 for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
                 
                     TVector3 dau_A0;
-                    dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
+                    dau_A0.SetPtEtaPhi((double)(*dau_pt)[ijet][A_trk],(double)(*dau_eta)[ijet][A_trk],(double)(*dau_phi)[ijet][A_trk]);
                     // TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
                     
-                    if((*genDau_chg)[ijet][A_trk] == 0) continue;
+                    if((*dau_chg)[ijet][A_trk] == 0) continue;
                     if(fabs(dau_A0.Eta()) > 2.4)        continue;
                     if(fabs(dau_A0.Perp())  < 0.3)      continue;
 
@@ -649,18 +663,23 @@ void MyClass::Loop(int job, std::string fList){
                     double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);
 
                     if(jet_dau_pt >3.0) continue;
+                    // if(jet_dau_pt0 <0.3) continue;
+
+                    // TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
+                    // TVector3       dau_A   = dau_A_4.Vect();
 
                     double jet_dau_eta   = etaWRTJet(JetA, dau_A0);
                     //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
                     double jet_dau_phi   = phiWRTJet(JetA, dau_A0) ;
 
+                    // double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);
 
 
 
                     // if(jet_dau_pt >3.0) continue;
                     if(jet_dau_pt  <0.3) continue;
 
-                    gRandom->SetSeed(0);
+                                        gRandom->SetSeed(0);
                     double phi;
                     if (jet_dau_eta>0.86 && jet_dau_eta<1.75){
 
@@ -691,27 +710,27 @@ void MyClass::Loop(int job, std::string fList){
 
                         Q_all2A = Q_all2A + Q_part2;
                         Q_all4A = Q_all4A + Q_part4;
-                        double nUnc_weight = i
+                        double nUnc_weight = 
                         (hReco2D[thisEffTable]->GetBinContent(
                             hReco2D[thisEffTable]->FindBin(
-                                (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk]
+                                dau_A0.Perp() , dau_A0.Eta()
                                             )));
                         M += (1.0* jet_HLT_weight/nUnc_weight);
                     }
 
                     else if ((jet_dau_eta>2.75) && (jet_dau_eta<5.00)){
 
-                        Q_all2T = Q_all2T + Q_part2;
-                        Q_all4T = Q_all4T + Q_part4;
-                        double nUnc_weight = i
+                        Q_all2A = Q_all2A + Q_part2;
+                        Q_all4A = Q_all4A + Q_part4;
+                        double nUnc_weight = 
                         (hReco2D[thisEffTable]->GetBinContent(
                             hReco2D[thisEffTable]->FindBin(
-                                (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk]
+                                dau_A0.Perp() , dau_A0.Eta()
                                             )));
                         N += (1.0* jet_HLT_weight/nUnc_weight);
                     }
                     else continue;
-                            
+                           
                 }
 
 
@@ -741,7 +760,7 @@ void MyClass::Loop(int job, std::string fList){
                     if(tkBool[i] == 1){
 
                     Rand_jet_avg_numerator_four[i] = Rand_jet_avg_numerator_four[i] + ((weight_four)*(particle_four));
-                    Rand_jet_avg_denominat_four[i] = Rand_jet_avg_denominat_four[i] + (weight_four);
+                    Rand_jet_avg_denominat_four[i] = Rand_åjet_avg_denominat_four[i] + (weight_four);
                     }
                 }
 
