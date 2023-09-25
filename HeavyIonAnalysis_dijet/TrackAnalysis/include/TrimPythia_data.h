@@ -45,7 +45,7 @@ public :
    TBranch        *b_jetEta;   //!
    TBranch        *b_jetPt;   //!
    TBranch        *b_jetPhi;   //!
-   TBranch        *b_jetChargedMultiplicity;   //!
+   TBranch        *b_chargedMultiplicity;   //!
    TBranch        *b_dau_chg;   //!
    TBranch        *b_dau_pt;   //!
    TBranch        *b_dau_eta;   //!
@@ -134,7 +134,7 @@ void MyClass::Init(TTree *tree)
    fChain->SetBranchAddress("jetEta", &jetEta, &b_jetEta);
    fChain->SetBranchAddress("jetPt", &jetPt, &b_jetPt);
    fChain->SetBranchAddress("jetPhi", &jetPhi, &b_jetPhi);
-   fChain->SetBranchAddress("jetChargedMultiplicity", &chargedMultiplicity, &b_chargedMultiplicity);
+   fChain->SetBranchAddress("chargedMultiplicity", &chargedMultiplicity, &b_chargedMultiplicity);
    fChain->SetBranchAddress("dau_chg", &dau_chg, &b_dau_chg);
    fChain->SetBranchAddress("dau_pt", &dau_pt, &b_dau_pt);
    fChain->SetBranchAddress("dau_eta", &dau_eta, &b_dau_eta);
