@@ -13,21 +13,12 @@ Error      = pythia_batch_data_output/err/submit_v0.$(Process).err
 +MaxRuntime =60000
 Queue
 '''
-for i in range(48):
-   # with open("all_data_list/list_cor_{:03d}".format(i)) as fs:
-   #    line_count = 0
-   #    for line in fs:
-   #       line_count += 1
-
-   # line_count_frac = line_count  # for all pthatpythia
-   # file_count = math.ceil(line_count_frac)
-
-   # for j in range(1, int(file_count)):
-      temp = '''
-   Arguments  = {:03d}
-   Queue
-      '''.format(i)
-      command_lines += temp
+for i in range(1,48):
+   temp = '''
+Arguments  = %03d
+Queue
+   ''' % i
+   command_lines += temp
 
 f.write(command_lines)
 f.close()
