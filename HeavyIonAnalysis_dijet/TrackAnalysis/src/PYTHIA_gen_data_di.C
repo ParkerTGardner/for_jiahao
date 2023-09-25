@@ -3,7 +3,7 @@
 
 
 
-#include "include/TrimPythia.h"
+#include "include/TrimPythia_data.h"
 //below allows for rotation into jet frame
 #include "include/coordinateTools.h"
 //defines constants
@@ -760,7 +760,7 @@ void MyClass::Loop(int job, std::string fList){
                     if(tkBool[i] == 1){
 
                     Rand_jet_avg_numerator_four[i] = Rand_jet_avg_numerator_four[i] + ((weight_four)*(particle_four));
-                    Rand_jet_avg_denominat_four[i] = Rand_åjet_avg_denominat_four[i] + (weight_four);
+                    Rand_jet_avg_denominat_four[i] = Rand_jet_avg_denominat_four[i] + (weight_four);
                     }
                 }
 
