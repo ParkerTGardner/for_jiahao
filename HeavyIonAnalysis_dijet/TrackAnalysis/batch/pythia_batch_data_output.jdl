@@ -1,0 +1,153 @@
+Universe   = vanilla
+GetEnv     = True
+Executable = pythia_batch_data_output/pythia_sub.sh
+Arguments  = 000
+Log        = pythia_batch_data_output/log/submit_v0.$(Process).log
+Output     = pythia_batch_data_output/out/submit_v0.$(Process).out
+Error      = pythia_batch_data_output/err/submit_v0.$(Process).err
++MaxRuntime =60000
+Queue
+
+Arguments  = 001
+Queue
+   
+Arguments  = 002
+Queue
+   
+Arguments  = 003
+Queue
+   
+Arguments  = 004
+Queue
+   
+Arguments  = 005
+Queue
+   
+Arguments  = 006
+Queue
+   
+Arguments  = 007
+Queue
+   
+Arguments  = 008
+Queue
+   
+Arguments  = 009
+Queue
+   
+Arguments  = 010
+Queue
+   
+Arguments  = 011
+Queue
+   
+Arguments  = 012
+Queue
+   
+Arguments  = 013
+Queue
+   
+Arguments  = 014
+Queue
+   
+Arguments  = 015
+Queue
+   
+Arguments  = 016
+Queue
+
+Arguments  = 017
+Queue
+   
+Arguments  = 018
+Queue
+   
+Arguments  = 019
+Queue
+   
+Arguments  = 020
+Queue
+   
+Arguments  = 021
+Queue
+   
+Arguments  = 022
+Queue
+   
+Arguments  = 023
+Queue
+   
+Arguments  = 024
+Queue
+   
+Arguments  = 025
+Queue
+   
+Arguments  = 026
+Queue
+   
+Arguments  = 027
+Queue
+   
+Arguments  = 028
+Queue
+   
+Arguments  = 029
+Queue
+   
+Arguments  = 030
+Queue
+   
+Arguments  = 031
+Queue
+   
+Arguments  = 032
+Queue
+
+Arguments  = 033
+Queue
+   
+Arguments  = 034
+Queue
+   
+Arguments  = 035
+Queue
+   
+Arguments  = 036
+Queue
+   
+Arguments  = 037
+Queue
+   
+Arguments  = 038
+Queue
+   
+Arguments  = 039
+Queue
+   
+Arguments  = 040
+Queue
+   
+Arguments  = 041
+Queue
+   
+Arguments  = 042
+Queue
+   
+Arguments  = 043
+Queue
+   
+Arguments  = 044
+Queue
+   
+Arguments  = 045
+Queue
+   
+Arguments  = 046
+Queue
+   
+Arguments  = 047
+Queue
+   
+
+   
