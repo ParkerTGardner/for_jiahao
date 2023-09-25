@@ -26,7 +26,7 @@ for i in range(48):
       temp = '''
    Arguments  = {:03d}
    Queue
-      '''.format(j)
+      '''.format(i)
       command_lines += temp
 
 f.write(command_lines)
