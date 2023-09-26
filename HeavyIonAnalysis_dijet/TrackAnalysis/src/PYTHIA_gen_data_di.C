@@ -192,10 +192,10 @@ void MyClass::Loop(int job, std::string fList){
     
 
 
-    // TH2D* hReco2D[fileList.size()];
-    // TH2D* hGen2D[fileList.size()];
-    // TH1D* hdid500;
-    // TH1D* hdid400;
+    TH2D* hReco2D[fileList.size()];
+    TH2D* hGen2D[fileList.size()];
+    TH1D* hdid500;
+    TH1D* hdid400;
 
     // TFile *f_jet_HLT_lookup = new TFile("did400500_v2_all.root");
     // hdid500 = (TH1D*)f_jet_HLT_lookup->Get("d500")->Clone("did500");
