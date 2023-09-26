@@ -253,7 +253,7 @@ void MyClass::Loop(int job, std::string fList){
         hGen2D[f] = (TH2D*)f_pt_eta_DCA_lookup->Get("h2_Dau_Gen_Pt_Eta_Lab_All")->Clone(Form("h2_Dau_Gen_Pt_Eta_Lab_All_%d",f));
         hReco2D[f]->Divide(hGen2D[f]);
         int thisEffTable =f_from_file;
-    }
+    
 
 
         // ENTERING EVENT LOOP
