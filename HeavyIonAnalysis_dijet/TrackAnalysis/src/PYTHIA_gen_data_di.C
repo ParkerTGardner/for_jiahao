@@ -353,8 +353,8 @@ void MyClass::Loop(int job, std::string fList){
                 std::complex<double> Q_all2T (0, 0);
                 std::complex<double> Q_all4T (0, 0);
 
-                double M = 0.0;
-                double N = 0.0;
+                int M = 0;
+                int N = 0;
 
                 // calculate the A_ptbool pile up Ntrig in jetA first,
                 //and then we do this in jetB so that we can get the complete Ntrig
@@ -398,24 +398,26 @@ void MyClass::Loop(int job, std::string fList){
 
                         Q_all2A = Q_all2A + Q_part2;
                         Q_all4A = Q_all4A + Q_part4;
-                        double nUnc_weight = 
-                        (hReco2D[thisEffTable]->GetBinContent(
-                            hReco2D[thisEffTable]->FindBin(
-                                dau_A0.Perp() , dau_A0.Eta()
-                                            )));
-                        M += (1.0* jet_HLT_weight/nUnc_weight);
+                        // double nUnc_weight = 
+                        // (hReco2D[thisEffTable]->GetBinContent(
+                        //     hReco2D[thisEffTable]->FindBin(
+                        //         dau_A0.Perp() , dau_A0.Eta()
+                        //                     )));
+                        // M += (1.0* jet_HLT_weight/nUnc_weight);
+                        M++;
                     }
 
                     else if ((jet_dau_eta>2.75) && (jet_dau_eta<5.00)){
 
                         Q_all2A = Q_all2A + Q_part2;
                         Q_all4A = Q_all4A + Q_part4;
-                        double nUnc_weight = 
-                        (hReco2D[thisEffTable]->GetBinContent(
-                            hReco2D[thisEffTable]->FindBin(
-                                dau_A0.Perp() , dau_A0.Eta()
-                                            )));
-                        N += (1.0* jet_HLT_weight/nUnc_weight);
+                        // double nUnc_weight = 
+                        // (hReco2D[thisEffTable]->GetBinContent(
+                        //     hReco2D[thisEffTable]->FindBin(
+                        //         dau_A0.Perp() , dau_A0.Eta()
+                        //                     )));
+                        // N += (1.0* jet_HLT_weight/nUnc_weight);
+                        N++;
                     }
                     else continue;
                         
@@ -648,8 +650,8 @@ void MyClass::Loop(int job, std::string fList){
                 std::complex<double> Q_all2T (0, 0);
                 std::complex<double> Q_all4T (0, 0);
 
-                double M = 0.0;
-                double N = 0.0;
+                int M = 0;
+                int N = 0;
 
                 // calculate the A_ptbool pile up Ntrig in jetA first,
                 //and then we do this in jetB so that we can get the complete Ntrig
@@ -714,24 +716,26 @@ void MyClass::Loop(int job, std::string fList){
 
                         Q_all2A = Q_all2A + Q_part2;
                         Q_all4A = Q_all4A + Q_part4;
-                        double nUnc_weight = 
-                        (hReco2D[thisEffTable]->GetBinContent(
-                            hReco2D[thisEffTable]->FindBin(
-                                dau_A0.Perp() , dau_A0.Eta()
-                                            )));
-                        M += (1.0* jet_HLT_weight/nUnc_weight);
+                        // double nUnc_weight = 
+                        // (hReco2D[thisEffTable]->GetBinContent(
+                        //     hReco2D[thisEffTable]->FindBin(
+                        //         dau_A0.Perp() , dau_A0.Eta()
+                        //                     )));
+                        // M += (1.0* jet_HLT_weight/nUnc_weight);
+                        M++;
                     }
 
                     else if ((jet_dau_eta>2.75) && (jet_dau_eta<5.00)){
 
                         Q_all2A = Q_all2A + Q_part2;
                         Q_all4A = Q_all4A + Q_part4;
-                        double nUnc_weight = 
-                        (hReco2D[thisEffTable]->GetBinContent(
-                            hReco2D[thisEffTable]->FindBin(
-                                dau_A0.Perp() , dau_A0.Eta()
-                                            )));
-                        N += (1.0* jet_HLT_weight/nUnc_weight);
+                        // double nUnc_weight = 
+                        // (hReco2D[thisEffTable]->GetBinContent(
+                        //     hReco2D[thisEffTable]->FindBin(
+                        //         dau_A0.Perp() , dau_A0.Eta()
+                        //                     )));
+                        // N += (1.0* jet_HLT_weight/nUnc_weight);
+                        N++
                     }
                     else continue;
                            
