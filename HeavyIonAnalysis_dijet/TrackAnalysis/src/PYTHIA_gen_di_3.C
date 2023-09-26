@@ -144,22 +144,11 @@ void MyClass::Loop(int job, std::string fList){
     //Initializing Histograms
 
 
-    // int hist_bins = mult_bins.size();
-    // double mult_binsA[trackbin]; 
 
-    long double jet_avg_numerator_two[trackbin] = {0};
-    long double jet_avg_denominat_two[trackbin] = {0};
-    double mult_bin_avg_two[trackbin] = {0};
-
-    long double jet_avg_numerator_four[trackbin] = {0};
-    long double jet_avg_denominat_four[trackbin] = {0};
-    double mult_bin_avg_four[trackbin] = {0};
-
-
-    TH1D* hc22    = new TH1D("hc22", "hc22" ,trackbin , trackbinEdge);
-    TH1D* hc24    = new TH1D("hc24", "hc24" ,trackbin , trackbinEdge);
-    TH1D* hv22    = new TH1D("hv22", "hv22" ,trackbin , trackbinEdge);
-    TH1D* hv24    = new TH1D("hv24", "hv24" ,trackbin , trackbinEdge);
+    TH1D* hjet_avg_numerator_two = new TH1D("hjet_avg_numerator_two", "hjet_avg_numerator_two" ,trackbin , trackbinEdge);
+    TH1D* hjet_avg_denominat_two = new TH1D("hjet_avg_denominat_two", "hjet_avg_denominat_two" ,trackbin , trackbinEdge);
+    TH1D* hjet_avg_numerator_four = new TH1D("hjet_avg_numerator_four", "hjet_avg_numerator_four" ,trackbin , trackbinEdge);
+    TH1D* hjet_avg_denominat_four = new TH1D("hjet_avg_denominat_four", "hjet_avg_denominat_four" ,trackbin , trackbinEdge);
 
     
    
@@ -169,11 +158,8 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hPhiDrawT[trackbin];
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_gen[wtrk-1]    = new TH1D(Form("hBinDist_gen_%d",wtrk),Form("hBinDist_gen_%d",wtrk), bin360, bin0, bin120);
-        
-
         hPhiDrawA[wtrk-1] = new TH1D(Form("hPhiDrawA_%d",wtrk),Form("hPhiDrawA_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
         hPhiDrawT[wtrk-1] = new TH1D(Form("hPhiDrawT_%d",wtrk),Form("hPhiDrawT_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
-
         
         
     }
@@ -367,8 +353,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
 
-                    jet_avg_numerator_two[i] = jet_avg_numerator_two[i] + ((weight_two)*(particle_twoAT)); 
-                    jet_avg_denominat_two[i] = jet_avg_denominat_two[i] + (weight_two);
+                    
+                    jet_avg_numerator_two->Fill(i,((weight_two)*(particle_twoAT)));
+                    jet_avg_denominat_two->Fill(i,(weight_two));
+
                     }
                 }
 
@@ -378,8 +366,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
 
-                    jet_avg_numerator_four[i] = jet_avg_numerator_four[i] + ((weight_four)*(particle_four));
-                    jet_avg_denominat_four[i] = jet_avg_denominat_four[i] + (weight_four);
+                    jet_avg_numerator_four->Fill(i,((weight_four)*(particle_four)) );
+                    jet_avg_denominat_four->Fill(i,(weight_four));
+
                     }
                 }
 
@@ -391,45 +380,13 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     fFile->Close();
                     }//File
 
-    long double c22[trackbin] = {0};
-    long double c24[trackbin] = {0};
-    long double v22[trackbin] = {0};
-    long double v24[trackbin] = {0};
 
-    for(int i = 0; i < trackbin; i++){
-        if(jet_avg_denominat_two[i]==0) continue;
-        if(jet_avg_denominat_four[i]==0) continue;
-        mult_bin_avg_two[i]  =jet_avg_numerator_two[i]/jet_avg_denominat_two[i];
-        mult_bin_avg_four[i] =jet_avg_numerator_four[i]/jet_avg_denominat_four[i];
-
-        c22[i] = mult_bin_avg_two[i];
-        c24[i] = mult_bin_avg_four[i] - (2* mult_bin_avg_two[i] * mult_bin_avg_two[i]);
-
-        v22[i] = std::pow(fabs(c22[i]),.50);
-        v24[i] = std::pow(fabs(-c24[i]),.25);
-
-        double x = hBinDist_gen[i]->GetMean();
-
-
-        hc22->Fill(x, c22[i]);
-        hc24->Fill(x, c24[i]);
-        hv22->Fill(x, v22[i]);
-        hv24->Fill(x, v24[i]);
-    }
     
                     
-    long double Rand_jet_avg_numerator_two[trackbin] = {0};
-    long double Rand_jet_avg_denominat_two[trackbin] = {0};
-    double Rand_mult_bin_avg_two[trackbin] = {0};
-
-    long double Rand_jet_avg_numerator_four[trackbin] = {0};
-    long double Rand_jet_avg_denominat_four[trackbin] = {0};
-    double Rand_mult_bin_avg_four[trackbin] = {0};
-
-    TH1D* hRand_c22    = new TH1D("hRand_c22", "hRand_c22" ,trackbin , trackbinEdge);
-    TH1D* hRand_c24    = new TH1D("hRand_c24", "hRand_c24" ,trackbin , trackbinEdge);
-    TH1D* hRand_v22    = new TH1D("hRand_v22", "hRand_v22" ,trackbin , trackbinEdge);
-    TH1D* hRand_v24    = new TH1D("hRand_v24", "hRand_v24" ,trackbin , trackbinEdge);
+    TH1D* hRand_jet_avg_numerator_two = new TH1D("hRand_jet_avg_numerator_two", "hRand_jet_avg_numerator_two" ,trackbin , trackbinEdge);
+    TH1D* hRand_jet_avg_denominat_two = new TH1D("hRand_jet_avg_denominat_two", "hRand_jet_avg_denominat_two" ,trackbin , trackbinEdge);
+    TH1D* hRand_jet_avg_numerator_four = new TH1D("hRand_jet_avg_numerator_four", "hRand_jet_avg_numerator_four" ,trackbin , trackbinEdge);
+    TH1D* hRand_jet_avg_denominat_four = new TH1D("hRand_jet_avg_denominat_four", "hRand_jet_avg_denominat_four" ,trackbin , trackbinEdge);
 
     for(int f = 0; f<fileList.size(); f++){
 //processing data from CMS
@@ -445,8 +402,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
-        // ENTERING EVENT LOOP
-        //for(int f = 0; f<fileList.size(); f++){
+ 
 
 
         for (Long64_t ievent=0; ievent <nentries; ievent ++){
@@ -619,8 +575,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
 
-                    Rand_jet_avg_numerator_two[i] = Rand_jet_avg_numerator_two[i] + ((weight_two)*(particle_twoAT)); 
-                    Rand_jet_avg_denominat_two[i] = Rand_jet_avg_denominat_two[i] + (weight_two);
+                    hRand_jet_avg_numerator_two -> Fill(i,((weight_two)*(particle_twoAT))); 
+                    hRand_jet_avg_denominat_two -> Fill(i,(weight_two));
                     }
                 }
 
@@ -630,8 +586,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
 
-                    Rand_jet_avg_numerator_four[i] = Rand_jet_avg_numerator_four[i] + ((weight_four)*(particle_four));
-                    Rand_jet_avg_denominat_four[i] = Rand_jet_avg_denominat_four[i] + (weight_four);
+                    hRand_jet_avg_numerator_four -> Fill (i,(weight_four)*(particle_four));
+                    hRand_jet_avg_denominat_four -> Fill (i,weight_four);
                     }
                 }
 
@@ -643,44 +599,18 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     fFile->Close();
                     }//File
 
-    double Rand_c22[trackbin] = {0};
-    double Rand_c24[trackbin] = {0};
-    double Rand_v22[trackbin] = {0};
-    double Rand_v24[trackbin] = {0};
-
-    for(int i = 0; i < trackbin; i++){
-        if(Rand_jet_avg_denominat_two[i]==0) continue;
-        if(Rand_jet_avg_denominat_four[i]==0) continue;
-        
-        Rand_mult_bin_avg_two[i]  =Rand_jet_avg_numerator_two[i]/Rand_jet_avg_denominat_two[i];
-        Rand_mult_bin_avg_four[i] =Rand_jet_avg_numerator_four[i]/Rand_jet_avg_denominat_four[i];
-
-        Rand_c22[i] = Rand_mult_bin_avg_two[i];
-        Rand_c24[i] = Rand_mult_bin_avg_four[i] - (2* Rand_mult_bin_avg_two[i] * Rand_mult_bin_avg_two[i]);
-        Rand_v22[i] = std::pow(fabs(Rand_c22[i]),.50);
-        Rand_v24[i] = std::pow(fabs(-Rand_c24[i]),.25);
-
-        double x = hBinDist_gen[i]->GetMean();
-
-//std::real(std::pow(std::complex<double>(-Rand_c24[i]),.25))
-
-        hRand_c22->Fill(x, Rand_c22[i]);
-        hRand_c24->Fill(x, Rand_c24[i]);
-        hRand_v22->Fill(x, Rand_v22[i]);
-        hRand_v24->Fill(x, Rand_v24[i]);
-    }
+    
     string subList = fList.substr(fList.size() - 3);
     TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_3/dijob_%s.root",subList.c_str()), "recreate");
-    hc22->Write();
-    hc24->Write();
-    hv22->Write();
-    hv24->Write();
+    hjet_avg_numerator_two ->Write();
+    hjet_avg_denominat_two ->Write();
+    hjet_avg_numerator_four->Write();
+    hjet_avg_numerator_four->Write();
     
-    // TFile* fS_2_temp = new TFile(Form("pythia_batch_output/root_out_2/rand_dijob_%s.root",subList.c_str()), "recreate");
-    hRand_c22->Write();
-    hRand_c24->Write();
-    hRand_v22->Write();
-    hRand_v24->Write();
+    hRand_jet_avg_numerator_two ->Write();
+    hRand_jet_avg_denominat_two ->Write();
+    hRand_jet_avg_numerator_four->Write();
+    hRand_jet_avg_numerator_four->Write();
 
     for(int i=0; i<trackbin; i++){
         hBinDist_gen[i]->Write();
