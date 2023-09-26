@@ -626,8 +626,8 @@ void MyClass::Loop(int job, std::string fList){
                     n_G_ChargeMult_count_corrected += (1.0/nUnc_weight);
                 }
 
-                hBinDist_corrected           ->Fill(n_G_ChargeMult_count_corrected, 1.0*jet_HLT_weight);
-                hBinDist_unccorrected        ->Fill(n_G_ChargeMult_count, 1.0*jet_HLT_weight);
+                // hBinDist_corrected           ->Fill(n_G_ChargeMult_count_corrected, 1.0*jet_HLT_weight);
+                // hBinDist_uncorrected        ->Fill(n_G_ChargeMult_count, 1.0*jet_HLT_weight);
                 
                 int tkBool[trackbin] = {0};
                 
@@ -814,9 +814,13 @@ void MyClass::Loop(int job, std::string fList){
     hRand_c24->Write();
     hRand_v22->Write();
     hRand_v24->Write();
+    hBinDist_corrected->Write();
+    hBinDist_unccorrected->Write();
+
 
     for(int i=0; i<trackbin; i++){
         hBinDist_gen[i]->Write();
+        hBinDist_gen_corrected[i]->Write();
     }
     fS_tempA->Close();
     // fS_2_temp->Close();
