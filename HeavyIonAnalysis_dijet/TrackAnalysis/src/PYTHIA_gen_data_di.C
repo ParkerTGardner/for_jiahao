@@ -495,18 +495,18 @@ void MyClass::Loop(int job, std::string fList){
 //     }
     
                     
-//     long double Rand_jet_avg_numerator_two[trackbin] = {0};
-//     long double Rand_jet_avg_denominat_two[trackbin] = {0};
-//     double Rand_mult_bin_avg_two[trackbin] = {0};
+    long double Rand_jet_avg_numerator_two[trackbin] = {0};
+    long double Rand_jet_avg_denominat_two[trackbin] = {0};
+    double Rand_mult_bin_avg_two[trackbin] = {0};
 
-//     long double Rand_jet_avg_numerator_four[trackbin] = {0};
-//     long double Rand_jet_avg_denominat_four[trackbin] = {0};
-//     double Rand_mult_bin_avg_four[trackbin] = {0};
+    long double Rand_jet_avg_numerator_four[trackbin] = {0};
+    long double Rand_jet_avg_denominat_four[trackbin] = {0};
+    double Rand_mult_bin_avg_four[trackbin] = {0};
 
-//     TH1D* hRand_c22    = new TH1D("hRand_c22", "hRand_c22" ,trackbin , trackbinEdge);
-//     TH1D* hRand_c24    = new TH1D("hRand_c24", "hRand_c24" ,trackbin , trackbinEdge);
-//     TH1D* hRand_v22    = new TH1D("hRand_v22", "hRand_v22" ,trackbin , trackbinEdge);
-//     TH1D* hRand_v24    = new TH1D("hRand_v24", "hRand_v24" ,trackbin , trackbinEdge);
+    TH1D* hRand_c22    = new TH1D("hRand_c22", "hRand_c22" ,trackbin , trackbinEdge);
+    TH1D* hRand_c24    = new TH1D("hRand_c24", "hRand_c24" ,trackbin , trackbinEdge);
+    TH1D* hRand_v22    = new TH1D("hRand_v22", "hRand_v22" ,trackbin , trackbinEdge);
+    TH1D* hRand_v24    = new TH1D("hRand_v24", "hRand_v24" ,trackbin , trackbinEdge);
 
 //     for(int f = 0; f<fileList.size(); f++){
 //         int f_from_file = f;
