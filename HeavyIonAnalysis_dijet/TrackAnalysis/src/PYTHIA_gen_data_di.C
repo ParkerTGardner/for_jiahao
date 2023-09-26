@@ -257,7 +257,7 @@ void MyClass::Loop(int job, std::string fList){
 
 
         // ENTERING EVENT LOOP
-        for(int f = 0; f<fileList.size(); f++){
+        // for(int f = 0; f<fileList.size(); f++){
 
 
         for (Long64_t ievent=0; ievent <nentries; ievent ++){
