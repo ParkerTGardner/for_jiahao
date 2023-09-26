@@ -256,7 +256,7 @@ void MyClass::Loop(int job, std::string fList){
     }
 
 
-        ENTERING EVENT LOOP
+        // ENTERING EVENT LOOP
         for(int f = 0; f<fileList.size(); f++){
 
 
