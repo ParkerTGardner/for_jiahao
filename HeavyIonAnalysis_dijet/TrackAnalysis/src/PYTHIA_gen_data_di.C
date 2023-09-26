@@ -246,7 +246,7 @@ void MyClass::Loop(int job, std::string fList){
             }
         }
 
-        string filename = "~/StorageArea/"+matched_cor_table_vec[i_keep]+".root";
+        string filename = "~/"+matched_cor_table_vec[i_keep]+".root";
         TFile *f_pt_eta_DCA_lookup = new TFile(filename.c_str());
 
         hReco2D[f] = (TH2D*)f_pt_eta_DCA_lookup->Get("h2_MAIN_DCA_Dau_Reco_Pt_Eta_Lab_All")->Clone(Form("h2_DCA_Dau_Reco_Pt_Eta_Lab_All_%d",f));
@@ -549,7 +549,7 @@ void MyClass::Loop(int job, std::string fList){
             }
         }
 
-        string filename = "~/StorageArea/"+matched_cor_table_vec[i_keep]+".root";
+        string filename = "~/"+matched_cor_table_vec[i_keep]+".root";
         TFile *f_pt_eta_DCA_lookup = new TFile(filename.c_str());
 
         hReco2D[f] = (TH2D*)f_pt_eta_DCA_lookup->Get("h2_MAIN_DCA_Dau_Reco_Pt_Eta_Lab_All")->Clone(Form("h2_DCA_Dau_Reco_Pt_Eta_Lab_All_%d",f));
