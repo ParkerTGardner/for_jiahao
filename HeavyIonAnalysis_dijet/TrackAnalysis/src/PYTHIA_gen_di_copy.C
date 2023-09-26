@@ -354,8 +354,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(tkBool[i] == 1){
 
                     
-                    jet_avg_numerator_two->Fill(i,((weight_two)*(particle_twoAT)));
-                    jet_avg_denominat_two->Fill(i,(weight_two));
+                    hjet_avg_numerator_two->Fill(i,((weight_two)*(particle_twoAT)));
+                    hjet_avg_denominat_two->Fill(i,(weight_two));
 
                     }
                 }
@@ -366,8 +366,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
 
-                    jet_avg_numerator_four->Fill(i,((weight_four)*(particle_four)) );
-                    jet_avg_denominat_four->Fill(i,(weight_four));
+                    hjet_avg_numerator_four->Fill(i,((weight_four)*(particle_four)) );
+                    hjet_avg_denominat_four->Fill(i,(weight_four));
 
                     }
                 }
