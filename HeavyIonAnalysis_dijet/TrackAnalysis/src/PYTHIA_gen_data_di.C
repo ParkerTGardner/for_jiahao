@@ -205,7 +205,7 @@ void MyClass::Loop(int job, std::string fList){
 
 
 
-    std::cout << "Starting event loop" << std::endl;
+       std::cout << "Starting event loop" << std::endl;
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
     for(int f = 0; f<fileList.size(); f++){
         int f_from_file = f;
@@ -353,8 +353,8 @@ void MyClass::Loop(int job, std::string fList){
                 std::complex<double> Q_all2T (0, 0);
                 std::complex<double> Q_all4T (0, 0);
 
-                int M = 0;
-                int N = 0;
+                double M = 0.0;
+                double N = 0.0;
 
                 // calculate the A_ptbool pile up Ntrig in jetA first,
                 //and then we do this in jetB so that we can get the complete Ntrig
@@ -440,7 +440,7 @@ void MyClass::Loop(int job, std::string fList){
                 double Q_all_absAT = std::real(Q_all2A*std::conj(Q_all2T));
                 double particle_twoAT = Q_all_absAT / (M*N);
 
-                int weight_two = (M*N);
+                double weight_two = (M*N);
 
 
                 for(int i = 0; i < trackbin; i++){
@@ -452,7 +452,7 @@ void MyClass::Loop(int job, std::string fList){
                 }
 
                 double particle_four = std::real( (Q_all2A*Q_all2A-Q_all4A)*std::conj((Q_all2T*Q_all2T-Q_all4T)) ) / (M*(M-1)*N*(N-1));
-                int weight_four = M*(M-1)*N*(N-1);
+                double weight_four = M*(M-1)*N*(N-1);
 
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
@@ -648,8 +648,8 @@ void MyClass::Loop(int job, std::string fList){
                 std::complex<double> Q_all2T (0, 0);
                 std::complex<double> Q_all4T (0, 0);
 
-                int M = 0;
-                int N = 0;
+                double M = 0.0;
+                double N = 0.0;
 
                 // calculate the A_ptbool pile up Ntrig in jetA first,
                 //and then we do this in jetB so that we can get the complete Ntrig
@@ -746,7 +746,7 @@ void MyClass::Loop(int job, std::string fList){
                 double Q_all_absAT = std::real(Q_all2A*std::conj(Q_all2T));
                 double particle_twoAT = Q_all_absAT / (M*N);
 
-                int weight_two = (M*N);
+                double weight_two = (M*N);
 
 
                 for(int i = 0; i < trackbin; i++){
@@ -758,7 +758,7 @@ void MyClass::Loop(int job, std::string fList){
                 }
 
                 double particle_four = std::real( (Q_all2A*Q_all2A-Q_all4A)*std::conj((Q_all2T*Q_all2T-Q_all4T)) ) / (M*(M-1)*N*(N-1));
-                int weight_four = M*(M-1)*N*(N-1);
+                double weight_four = M*(M-1)*N*(N-1);
 
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
@@ -821,6 +821,8 @@ void MyClass::Loop(int job, std::string fList){
     for(int i=0; i<trackbin; i++){
         hBinDist_gen[i]->Write();
         hBinDist_gen_corrected[i]->Write();
+        hPhiDrawA[i]->Write();
+        hPhiDrawT[i]->Write();
     }
     fS_tempA->Close();
     // fS_2_temp->Close();
