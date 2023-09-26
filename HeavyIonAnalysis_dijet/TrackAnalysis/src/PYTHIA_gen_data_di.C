@@ -340,7 +340,7 @@ void MyClass::Loop(int job, std::string fList){
 
                 for(int i = 0; i < trackbin; i++){
                     if(n_G_ChargeMult_count_corrected >= trackbinbounds[i] && n_G_ChargeMult_count_corrected < trackbinboundsUpper[i]){
-                        tkBool[i] = 1;
+                        // tkBool[i] = 1;
                         // hJet_Pass           ->Fill(i);
                         hBinDist_gen_corrected[i]         ->Fill(n_G_ChargeMult_count_corrected);
                     }
@@ -683,7 +683,7 @@ void MyClass::Loop(int job, std::string fList){
                     // if(jet_dau_pt >3.0) continue;
                     if(jet_dau_pt  <0.3) continue;
 
-                                        gRandom->SetSeed(0);
+                    gRandom->SetSeed(0);
                     double phi;
                     if (jet_dau_eta>0.86 && jet_dau_eta<1.75){
 
