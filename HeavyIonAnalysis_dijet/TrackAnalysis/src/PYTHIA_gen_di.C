@@ -347,7 +347,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 double Q_all_abs_2n = std::abs(Q_all4);   
                 double Q_all_sqr_2n = Q_all_abs_2n * Q_all_abs_2n;      
                 double Q_all_re_threetrm = std::real(
-                        (2.0 * Q_all4) *
+                        ( Q_all4) *
                         std::conj( Q_all2 ) *
                         std::conj( Q_all2 )
                         );                                              
@@ -552,7 +552,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 double Q_all_abs_2n = std::abs(Q_all4);   
                 double Q_all_sqr_2n = Q_all_abs_2n * Q_all_abs_2n;      
                 double Q_all_re_threetrm = std::real(
-                        (2.0 * Q_all4) *
+                        ( Q_all4) *
                         std::conj( Q_all2 ) *
                         std::conj( Q_all2 )
                         );                                              
