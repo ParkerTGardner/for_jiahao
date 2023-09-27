@@ -319,7 +319,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         M++;
                     }
 
-                    else if ((jet_dau_eta>3.00) && (jet_dau_eta<5.00)){
+                    else if ((jet_dau_eta>2.25) && (jet_dau_eta<5.00)){
 
                         Q_all2T = Q_all2T + Q_part2;
                         Q_all4T = Q_all4T + Q_part4;
@@ -332,7 +332,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
                         if(tkBool[i] == 1){
                             if (jet_dau_eta>0.86 && jet_dau_eta<1.75) hPhiDrawA[i]->Fill(phi);
-                            if (jet_dau_eta>3.00 && jet_dau_eta<5.00) hPhiDrawT[i]->Fill(phi);
+                            if (jet_dau_eta>2.25 && jet_dau_eta<5.00) hPhiDrawT[i]->Fill(phi);
                         }
                     }
 
@@ -525,7 +525,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         
                     }
 
-                    else if (jet_dau_eta>3.00 && jet_dau_eta<5.00){
+                    else if (jet_dau_eta>2.25 && jet_dau_eta<5.00){
 
                         for(int i = 0; i < trackbin; i++){
                             if(tkBool[i] == 1){
@@ -549,7 +549,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         M++;
                     }
 
-                    if (jet_dau_eta>3.00 && jet_dau_eta<5.00){
+                    if (jet_dau_eta>2.25 && jet_dau_eta<5.00){
 
                         Q_all2T = Q_all2T + Q_part2;
                         Q_all4T = Q_all4T + Q_part4;
