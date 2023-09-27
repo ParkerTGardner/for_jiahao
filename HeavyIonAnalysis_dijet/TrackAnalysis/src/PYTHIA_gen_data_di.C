@@ -302,7 +302,7 @@ void MyClass::Loop(int job, std::string fList){
                     if(fabs((*dau_pt)[Gjet][G_trk])  < 0.3)     continue;
                     if(fabs((*dau_eta)[Gjet][G_trk]) > 2.4)     continue;
                     n_G_ChargeMult_count += 1;
-                    double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][    A_trk] )));
+                    double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][G_trk] , (*dau_eta)[ijet][    G_trk] )));
                     n_G_ChargeMult_count_corrected += (1.0/nUnc_weight);
                 }
 
@@ -570,7 +570,7 @@ void MyClass::Loop(int job, std::string fList){
                     if(fabs((*dau_pt)[Gjet][G_trk])  < 0.3)     continue;
                     if(fabs((*dau_eta)[Gjet][G_trk]) > 2.4)     continue;
                     n_G_ChargeMult_count += 1;
-                    double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][    A_trk] )));
+                    double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][G_trk] , (*dau_eta)[ijet][    G_trk] )));
                     n_G_ChargeMult_count_corrected += (1.0/nUnc_weight);
                 }
 
@@ -696,8 +696,8 @@ void MyClass::Loop(int job, std::string fList){
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
 
-                    Rand_jet_avg_numerator_two[i] = Rand_jet_avg_numerator_two[i] + ((weight_two)*(particle_twoAT)); 
-                    Rand_jet_avg_denominat_two[i] = Rand_jet_avg_denominat_two[i] + (weight_two);
+                    hRand_jet_avg_numerator_two -> Fill(i,((weight_two)*(particle_twoAT))); 
+                    hRand_jet_avg_denominat_two -> Fill(i,(weight_two));
                     }
                 }
 
@@ -707,8 +707,8 @@ void MyClass::Loop(int job, std::string fList){
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
 
-                    Rand_jet_avg_numerator_four[i] = Rand_jet_avg_numerator_four[i] + ((weight_four)*(particle_four));
-                    Rand_jet_avg_denominat_four[i] = Rand_jet_avg_denominat_four[i] + (weight_four);
+                    hRand_jet_avg_numerator_four -> Fill (i,(weight_four)*(particle_four));
+                    hRand_jet_avg_denominat_four -> Fill (i,weight_four);
                     }
                 }
 
