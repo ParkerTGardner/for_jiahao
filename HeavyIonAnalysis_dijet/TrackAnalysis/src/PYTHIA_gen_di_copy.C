@@ -605,12 +605,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
     hjet_avg_numerator_two ->Write();
     hjet_avg_denominat_two ->Write();
     hjet_avg_numerator_four->Write();
-    hjet_avg_numerator_four->Write();
+    hjet_avg_denominat_four ->Write();
     
     hRand_jet_avg_numerator_two ->Write();
     hRand_jet_avg_denominat_two ->Write();
     hRand_jet_avg_numerator_four->Write();
-    hRand_jet_avg_numerator_four->Write();
+    hRand_jet_avg_denominat_four ->Write();
 
     for(int i=0; i<trackbin; i++){
         hBinDist_gen[i]->Write();
