@@ -230,7 +230,7 @@ void MyClass::Loop(int job, std::string fList){
 
 
 
-       std::cout << "Starting event loop" << std::endl;
+    std::cout << "Starting event loop" << std::endl;
     std::cout << "Total Number of Files in this Job: " << fileList.size() << std::endl;
     for(int f = 0; f<fileList.size(); f++){
         int f_from_file = f;
@@ -285,18 +285,18 @@ void MyClass::Loop(int job, std::string fList){
 
 
         for (Long64_t ievent=0; ievent <nentries; ievent ++){
-                  Long64_t jevent = LoadTree(ievent);
-                  nb = fChain->GetEntry(ievent);   nbytes += nb;
+                    Long64_t jevent = LoadTree(ievent);
+                    nb = fChain->GetEntry(ievent);   nbytes += nb;
 
-//what is the def of genDau_pt, genJetPt
-                  if(genJetPt->size()==0) continue;
-                  if(genJetChargedMultiplicity->size()==0) continue;
+    //what is the def of genDau_pt, genJetPt
+                    if(jetEta->size()==0) continue;
+                    if(chargedMultiplicity->size()==0) continue;
 
 
-                  if(!F_eventpass(genJetPt, genJetPt->size(), jetPtCut_Event)){
-                      continue;
-                  }
-                  int gjN = genJetPhi->size();
+                    if(!F_eventpass(jetPt, jetPt->size(), jetPtCut_Event)){
+                        continue;
+                    }
+                    int gjN = jetPhi->size();
 
 
             hEvent_Pass->Fill(1);
@@ -310,19 +310,7 @@ void MyClass::Loop(int job, std::string fList){
             //ENTERING JET LOOP
 
             //in this first loop I choose the jetA and count the trks of A 
-                    for (Long64_t ievent=0; ievent <nentries; ievent ++){
-                  Long64_t jevent = LoadTree(ievent);
-                  nb = fChain->GetEntry(ievent);   nbytes += nb;
-
-//what is the def of genDau_pt, genJetPt
-                  if(jetEta->size()==0) continue;
-                  if(chargedMultiplicity->size()==0) continue;
-
-
-                  if(!F_eventpass(jetPt, jetPt->size(), jetPtCut_Event)){
-                      continue;
-                  }
-                  int gjN = jetPhi->size();
+                    
 
 
             // hEvent_Pass->Fill(1);
@@ -499,10 +487,10 @@ void MyClass::Loop(int job, std::string fList){
                                     double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][    A_trk] )));
                                     Ntrig[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
                                     // Ntrig[i][j] += 1;
-                                    if((*genDau_chg)[jjet][T_trk] > 0){
+                                    if((*genDau_chg)[jjet][A_trk] > 0){
                                         NtrigP[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
                                     }
-                                    if((*genDau_chg)[jjet][T_trk] < 0){
+                                    if((*genDau_chg)[jjet][A_trk] < 0){
                                         NtrigM[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
                                     }
                                 }
@@ -688,7 +676,7 @@ void MyClass::Loop(int job, std::string fList){
 
                                 //Unboosted dau_T0
                             TVector3 dau_T0;
-                            dau_T0.SetPtEtaPhi((double)(*genDau_pt)[jjet][T_trk],(double)(*genDau_eta)[jjet][T_trk],(double)(*genDau_phi)[jjet][T_trk]);
+                            dau_T0.SetPtEtaPhi((double)(*dau_pt)[jjet][T_trk],(double)(*dau_eta)[jjet][T_trk],(double)(*dau_phi)[jjet][T_trk]);
                             TLorentzVector dau_T0_4 (dau_T0,dau_T0.Mag());     
                             
                             double T_jet_dau_pt0    =  ptWRTJet(JetB, dau_T0);  
@@ -821,7 +809,7 @@ std::cout<< "made 4" << endl;
 
                     string subList = fList.substr(fList.size() - 3);
 
-                    TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out/dijob_%s.root",subList.c_str()), "recreate");
+                    TFile* fS_tempA = new TFile(Form("pythia_batch_data_output/root_out_2/dijob_%s.root",subList.c_str()), "recreate");
                     
                     for(int wtrk =1; wtrk <trackbin+1; wtrk++){
                         hBinDist_gen[wtrk-1]         ->Write();
