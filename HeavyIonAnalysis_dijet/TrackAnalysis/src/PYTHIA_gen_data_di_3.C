@@ -381,7 +381,6 @@ void MyClass::Loop(int job, std::string fList){
                 double NtrigM[trackbin][ptbin] = {0.0};
                 double NtrigP[trackbin][ptbin] = {0.0};
                 int A_ptBool[NNtrk1][ptbin] = {0};    //
-                int T_ptBool[NNtrk2][ptbin]     = {0};// This is for the AB
 
                 for(int i = 0; i < trackbin; i++){
                 //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
@@ -431,10 +430,10 @@ void MyClass::Loop(int job, std::string fList){
                                 double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][    A_trk] )));
                                 Ntrig[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
                                 // Ntrig[i][j] += 1;
-                                if((*dau_chg)[jjet][A_trk] > 0){
+                                if((*dau_chg)[ijet][A_trk] > 0){
                                     NtrigP[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
                                 }
-                                if((*dau_chg)[jjet][A_trk] < 0){
+                                if((*dau_chg)[ijet][A_trk] < 0){
                                     NtrigM[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
                                 }
                             }
