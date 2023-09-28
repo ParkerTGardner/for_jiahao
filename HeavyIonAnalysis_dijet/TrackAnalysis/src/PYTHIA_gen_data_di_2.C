@@ -139,6 +139,9 @@ void MyClass::Loop(int job, std::string fList){
 
     //Initializing Histograms
 
+    TH1D* hBinDist_corrected = new TH1D("hBinDist_corrected","hBinDist_corrected",bin360,bin0, bin120);
+    TH1D* hBinDist_uncorrected = new TH1D("hBinDist_uncorrected","hBinDist_uncorrected",bin360,bin0, bin120);
+
     TH2D* hPairs        = new TH2D("hPairs","hPairs",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
 
     TH2D* hNtrig        = new TH2D("hNtrig","hNtrig",  trackbin, bin0,trackbin, ptbin, bin0, ptbin);
@@ -236,6 +239,7 @@ void MyClass::Loop(int job, std::string fList){
         int f_from_file = f;
         fFile = TFile::Open(fileList.at(f).c_str(),"read");
         TTree *tree = (TTree*)fFile->Get("analyzer500/trackTree");
+        // TTree *tree = (TTree*)_file0->Get("analyzer500/trackTree");
         Init(tree);
 
         std::cout << "File " << f+1 << " out of " << fileList.size() << std::endl;
@@ -431,8 +435,8 @@ void MyClass::Loop(int job, std::string fList){
                     double Ntrig[trackbin][ptbin] = {0.0};
                     double NtrigM[trackbin][ptbin] = {0.0};
                     double NtrigP[trackbin][ptbin] = {0.0};
-                    int A_ptBool[NNtrk1][ptbin] = {0.0};    //
-                    int T_ptBool[NNtrk2][ptbin]     = {0.0};// This is for the AB
+                    int A_ptBool[NNtrk1][ptbin] = {0};    //
+                    int T_ptBool[NNtrk2][ptbin]     = {0};// This is for the AB
 
                     for(int i = 0; i < trackbin; i++){
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
@@ -487,10 +491,10 @@ void MyClass::Loop(int job, std::string fList){
                                     double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][    A_trk] )));
                                     Ntrig[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
                                     // Ntrig[i][j] += 1;
-                                    if((*genDau_chg)[jjet][A_trk] > 0){
+                                    if((*dau_chg)[jjet][A_trk] > 0){
                                         NtrigP[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
                                     }
-                                    if((*genDau_chg)[jjet][A_trk] < 0){
+                                    if((*dau_chg)[jjet][A_trk] < 0){
                                         NtrigM[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
                                     }
                                 }
@@ -575,7 +579,7 @@ void MyClass::Loop(int job, std::string fList){
 
                             //Unboosted dau_T0
                         TVector3 dau_T0;
-                        dau_T0.SetPtEtaPhi((double)(*genDau_pt)[jjet][T_trk],(double)(*genDau_eta)[jjet][T_trk],(double)(*genDau_phi)[jjet][T_trk]);
+                        dau_T0.SetPtEtaPhi((double)(*dau_pt)[jjet][T_trk],(double)(*dau_eta)[jjet][T_trk],(double)(*dau_phi)[jjet][T_trk]);
                         TLorentzVector dau_T0_4 (dau_T0,dau_T0.Mag());     
                         
                         double T_jet_dau_pt0    =  ptWRTJet(JetB, dau_T0);  
@@ -596,6 +600,7 @@ void MyClass::Loop(int job, std::string fList){
                         double T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
 
                         double Ttrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[jjet][T_trk] , (*dau_eta)[jjet][    T_trk] )));
+                        // double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
 
 
 
@@ -605,7 +610,7 @@ void MyClass::Loop(int job, std::string fList){
                                     int k_PU=0;
                                     if ((Ntrig[i][j])==0) continue;
                                     double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[jjet][T_trk] , (*dau_eta)[jjet][    T_trk] )));
-                                    hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi , 1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight*Ntrig[i][j]) );
+                                    hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi , 1.0* jet_HLT_weight/(nUnc_weight*Ttrk_weight*Ntrig[i][j]) );
                                 }
                             }
                         }
@@ -618,7 +623,7 @@ void MyClass::Loop(int job, std::string fList){
                     for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
                         
                         TVector3 dau_A0;
-                        dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
+                        dau_A0.SetPtEtaPhi((double)(*dau_pt)[ijet][A_trk],(double)(*dau_eta)[ijet][A_trk],(double)(*dau_phi)[ijet][A_trk]);
                         TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
                         
                         if((*genDau_chg)[ijet][A_trk] == 0) continue;
@@ -697,7 +702,6 @@ void MyClass::Loop(int job, std::string fList){
                             double T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
 
                             double Ttrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[jjet][T_trk] , (*dau_eta)[jjet][    T_trk] )));
-
                             
 
                             //correlation function
@@ -708,7 +712,7 @@ void MyClass::Loop(int job, std::string fList){
 
                             
 
-                            
+                            double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
 
                             // double deltaJt  = fabs(jet_dau_pt - T_jet_dau_pt);
                             

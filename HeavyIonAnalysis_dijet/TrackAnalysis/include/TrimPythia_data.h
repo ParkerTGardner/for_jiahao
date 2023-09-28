@@ -29,7 +29,7 @@ public :
    // Fixed size dimensions of array or collections stored in the TTree if any.
 
    // Declaration of leaf types
-
+   vector<float>   *jetMass;
    vector<float>   *jetEta;
    vector<float>   *jetPt;
    vector<float>   *jetPhi;
@@ -42,6 +42,7 @@ public :
 
    // List of branches
    //TBranch        *b_nRun;   //!
+   TBranch        *b_jetMass;
    TBranch        *b_jetEta;   //!
    TBranch        *b_jetPt;   //!
    TBranch        *b_jetPhi;   //!
@@ -123,6 +124,7 @@ void MyClass::Init(TTree *tree)
    dau_pt = 0;
    dau_eta = 0;
    dau_phi = 0;
+   jetMass = 0;
 
 
    // Set branch addresses and branch pointers
@@ -131,6 +133,7 @@ void MyClass::Init(TTree *tree)
    fCurrent = -1;
    fChain->SetMakeClass(1);
 
+   fChain->SetBranchAddress("jetMass", &jetMass, &b_jetMass);
    fChain->SetBranchAddress("jetEta", &jetEta, &b_jetEta);
    fChain->SetBranchAddress("jetPt", &jetPt, &b_jetPt);
    fChain->SetBranchAddress("jetPhi", &jetPhi, &b_jetPhi);
