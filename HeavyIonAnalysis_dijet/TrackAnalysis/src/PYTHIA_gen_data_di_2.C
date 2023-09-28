@@ -626,7 +626,7 @@ void MyClass::Loop(int job, std::string fList){
                         dau_A0.SetPtEtaPhi((double)(*dau_pt)[ijet][A_trk],(double)(*dau_eta)[ijet][A_trk],(double)(*dau_phi)[ijet][A_trk]);
                         TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
                         
-                        if((*genDau_chg)[ijet][A_trk] == 0) continue;
+                        if((*dau_chg)[ijet][A_trk] == 0) continue;
                         if(fabs(dau_A0.Eta()) > 2.4)        continue;
                         if(fabs(dau_A0.Perp())  < 0.3)      continue;
 
