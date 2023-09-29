@@ -491,10 +491,10 @@ void MyClass::Loop(int job, std::string fList){
                                     double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][    A_trk] )));
                                     Ntrig[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
                                     // Ntrig[i][j] += 1;
-                                    if((*dau_chg)[jjet][A_trk] > 0){
+                                    if((*dau_chg)[ijet][A_trk] > 0){
                                         NtrigP[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
                                     }
-                                    if((*dau_chg)[jjet][A_trk] < 0){
+                                    if((*dau_chg)[ijet][A_trk] < 0){
                                         NtrigM[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
                                     }
                                 }
@@ -833,12 +833,10 @@ std::cout<< "made 4" << endl;
                     }
 
 
-                    // hJJT1D -> Write();
-                    // hJJT   -> Write();
-                    // hMult_ratio_AB -> Write();
-                    // hMult_AB -> Write();
+                    hBinDist_corrected ->Write();
+                    hBinDist_uncorrected ->Write();
 
-                    hBinDist_gen_single->Write();
+                    // hBinDist_gen_single->Write();
                     hEvent_Pass   ->Write();
                     hJet_Pass     ->Write();
                     // hdeltaR       ->Write();

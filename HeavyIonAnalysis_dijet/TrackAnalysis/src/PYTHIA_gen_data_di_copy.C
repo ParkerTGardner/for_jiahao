@@ -669,7 +669,7 @@ void MyClass::Loop(int job, std::string fList){
                         // M++;
                     }
 
-                    else if ((jet_dau_eta>2.75) && (jet_dau_eta<5.00)){
+                    else if ((jet_dau_eta>3.00) && (jet_dau_eta<5.00)){
 
                         Q_all2T = Q_all2T + Q_part2;
                         Q_all4T = Q_all4T + Q_part4;
