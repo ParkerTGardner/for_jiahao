@@ -381,7 +381,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         if(fabs(dau_A0.Perp())  < 0.3)      continue;
 
                         //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                        double jet_dau_pt    =  ptWRTJet(JetA, dau_A);
+                        double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);
 
                         if(jet_dau_pt >3.0) continue;
 
@@ -433,9 +433,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                             double T_jet_dau_pt    =  ptWRTJet(JetA, dau_T0);  
                             if(T_jet_dau_pt >3.0) continue;
 
-                            double T_jet_dau_eta0  = etaWRTJet(JetA, dau_T0);
+                            double T_jet_dau_eta  = etaWRTJet(JetA, dau_T0);
                             
-                            if(T_jet_dau_eta0 > track_eta_lim) continue;
+                            if(T_jet_dau_eta > track_eta_lim) continue;
 
 
                             //boosted B wrt old A   
