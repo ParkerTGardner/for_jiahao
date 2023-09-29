@@ -464,7 +464,7 @@ void MyClass::Loop(int job, std::string fList){
                                 int k_PU=0;
                                 if ((Ntrig[i][j])==0) continue;
                                 double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
-                                hEPDrawA[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, 1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight*Ntrig[i][j]));
+                                hEPDrawA[i][j]->Fill(jet_dau_eta, jet_dau_phi, 1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight*Ntrig[i][j]));
                             }
                         }
                     }
@@ -507,7 +507,7 @@ void MyClass::Loop(int job, std::string fList){
                         double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
 
                         
-
+                        double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
                         
 
                         // double deltaJt  = fabs(jet_dau_pt - T_jet_dau_pt);
