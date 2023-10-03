@@ -156,12 +156,13 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hBinDist_gen[trackbin];
     TH1D* hPhiDrawA[trackbin];
     // TH1D* hPhiDrawT[trackbin];
+    TH1D* hEta[trackbin];
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_gen[wtrk-1]    = new TH1D(Form("hBinDist_gen_%d",wtrk),Form("hBinDist_gen_%d",wtrk), bin360, bin0, bin120);
         hPhiDrawA[wtrk-1] = new TH1D(Form("hPhiDrawA_%d",wtrk),Form("hPhiDrawA_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
         // hPhiDrawT[wtrk-1] = new TH1D(Form("hPhiDrawT_%d",wtrk),Form("hPhiDrawT_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
         
-        
+        hEta[wtrk-1] = new TH1D(Form("hEta_%d",wtrk),Form("hEta_%d",wtrk), 1000, 0, 8);
     }
 
     double n_harm = 2.0;
@@ -313,11 +314,12 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     std::complex<double> Q_part4 (TMath::Cos(2.0*n_harm*phi) , TMath::Sin(2.0*n_harm*phi));
                     Q_all4 = Q_all4 + Q_part4;
 
+
                     for(int i = 0; i < trackbin; i++){
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
                         if(tkBool[i] == 1){
                             hPhiDrawA[i]->Fill(phi);
-                            
+                            hEta[i]->Fill(jet_dau_eta);
                         }
                     }
 
@@ -597,6 +599,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
     for(int i=0; i<trackbin; i++){
         hBinDist_gen[i]->Write();
+        hEta[i] -> Write();
     }
     fS_tempA->Close();
     // fS_2_temp->Close();
