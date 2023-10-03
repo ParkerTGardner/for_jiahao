@@ -512,10 +512,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         double T_jet_dau_phi   = phiWRTJet(JetAA, dau_T);
                         double T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
 
-                        //boosted dau_T
-                        TLorentzVector dau_T_4 = BeamBoost(Boost_to_CM, dau_T0_4);
-                        TVector3 dau_T = dau_T_4.Vect();
-
                         for(int i = 0; i < trackbin; i++){
                             for(int j = 0; j < ptbin; j++){
                                 if(tkBool[i] + T_ptBool[T_trk][j] == 2){
