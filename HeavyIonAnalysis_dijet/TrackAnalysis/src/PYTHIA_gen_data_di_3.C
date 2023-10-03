@@ -637,7 +637,7 @@ void MyClass::Loop(int job, std::string fList){
                         for(        int i = 0; i < trackbin; i++){
                             for(    int j = 0; j < ptbin;    j++){ 
         
-                                if(tkBool[i] + A_ptBool[A_trk][j] + T_ptBool[T_trk][j] == 3){
+                                if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][j] == 3){
                                         hPairs->Fill(i,j);
                                         if ((Ntrig[i][j])==0) continue;
                                         int k_PU=0;
