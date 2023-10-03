@@ -442,6 +442,7 @@ void MyClass::Loop(int job, std::string fList){
                     double Ntrig[trackbin][ptbin] = {0.0};
                     double NtrigM[trackbin][ptbin] = {0.0};
                     double NtrigP[trackbin][ptbin] = {0.0};
+                    double Ntrig2[trackbin][ptbin] = {0.0};
                     int A_ptBool[NNtrk1][ptbin] = {0};    //
                     int T_ptBool[NNtrk2][ptbin]     = {0};// This is for the AB
 
@@ -560,6 +561,16 @@ void MyClass::Loop(int job, std::string fList){
                             }
                         }
 
+                        for(int i = 0; i < trackbin; i++){
+                            for(int j = 0; j < ptbin; j++){
+                                if(tkBool[i] + T_ptBool[T_trk][j] == 2){
+                                    double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[jjet][T_trk] , (*dau_eta)[jjet][    T_trk] )));
+                                    Ntrig2[i][j] += (1.0* jet_HLT_weight/(Ttrk_weight));
+                                    
+                                }
+                            }
+                        }
+
                         
 
                 
@@ -574,6 +585,9 @@ void MyClass::Loop(int job, std::string fList){
                             hNtrig->Fill(i,j,Ntrig[i][j]);
                         }
                     }
+
+                    double A_Eff_sum = 0.0;
+                    double T_Eff_sum = 0.0;
 
 
 
@@ -608,7 +622,7 @@ void MyClass::Loop(int job, std::string fList){
 
                         double Ttrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[jjet][T_trk] , (*dau_eta)[jjet][    T_trk] )));
                         // double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
-
+                        T_Eff_sum += 1.0/Ttrk_weight;
 
 
                         for(int i = 0; i < trackbin; i++){
@@ -617,12 +631,14 @@ void MyClass::Loop(int job, std::string fList){
                                     int k_PU=0;
                                     if ((Ntrig[i][j])==0) continue;
                                     double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[jjet][T_trk] , (*dau_eta)[jjet][    T_trk] )));
-                                    hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi , 1.0* jet_HLT_weight2/(Ttrk_weight*Ntrig[i][j]) );
+                                    hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi , 1.0* jet_HLT_weight2/(Ttrk_weight*Ntrig2[i][j]) );
                                 }
                             }
                         }
                 
                     }//T_trk;  AB
+
+                    
 
 
 
@@ -725,7 +741,7 @@ void MyClass::Loop(int job, std::string fList){
                                     if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][j] == 3){
 
                                             if ((Ntrig[i][j])==0) continue;
-                                            hEtaPhiEff[i][j] -> Fill(deltaEta,deltaPhi, Atrk_weight*Ttrk_weight);    
+                                            hEtaPhiEff[i][j] -> Fill(deltaEta,deltaPhi, jet_HLT_weight*jet_HLT_weight2/(Atrk_weight*Ttrk_weight));    
 
                                     }
 
@@ -829,14 +845,14 @@ void MyClass::Loop(int job, std::string fList){
                                             int k_PU=0;
                                             int deltaEta_binX = hEtaPhiEff[i][j]->GetXaxis()->FindBin(deltaEta);
                                             int deltaPhi_binY = hEtaPhiEff[i][j]->GetYaxis()->FindBin(deltaPhi);
-                                            double corr_Eff = hEtaPhiEff[i][j]->GetBinContent(deltaEta_binX, deltaPhi_binY);
+                                            double corr_Eff = hEtaPhiEff[i][j]->GetBinContent(deltaEta_binX, deltaPhi_binY)/(Ntrig[i][j]*Ntrig2[i][j]);
 
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
-                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
+                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 (double)(1.0*hEtaPhiEff[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                (double)(1.0*hEtaPhiEff[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                (double)(1.0*hEtaPhiEff[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               (double)(1.0*hEtaPhiEff[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, (double)(1.0*hEtaPhiEff[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, (double)(1.0*hEtaPhiEff[i][j]));
                                             // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
 
                                     }
