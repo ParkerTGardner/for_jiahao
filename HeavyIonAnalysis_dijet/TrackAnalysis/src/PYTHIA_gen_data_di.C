@@ -396,6 +396,11 @@ void MyClass::Loop(int job, std::string fList){
                     long int NNtrk2 = (dau_pt->at(jjet)).size();
                     // hdeltaR -> Fill(deltaR);
 
+                    double jet_HLT_weight2 = 1.0;
+                    if((*jetPt)[ijet] < 880 && (*jetPt)[ijet] > 550){
+                        jet_HLT_weight2 = 1.0/ (hdid500->GetBinContent(hdid500->FindBin((*jetPt)[jjet]) ) );
+                    }
+
                    
                     
                     // Calculate the trks in jetB
@@ -610,7 +615,7 @@ void MyClass::Loop(int job, std::string fList){
                                     int k_PU=0;
                                     if ((Ntrig[i][j])==0) continue;
                                     double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[jjet][T_trk] , (*dau_eta)[jjet][    T_trk] )));
-                                    hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi , 1.0* jet_HLT_weight/(Ttrk_weight*Ntrig[i][j]) );
+                                    hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi , 1.0* jet_HLT_weight2/(Ttrk_weight*Ntrig[i][j]) );
                                 }
                             }
                         }
