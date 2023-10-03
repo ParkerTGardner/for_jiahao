@@ -410,7 +410,7 @@ void MyClass::Loop(int job, std::string fList){
                         if(fabs((*dau_pt)[jjet][G_trk2])  < 0.3)     continue;
                         if(fabs((*dau_eta)[jjet][G_trk2]) > 2.4)     continue;
                         double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[jjet][G_trk2] , (*dau_eta)[jjet][    G_trk2] )));
-                        n_G_ChargeMult_count2  += (1.0/nUnc_weight);;
+                        n_G_ChargeMult_count2  += (1.0*jet_HLT_weight2/nUnc_weight);;
                     }
 
                     
@@ -728,12 +728,12 @@ void MyClass::Loop(int job, std::string fList){
                                             hPairs->Fill(i,j);
                                             if ((Ntrig[i][j])==0) continue;
                                             int k_PU=0;
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 1.0* jet_HLT_weight/(Atrk_weight*Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                1.0* jet_HLT_weight/(Atrk_weight*Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                1.0* jet_HLT_weight/(Atrk_weight*Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               1.0* jet_HLT_weight/(Atrk_weight*Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, 1.0* jet_HLT_weight/(Atrk_weight*Ntrig[i][j]));
-                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, 1.0* jet_HLT_weight/(Atrk_weight*Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, deltaPhi,                 1.0* jet_HLT_weight*jet_HLT_weight2/(Ttrk_weight*Atrk_weight*Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, deltaPhi,                1.0* jet_HLT_weight*jet_HLT_weight2/(Ttrk_weight*Atrk_weight*Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(deltaEta, -deltaPhi,                1.0* jet_HLT_weight*jet_HLT_weight2/(Ttrk_weight*Atrk_weight*Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta, -deltaPhi,               1.0* jet_HLT_weight*jet_HLT_weight2/(Ttrk_weight*Atrk_weight*Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, 1.0* jet_HLT_weight*jet_HLT_weight2/(Ttrk_weight*Atrk_weight*Ntrig[i][j]));
+                                            hSignalShifted[i][j][k_PU]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, 1.0* jet_HLT_weight*jet_HLT_weight2/(Ttrk_weight*Atrk_weight*Ntrig[i][j]));
                                             // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
 
                                     }
