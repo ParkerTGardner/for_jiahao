@@ -376,6 +376,9 @@ void MyClass::Loop(int job, std::string fList){
 
                     if(jet_dau_pt >3.0) continue;
 
+                    double jet_dau_eta   = etaWRTJet(JetA, dau_A0);
+                    if(jet_dau_eta > track_eta_lim) continue;
+
 
                     // boosted:
                     // double jet_dau_pt    =  ptWRTJet(JetA, dau_A);

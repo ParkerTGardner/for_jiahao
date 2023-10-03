@@ -414,6 +414,9 @@ void MyClass::Loop(int job, std::string fList){
 
                     if(jet_dau_pt >3.0) continue;
 
+                    double jet_dau_eta   = etaWRTJet(JetA, dau_A0);
+                    if(jet_dau_eta > track_eta_lim) continue;
+
 
                     // find A_trk in i ptbin
                     for(int i = 0; i < ptbin; i++){
@@ -472,6 +475,8 @@ void MyClass::Loop(int job, std::string fList){
                     double jet_dau_eta   = etaWRTJet(JetA, dau_A0);
                     //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
                     double jet_dau_phi   = phiWRTJet(JetA, dau_A0) ;
+
+                    if(jet_dau_eta > track_eta_lim) continue;
 
                     // double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);/
 

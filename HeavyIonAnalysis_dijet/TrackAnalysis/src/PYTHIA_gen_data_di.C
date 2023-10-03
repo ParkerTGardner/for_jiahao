@@ -475,6 +475,10 @@ void MyClass::Loop(int job, std::string fList){
 
                         if(jet_dau_pt0 >3.0) continue;
 
+                        double jet_dau_eta   = etaWRTJet(JetA, dau_A0);
+                        if(jet_dau_eta > track_eta_lim) continue;
+                        
+
                         TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
                         TVector3       dau_A   = dau_A_4.Vect();
 
@@ -639,6 +643,9 @@ void MyClass::Loop(int job, std::string fList){
                         double jet_dau_pt0    =  ptWRTJet(JetA, dau_A0);
 
                         if(jet_dau_pt0 >3.0) continue;
+
+                        double jet_dau_eta0   = etaWRTJet(JetA, dau_A0);
+                        if(jet_dau_eta0 > track_eta_lim) continue;
 
                         TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
                         TVector3       dau_A   = dau_A_4.Vect();
