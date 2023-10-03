@@ -565,7 +565,7 @@ void MyClass::Loop(int job, std::string fList){
                             for(int j = 0; j < ptbin; j++){
                                 if(tkBool[i] + T_ptBool[T_trk][j] == 2){
                                     double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[jjet][T_trk] , (*dau_eta)[jjet][    T_trk] )));
-                                    Ntrig2[i][j] += (1.0* jet_HLT_weight/(Ttrk_weight));
+                                    Ntrig2[i][j] += (1.0* jet_HLT_weight2/(nUnc_weight));
                                     
                                 }
                             }
