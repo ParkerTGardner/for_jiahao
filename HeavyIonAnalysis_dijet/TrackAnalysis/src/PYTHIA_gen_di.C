@@ -301,6 +301,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     // if(jet_dau_pt >3.0) continue;
                     if(jet_dau_pt  <0.3) continue;
+                    if(jet_dau_eta > track_eta_lim) continue;
 
                     double phi = jet_dau_phi;
 
@@ -501,10 +502,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     // double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
 
+                    if(jet_dau_pt  <0.3) continue;
+                    if(jet_dau_eta > track_eta_lim) continue;
 
-
-                    // if(jet_dau_pt >3.0) continue;
-                    if(jet_dau_pt <0.3) continue;
 
                     gRandom->SetSeed(0);
                     double phi;
