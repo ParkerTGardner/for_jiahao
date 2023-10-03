@@ -523,7 +523,7 @@ void MyClass::Loop(int job, std::string fList){
                                             hPairs->Fill(i,j,k);
                                             if ((Ntrig[i][j])==0) continue;
                                             
-                                            hEtaPhiEff[i][j] -> Fill(deltaEta,deltaPhi, Atrk_weight*Ttrk_weight);
+                                            hEtaPhiEff[i][j] -> Fill(deltaEta,deltaPhi, (jet_HLT_weight*jet_HLT_weight)/(Atrk_weight*Ttrk_weight));    
                                             // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
 
                                     }
@@ -614,16 +614,16 @@ void MyClass::Loop(int job, std::string fList){
                                             if ((Ntrig[i][j])==0) continue;
 
                                             int deltaEta_binX = hEtaPhiEff[i][j]->GetXaxis()->FindBin(deltaEta);
-                                            int deltaPhi_binY = hEtaPhiEff[i][j]->GetYaxis()->FindBin(deltaPhi);
-                                            double corr_Eff = hEtaPhiEff[i][j]->GetBinContent(deltaEta_binX, deltaPhi_binY);
+                                        int deltaPhi_binY = hEtaPhiEff[i][j]->GetYaxis()->FindBin(deltaPhi);
+                                        double corr_Eff = hEtaPhiEff[i][j]->GetBinContent(deltaEta_binX, deltaPhi_binY)/(Ntrig[i][j]*Ntrig[i][k]);
 
                                             
-                                            hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta, deltaPhi,                ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill(deltaEta, -deltaPhi,                ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
+                                            hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 (double)(1.0*hEtaPhiEff[i][j]));
+                                            hSignalShifted[i][j][k]->Fill(-deltaEta, deltaPhi,                (double)(1.0*hEtaPhiEff[i][j]));
+                                            hSignalShifted[i][j][k]->Fill(deltaEta, -deltaPhi,                (double)(1.0*hEtaPhiEff[i][j]));
+                                            hSignalShifted[i][j][k]->Fill(-deltaEta, -deltaPhi,               (double)(1.0*hEtaPhiEff[i][j]));
+                                            hSignalShifted[i][j][k]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, (double)(1.0*hEtaPhiEff[i][j]));
+                                            hSignalShifted[i][j][k]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, (double)(1.0*hEtaPhiEff[i][j]));
                                             // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
 
                                     }
