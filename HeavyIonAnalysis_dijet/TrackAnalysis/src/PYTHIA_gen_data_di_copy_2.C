@@ -618,12 +618,12 @@ void MyClass::Loop(int job, std::string fList){
                                         double corr_Eff = hEtaPhiEff[i][j]->GetBinContent(deltaEta_binX, deltaPhi_binY)/(Ntrig[i][j]*Ntrig[i][k]);
 
                                             
-                                            hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 (double)(1.0*hEtaPhiEff[i][j]));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta, deltaPhi,                (double)(1.0*hEtaPhiEff[i][j]));
-                                            hSignalShifted[i][j][k]->Fill(deltaEta, -deltaPhi,                (double)(1.0*hEtaPhiEff[i][j]));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta, -deltaPhi,               (double)(1.0*hEtaPhiEff[i][j]));
-                                            hSignalShifted[i][j][k]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, (double)(1.0*hEtaPhiEff[i][j]));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, (double)(1.0*hEtaPhiEff[i][j]));
+                                            hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 (double)(1.0*corr_Eff));
+                                            hSignalShifted[i][j][k]->Fill(-deltaEta, deltaPhi,                (double)(1.0*corr_Eff));
+                                            hSignalShifted[i][j][k]->Fill(deltaEta, -deltaPhi,                (double)(1.0*corr_Eff));
+                                            hSignalShifted[i][j][k]->Fill(-deltaEta, -deltaPhi,               (double)(1.0*corr_Eff));
+                                            hSignalShifted[i][j][k]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, (double)(1.0*corr_Eff));
+                                            hSignalShifted[i][j][k]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, (double)(1.0*corr_Eff));
                                             // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
 
                                     }
