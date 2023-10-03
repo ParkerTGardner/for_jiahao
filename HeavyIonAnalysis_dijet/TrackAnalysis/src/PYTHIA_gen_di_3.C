@@ -483,17 +483,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                                 }
                             }
                         }
-
-                        for(int i = 0; i < trackbin; i++){
-                            for(int j = 0; j < ptbin; j++){
-                                if(tkBool[i] + T_ptBool[T_trk][j] == 2){
-                                    int k_PU=0;
-                                    if ((Ntrig[i][j])==0) continue;
-
-                                    hEPDrawT[i][j][k_PU]->Fill(T_jet_dau_eta, T_jet_dau_phi ,  ((double)(1.0)/(Ntrig[i][j])));
-                                }
-                            }
-                        }
                 
                     }//T_trk;  AB
 
@@ -515,6 +504,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         double T_jet_dau_eta0   = etaWRTJet(JetB, dau_T0);
                         
                         if(T_jet_dau_eta0 > track_eta_lim) continue;
+
+                        double T_jet_dau_eta   = etaWRTJet(JetAA, dau_T);
+                        double T_jet_dau_phi   = phiWRTJet(JetAA, dau_T);
+                        double T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
 
                         //boosted dau_T
                         TLorentzVector dau_T_4 = BeamBoost(Boost_to_CM, dau_T0_4);
