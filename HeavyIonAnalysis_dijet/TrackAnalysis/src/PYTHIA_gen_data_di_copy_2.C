@@ -171,6 +171,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hBinDist_gen[trackbin];
     TH1D* hBinDist_reco[trackbin];
     TH1D* hJt[trackbin][ptbin]; 
+    TH2D* hEtaPhiEff[trackbin][ptbin];
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_gen[wtrk-1]    = new TH1D(Form("hBinDist_gen_%d",wtrk),Form("hBinDist_gen_%d",wtrk), bin360, bin0, bin120);
         hBinDist_reco[wtrk-1]   = new TH1D(Form("hBinDist_reco_%d",wtrk),Form("hBinewnDist_reco_%d",wtrk), bin360, bin0, bin120);
@@ -183,7 +184,7 @@ void MyClass::Loop(int job, std::string fList){
                 hBckrndShifted[wtrk-1][wppt-1][wppt2-1]      = new TH2D(Form("hBckrndS_trk_%d_ppt_%d_pt_%d",wtrk,wppt,wppt2) ,Form("hBckrndS_trk_%d_ppt_%d_pt_%d",wtrk,wppt,wppt2) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
                 hSignalShifted[wtrk-1][wppt-1][wppt2-1]      = new TH2D(Form("hSignalS_trk_%d_ppt_%d_pt_%d",wtrk,wppt,wppt2) ,Form("hSignalS_trk_%d_ppt_%d_pt_%d",wtrk,wppt,wppt2) ,41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
                 
-                
+                hEtaPhiEff[wtrk-1][wppt-1]                  = new TH2D(Form("hEtaPhiEff_trk_%d_ppt_%d",wtrk,wppt),Form("hEtaPhiEff_trk_%d_ppt_%d",wtrk,wppt),41,-(20*EtaBW)-(0.5*EtaBW),(20*EtaBW)+(0.5*EtaBW),33,-(8*PhiBW)-0.5*PhiBW,(24*PhiBW)+0.5*PhiBW);
 
             }
         }
@@ -393,13 +394,13 @@ void MyClass::Loop(int job, std::string fList){
                         for(int j = 0; j < ptbin; j++){
                             if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                 double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][    A_trk] )));
-                                Ntrig[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
+                                Ntrig[i][j] += (1.0* jet_HLT_weight/(nUnc_weight));
                                 // Ntrig[i][j] += 1;
                                 if((*dau_chg)[ijet][A_trk] > 0){
-                                    NtrigP[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
+                                    NtrigP[i][j] += (1.0* jet_HLT_weight/(nUnc_weight));
                                 }
                                 if((*dau_chg)[ijet][A_trk] < 0){
-                                    NtrigM[i][j] += (1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight));
+                                    NtrigM[i][j] += (1.0* jet_HLT_weight/(nUnc_weight));
                                 }
                             }
                         }
@@ -464,7 +465,7 @@ void MyClass::Loop(int job, std::string fList){
                                 int k_PU=0;
                                 if ((Ntrig[i][j])==0) continue;
                                 double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
-                                hEPDrawA[i][j]->Fill(jet_dau_eta, jet_dau_phi, 1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight*Ntrig[i][j]));
+                                hEPDrawA[i][j]->Fill(jet_dau_eta, jet_dau_phi, 1.0* jet_HLT_weight/(Atrk_weight*Ntrig[i][j]));
                             }
                         }
                     }
@@ -507,7 +508,7 @@ void MyClass::Loop(int job, std::string fList){
                         double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
 
                         
-                        double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
+                        double Ttrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][T_trk] , (*dau_eta)[ijet][T_trk] )));
                         
 
                         // double deltaJt  = fabs(jet_dau_pt - T_jet_dau_pt);
@@ -522,12 +523,107 @@ void MyClass::Loop(int job, std::string fList){
                                             hPairs->Fill(i,j,k);
                                             if ((Ntrig[i][j])==0) continue;
                                             
-                                            hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight*Ntrig[i][j]));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta, deltaPhi,                1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight*Ntrig[i][j]));
-                                            hSignalShifted[i][j][k]->Fill(deltaEta, -deltaPhi,                1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight*Ntrig[i][j]));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta, -deltaPhi,               1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight*Ntrig[i][j]));
-                                            hSignalShifted[i][j][k]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, 1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight*Ntrig[i][j]));
-                                            hSignalShifted[i][j][k]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, 1.0* jet_HLT_weight/(nUnc_weight*Atrk_weight*Ntrig[i][j]));
+                                            hEtaPhiEff[i][j] -> Fill(deltaEta,deltaPhi, Atrk_weight*Ttrk_weight);
+                                            // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
+
+                                    }
+
+                                }
+
+                    
+                            }
+                        }
+
+                    }//T_trk;  AA
+                }// A_trk; AA
+
+                for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
+                    
+                    TVector3 dau_A;
+                    dau_A.SetPtEtaPhi((double)(*dau_pt)[ijet][A_trk],(double)(*dau_eta)[ijet][A_trk],(double)(*dau_phi)[ijet][A_trk]);
+                    
+                    if((*dau_chg)[ijet][A_trk] == 0) continue;
+                    if(fabs(dau_A.Eta()) > 2.4)        continue;
+                    if(fabs(dau_A.Perp())  < 0.3)      continue;
+
+                    //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
+                    double jet_dau_pt    =  ptWRTJet(JetA, dau_A);
+
+                    if(jet_dau_pt >3.0) continue;
+
+        
+
+                    //     daughter eta with respect to the jet axis                 eta With Respect To Jet 
+                    double jet_dau_eta   = etaWRTJet(JetA, dau_A);
+                    //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
+                    double jet_dau_phi   = phiWRTJet(JetA, dau_A) ;
+
+
+
+
+                    double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
+
+                    
+
+                    for(long int T_trk = A_trk+1; T_trk < NNtrk1; T_trk++ ){
+
+                        
+                        if((*dau_chg)[ijet][T_trk] == 0) continue;
+                        if(fabs((*dau_eta)[ijet][T_trk]) > 2.4) continue;
+                        if(fabs((*dau_pt)[ijet][T_trk])  < 0.3)      continue;
+
+                            //Unboosted dau_T0
+                        TVector3 dau_T;
+                        dau_T.SetPtEtaPhi((double)(*dau_pt)[ijet][T_trk],(double)(*dau_eta)[ijet][T_trk],(double)(*dau_phi)[ijet][T_trk]);    
+                        
+                        double T_jet_dau_pt    =  ptWRTJet(JetA, dau_T);  
+                        if(T_jet_dau_pt >3.0) continue;
+
+                        double T_jet_dau_eta   = etaWRTJet(JetA, dau_T);
+                        
+                        if(T_jet_dau_eta > track_eta_lim) continue;
+
+
+
+
+                        //boosted B wrt old A   
+                        // double T_jet_dau_eta   = etaWRTJet(JetA, dau_T);
+                        double T_jet_dau_phi   = phiWRTJet(JetA, dau_T);
+                        // double T_jet_dau_pt    =  ptWRTJet(JetA, dau_T);
+                        
+
+                        //correlation function
+                                            //A_trk(dau_A)  T_trk(dau_B)
+                        double deltaEta = (jet_dau_eta - T_jet_dau_eta);
+                                                                    //A_trk        T_trk
+                        double deltaPhi = (TMath::ACos(TMath::Cos(jet_dau_phi - T_jet_dau_phi)));
+
+                        
+                        double Ttrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][T_trk] , (*dau_eta)[ijet][T_trk] )));
+                        
+
+                        
+                        for(        int i = 0; i < trackbin; i++){
+                            for(    int j = 0; j < ptbin;    j++){ 
+                                for(int k = j; k < ptbin;    k++){ 
+        
+
+
+                                    if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][k] == 3){
+                                            hPairs->Fill(i,j,k);
+                                            if ((Ntrig[i][j])==0) continue;
+
+                                            int deltaEta_binX = hEtaPhiEff->GetXaxis()->FindBin(deltaEta);
+                                            int deltaPhi_binY = hEtaPhiEff->GetYaxis()->FindBin(deltaPhi);
+                                            double corr_Eff = hEtaPhiEff[i][j]->GetBinContent(binX, binY);
+
+                                            
+                                            hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
+                                            hSignalShifted[i][j][k]->Fill(-deltaEta, deltaPhi,                ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
+                                            hSignalShifted[i][j][k]->Fill(deltaEta, -deltaPhi,                ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
+                                            hSignalShifted[i][j][k]->Fill(-deltaEta, -deltaPhi,               ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
+                                            hSignalShifted[i][j][k]->Fill( deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
+                                            hSignalShifted[i][j][k]->Fill(-deltaEta,2*TMath::Pi() - deltaPhi, ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
                                             // hMomSignalShifted[i][j][k_PU]->Fill(deltaJt,                         1/(Ntrig[i][j]));
 
                                     }
@@ -678,6 +774,7 @@ std::cout<< "made 4" << endl;
                         for(int wppt =1; wppt <ptbin+1; wppt++){
                             hEPDrawA                   [wtrk-1][wppt-1]->Write(Form("hEPDA_%d_to_%d_and_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1])));
                             hJt[wtrk-1][wppt-1] ->Write(Form("hJt_%d_to_%d_and_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1])));
+                            hEtaPhiEff                 [wtrk-1][wppt-1]        ->Write(Form("hEtaPhiEff_trk_%d_ppt_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1])));
                             for(int wppt2 = wppt; wppt2 <ptbin+1; wppt2++){
 
                                 hSignalShifted             [wtrk-1][wppt-1][wppt2-1]->Write(Form("hSigS_%d_to_%d_pt_%d_to_%d_pt_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),(int)(10*ptbinbounds_lo[wppt2-1]),(int)(10*ptbinbounds_hi[wppt2-1])    ));
