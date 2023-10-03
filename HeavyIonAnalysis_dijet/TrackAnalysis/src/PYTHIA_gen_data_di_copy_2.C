@@ -613,9 +613,9 @@ void MyClass::Loop(int job, std::string fList){
                                             hPairs->Fill(i,j,k);
                                             if ((Ntrig[i][j])==0) continue;
 
-                                            int deltaEta_binX = hEtaPhiEff->GetXaxis()->FindBin(deltaEta);
-                                            int deltaPhi_binY = hEtaPhiEff->GetYaxis()->FindBin(deltaPhi);
-                                            double corr_Eff = hEtaPhiEff[i][j]->GetBinContent(binX, binY);
+                                            int deltaEta_binX = hEtaPhiEff[i][j]->GetXaxis()->FindBin(deltaEta);
+                                            int deltaPhi_binY = hEtaPhiEff[i][j]->GetYaxis()->FindBin(deltaPhi);
+                                            double corr_Eff = hEtaPhiEff[i][j]->GetBinContent(deltaEta_binX, deltaPhi_binY);
 
                                             
                                             hSignalShifted[i][j][k]->Fill(deltaEta, deltaPhi,                 ((double)(1.0*jet_HLT_weight)/(corr_Eff*Ntrig[i][j])));
