@@ -464,6 +464,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         TLorentzVector dau_T_4 = BeamBoost(Boost_to_CM, dau_T0_4);
                         TVector3 dau_T = dau_T_4.Vect();
 
+                        double T_jet_dau_eta   = etaWRTJet(JetAA, dau_T);
+                        double T_jet_dau_phi   = phiWRTJet(JetAA, dau_T);
+                        double T_jet_dau_pt    =  ptWRTJet(JetAA, dau_T);
+
                         for(int i = 0; i < ptbin; i++){
                             if(T_jet_dau_pt >= ptbinbounds_lo[i] && T_jet_dau_pt < ptbinbounds_hi[i]){
                                 T_ptBool[T_trk][i] = 1;
@@ -473,8 +477,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         for(int i = 0; i < trackbin; i++){
                             for(int j = 0; j < ptbin; j++){
                                 if(tkBool[i] + T_ptBool[T_trk][j] == 2){
-                                    double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[jjet][T_trk] , (*dau_eta)[jjet][    T_trk] )));
-                                    Ntrig2[i][j] += (1.0* jet_HLT_weight2/(nUnc_weight));
+                                    
+                                    Ntrig2[i][j] += 1;
                                     
                                 }
                             }
@@ -676,23 +680,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
 
-                        hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1);
-                        hEtaA -> Fill(jet_dau_eta,1);
-                        hPhiA -> Fill(jet_dau_phi,1);
-                        hJtA  -> Fill(jet_dau_pt, 1);
-
-
-
-                        for(int i = 0; i < trackbin; i++){
-                            for(int j = 0; j < ptbin; j++){
-                                if(tkBool[i] + A_ptBool[A_trk][j] == 2){
-                                    int k_PU=0;
-                                    if ((Ntrig[i][j])==0) continue;
-
-                                    hEPDrawA[i][j][k_PU]->Fill(jet_dau_eta, jet_dau_phi, ((double)(1.0)/(Ntrig[i][j])));
-                                }
-                            }
-                        }
 
 
 
