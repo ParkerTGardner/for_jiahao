@@ -7,7 +7,7 @@
 //below allows for rotation into jet frame
 #include "include/coordinateTools.h"
 //defines constants
-#include "include/sherpa_constants.h"
+#include "include/sherpa_constants_cumulant.h"
 
 #include <iostream>
 #include <iomanip>
@@ -156,11 +156,12 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hBinDist_gen[trackbin];
     TH1D* hPhiDrawA[trackbin];
     TH1D* hPhiDrawT[trackbin];
+    TH1D* hEta[trackbin];
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_gen[wtrk-1]    = new TH1D(Form("hBinDist_gen_%d",wtrk),Form("hBinDist_gen_%d",wtrk), bin360, bin0, bin120);
         hPhiDrawA[wtrk-1] = new TH1D(Form("hPhiDrawA_%d",wtrk),Form("hPhiDrawA_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
         hPhiDrawT[wtrk-1] = new TH1D(Form("hPhiDrawT_%d",wtrk),Form("hPhiDrawT_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
-        
+        hEta[wtrk-1] = new TH1D(Form("hEta_%d",wtrk),Form("hEta_%d",wtrk), 1000, 0, 8);
         
     }
 
@@ -306,33 +307,42 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     // if(jet_dau_pt >3.0) continue;
                     if(jet_dau_pt  <0.3) continue;
 
+                    
+
                     double phi = jet_dau_phi;
 
 
                     
                     std::complex<double> Q_part2 (TMath::Cos(n_harm*phi) , TMath::Sin(n_harm*phi));
                     std::complex<double> Q_part4 (TMath::Cos(2.0*n_harm*phi) , TMath::Sin(2.0*n_harm*phi));
-                    if ((jet_dau_eta>0.86) && (jet_dau_eta<2.00)){
+                    if ((jet_dau_eta>0.86) && (jet_dau_eta<2.10)){
 
                         Q_all2A = Q_all2A + Q_part2;
                         Q_all4A = Q_all4A + Q_part4;
                         M++;
                     }
 
-                    else if ((jet_dau_eta>1.50) && (jet_dau_eta<5.00)){
+                    else if ((jet_dau_eta>2.10) && (jet_dau_eta<5.00)){
 
                         Q_all2T = Q_all2T + Q_part2;
                         Q_all4T = Q_all4T + Q_part4;
                         N++;
                     }
                     else continue;
+
+                    for(int i = 0; i < trackbin; i++){
+                    //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
+                        if(tkBool[i] == 1){
+                            hEta[i]->Fill(jet_dau_eta);
+                        }
+                    }
                         
 
                     for(int i = 0; i < trackbin; i++){
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
                         if(tkBool[i] == 1){
-                            if (jet_dau_eta>0.86 && jet_dau_eta<2.00) hPhiDrawA[i]->Fill(phi);
-                            if (jet_dau_eta>1.50 && jet_dau_eta<5.00) hPhiDrawT[i]->Fill(phi);
+                            if (jet_dau_eta>0.86 && jet_dau_eta<2.10) hPhiDrawA[i]->Fill(phi);
+                            if (jet_dau_eta>2.10 && jet_dau_eta<5.00) hPhiDrawT[i]->Fill(phi);
                         }
                     }
 
@@ -514,7 +524,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     gRandom->SetSeed(0);
                     double phi;
-                    if (jet_dau_eta>0.86 && jet_dau_eta<2.00){
+                    if (jet_dau_eta>0.86 && jet_dau_eta<2.10){
 
                         for(int i = 0; i < trackbin; i++){
                             if(tkBool[i] == 1){
@@ -525,7 +535,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         
                     }
 
-                    else if (jet_dau_eta>1.50 && jet_dau_eta<5.00){
+                    else if (jet_dau_eta>2.10 && jet_dau_eta<5.00){
 
                         for(int i = 0; i < trackbin; i++){
                             if(tkBool[i] == 1){
@@ -542,14 +552,14 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     
                     std::complex<double> Q_part2 (TMath::Cos(n_harm*phi) , TMath::Sin(n_harm*phi));
                     std::complex<double> Q_part4 (TMath::Cos(2.0*n_harm*phi) , TMath::Sin(2.0*n_harm*phi));
-                    if (jet_dau_eta>0.86 && jet_dau_eta<2.00){
+                    if (jet_dau_eta>0.86 && jet_dau_eta<2.10){
 
                         Q_all2A = Q_all2A + Q_part2;
                         Q_all4A = Q_all4A + Q_part4;
                         M++;
                     }
 
-                    if (jet_dau_eta>1.50 && jet_dau_eta<5.00){
+                    if (jet_dau_eta>2.10 && jet_dau_eta<5.00){
 
                         Q_all2T = Q_all2T + Q_part2;
                         Q_all4T = Q_all4T + Q_part4;
@@ -614,6 +624,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
     for(int i=0; i<trackbin; i++){
         hBinDist_gen[i]->Write();
+        hEta[i] -> Write();
     }
     fS_tempA->Close();
     // fS_2_temp->Close();
