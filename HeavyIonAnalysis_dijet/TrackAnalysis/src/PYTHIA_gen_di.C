@@ -269,6 +269,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                 std::complex<double> Q_all2 (0, 0);
                 std::complex<double> Q_all4 (0, 0);
+                int M = 0;
 
 
                 // calculate the A_ptbool pile up Ntrig in jetA first,
@@ -314,6 +315,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     std::complex<double> Q_part4 (TMath::Cos(2.0*n_harm*phi) , TMath::Sin(2.0*n_harm*phi));
                     Q_all4 = Q_all4 + Q_part4;
 
+                    M++;
+
 
                     for(int i = 0; i < trackbin; i++){
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
@@ -327,7 +330,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 }
 
 
-                int M = n_G_ChargeMult_count ;
+                // int M = n_G_ChargeMult_count ;
                 if (M<5) continue;
 
                 double Q_all_abs = std::abs(Q_all2);
@@ -476,6 +479,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 std::complex<double> Q_all2 (0, 0);
                 std::complex<double> Q_all4 (0, 0);
 
+                int M = 0;
+
 
                 // calculate the A_ptbool pile up Ntrig in jetA first,
                 //and then we do this in jetB so that we can get the complete Ntrig
@@ -527,13 +532,13 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     // hPhiDrawA->Fill(phi);
 
-
+                    M++;
 
                         
                 }
 
 
-                int M = n_G_ChargeMult_count ;
+                // int M = n_G_ChargeMult_count ;
                 if (M<5) continue;
 
                 double Q_all_abs = std::abs(Q_all2);
