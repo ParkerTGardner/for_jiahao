@@ -13,7 +13,7 @@ Error      = pythia_batch_data_output/err_copy_3/submit_v0.$(Process).err
 +MaxRuntime =60000
 Queue
 '''
-for i in range(1,48):
+for i in range(1,80):
    temp = '''
 Arguments  = %03d
 Queue
