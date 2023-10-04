@@ -410,7 +410,7 @@ void MyClass::Loop(int job, std::string fList){
                         if(fabs((*dau_pt)[jjet][G_trk2])  < 0.3)     continue;
                         if(fabs((*dau_eta)[jjet][G_trk2]) > 2.4)     continue;
                         double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[jjet][G_trk2] , (*dau_eta)[jjet][    G_trk2] )));
-                        n_G_ChargeMult_count2  += (1.0*jet_HLT_weight2/nUnc_weight);;
+                        n_G_ChargeMult_count2  += (1.0/nUnc_weight);;
                     }
 
                     
@@ -498,13 +498,13 @@ void MyClass::Loop(int job, std::string fList){
                             for(int j = 0; j < ptbin; j++){
                                 if(tkBool[i] + A_ptBool[A_trk][j] == 2){
                                     double nUnc_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][    A_trk] )));
-                                    Ntrig[i][j] += (1.0* jet_HLT_weight/(nUnc_weight));
+                                    Ntrig[i][j] += (1.0/(nUnc_weight));
                                     // Ntrig[i][j] += 1;
                                     if((*dau_chg)[ijet][A_trk] > 0){
-                                        NtrigP[i][j] += (1.0* jet_HLT_weight/(nUnc_weight));
+                                        NtrigP[i][j] += (1.0/(nUnc_weight));
                                     }
                                     if((*dau_chg)[ijet][A_trk] < 0){
-                                        NtrigM[i][j] += (1.0* jet_HLT_weight/(nUnc_weight));
+                                        NtrigM[i][j] += (1.0/(nUnc_weight));
                                     }
                                 }
                             }
