@@ -163,7 +163,7 @@ void MyClass::Loop(int job, std::string fList){
         hPhiDrawA[wtrk-1] = new TH1D(Form("hPhiDrawA_%d",wtrk),Form("hPhiDrawA_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
         hPhiDrawT[wtrk-1] = new TH1D(Form("hPhiDrawT_%d",wtrk),Form("hPhiDrawT_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
         hEta[wtrk-1] = new TH1D(Form("hEta_%d",wtrk),Form("hEta_%d",wtrk), 1000, 0, 8);
-        hPhi_EP[wtrk-1] = new TH1D(Form("hPhi_EP_%d",wtrk),Form("hPhi_EP_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
+        hPhi_EP[wtrk-1] = new TH1D(Form("hPhi_EP_%d",wtrk),Form("hPhi_EP_%d",wtrk), 1000, -2*TMath::Pi(), 2*TMath::Pi());
         
     }
 
@@ -321,7 +321,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     double phi_EP0 = EP.Angle(dau);
                     double phi_EP;
                     if((EP.Cross(dau))*z >= 0) phi_EP = phi_EP0;
-                    else phi_EP = phi_EP0;
+                    else phi_EP = -phi_EP0;
 
                     double weight = 1+2*v2*TMath::Cos(phi_EP);
                     double phi = jet_dau_phi;
