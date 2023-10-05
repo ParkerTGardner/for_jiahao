@@ -312,9 +312,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     
                     TVector3 EP;
-                    EP.SetMagThetaPhi(1.,0.,Psi);
+                    EP.SetMagThetaPhi(1.,M_PI/2,Psi);
                     TVector3 dau;
-                    dau.SetMagThetaPhi(1.,0.,jet_dau_phi);
+                    dau.SetMagThetaPhi(1.,M_PI/2,jet_dau_phi);
                     TVector3 z;
                     z.SetXYZ(0.,0.,1.);
                     double phi_EP0 = TMath::ACos(EP*dau);
