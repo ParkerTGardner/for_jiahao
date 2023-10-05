@@ -157,6 +157,7 @@ void MyClass::Loop(int job, std::string fList){
     TH1D* hPhiDrawA[trackbin];
     TH1D* hPhiDrawT[trackbin];
     TH1D* hEta[trackbin];
+    TH1D* hPhi_EP[trackbin];
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_gen[wtrk-1]    = new TH1D(Form("hBinDist_gen_%d",wtrk),Form("hBinDist_gen_%d",wtrk), bin360, bin0, bin120);
         hPhiDrawA[wtrk-1] = new TH1D(Form("hPhiDrawA_%d",wtrk),Form("hPhiDrawA_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
@@ -270,8 +271,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 std::complex<double> Q_all2T (0, 0);
                 std::complex<double> Q_all4T (0, 0);
 
-                // int M = 0;
-                // int N = 0;
+                int M = 0;
+                int N = 0;
                 double weight_sum_A = 0.0;
                 double weight_sum_T = 0.0;
                 double weight_sum_A_sqr = 0.0;
