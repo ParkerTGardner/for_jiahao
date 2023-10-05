@@ -322,7 +322,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if((EP.Cross(dau))*z >= 0) phi_EP = phi_EP0;
                     else phi_EP = -phi_EP0;
 
-                    double weight = 1.0+2*v2*TMath::Cos(phi_EP);
+                    double weight = 1.0+2*v2*TMath::Cos(n_harm*phi_EP);
                     double phi = jet_dau_phi;
 
                     
