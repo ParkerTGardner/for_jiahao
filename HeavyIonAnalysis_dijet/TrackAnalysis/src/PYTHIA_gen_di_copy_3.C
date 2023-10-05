@@ -311,7 +311,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     
 
-                   TVector3 EP;
+                    TVector3 EP;
                     EP.SetXYZ(TMath::Cos(Psi),TMath::Sin(Psi),0);
                     TVector3 dau;
                     dau.SetXYZ(TMath::Cos(jet_dau_phi),TMath::Sin(jet_dau_phi),0);
@@ -374,9 +374,9 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 if (N<3) continue;
 
                 double Q_all_absAT = std::real(Q_all2A*std::conj(Q_all2T));
-                double particle_twoAT = Q_all_absAT / (weight_sum_A*weight_sum_A);
+                double particle_twoAT = Q_all_absAT / (weight_sum_A*weight_sum_T);
 
-                double weight_two = (weight_sum_A*weight_sum_A);
+                double weight_two = (weight_sum_A*weight_sum_T);
 
 
                 for(int i = 0; i < trackbin; i++){
