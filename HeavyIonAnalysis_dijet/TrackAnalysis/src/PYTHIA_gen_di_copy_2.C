@@ -343,7 +343,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
                         if(tkBool[i] == 1){
                             hEta[i]->Fill(jet_dau_eta);
-                            hPhi_EP->Fill(phi_EP, weight);
+                            hPhi_EP[i]->Fill(phi_EP, weight);
                         }
                     }
                         
