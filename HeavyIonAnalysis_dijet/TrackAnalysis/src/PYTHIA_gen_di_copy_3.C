@@ -223,7 +223,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
             // weight = (1+2v2*cos(phi*'))
             TRandom3 randGenerator(0); 
             double Psi = randGenerator.Uniform(-TMath::Pi(), TMath::Pi());
-            Psi = M_PI/2;
             //ENTERING JET LOOP
             for(int kjet=0; kjet < genJetPt->size(); kjet++){
 
@@ -313,11 +312,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     
 
                     TVector3 EP;
-                    EP.SetMagThetaPhi(1.,0.,Psi);
+                    EP.SetMagThetaPhi(1.,Psi,0);
                     TVector3 dau;
-                    dau.SetMagThetaPhi(1.,0.,jet_dau_phi);
+                    dau.SetMagThetaPhi(1.,jet_dau_phi,0);
                     TVector3 z;
-                    z.SetXYZ(0.,0.,1.);
+                    z.SetXYZ(1.,0.,0.);
                     double phi_EP0 = EP.Angle(dau);
                     double phi_EP;
                     if((EP.Cross(dau))*z >= 0) phi_EP = phi_EP0;
