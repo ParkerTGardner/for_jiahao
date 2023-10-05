@@ -223,7 +223,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
             // weight = (1+2v2*cos(phi*'))
             TRandom3 randGenerator(0); 
             double Psi = randGenerator.Uniform(-TMath::Pi(), TMath::Pi());
-            Psi = M_Pi/2;
+            Psi = M_PI/2;
             //ENTERING JET LOOP
             for(int kjet=0; kjet < genJetPt->size(); kjet++){
 
