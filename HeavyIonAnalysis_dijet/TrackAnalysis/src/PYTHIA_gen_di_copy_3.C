@@ -312,8 +312,14 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     
 
-                    double phi_EP = jet_dau_phi-Psi;
-                    double phi = jet_dau_phi;
+                    TVector3 EP;
+                    EP.SetMagThetaPhi(1,0,Psi);
+                    TVector3 dau;
+                    dau.SetMagThetaPhi(1,0,jet_dau_phi);
+                    double phi_EP0 = EP.Angle(dau);
+                    if(((Psi>0)&&((-M_PI<jet_dau_phi<=Psi-M_PI)||(Psi<jet_dau_phi<M_PI)))||((Psi<=0)&&(Psi<jet_dau_phi<=Psi+M_PI))) {double phi_EP = phi_EP0;}
+                    else {double phi_EP = -phi_EP0;}
+                    
                     double weight = 1+2*v2*TMath::Cos(phi_EP);
 
 
