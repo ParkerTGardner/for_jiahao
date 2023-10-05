@@ -317,7 +317,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     dau.SetMagThetaPhi(1.,0.,jet_dau_phi);
                     TVector3 z;
                     z.SetXYZ(0.,0.,1.);
-                    double phi_EP0 = EP.Angle(dau);
+                    double phi_EP0 = TMath::ACos(EP*dau);
                     double phi_EP;
                     if((EP.Cross(dau))*z >= 0) phi_EP = phi_EP0;
                     else phi_EP = -phi_EP0;
