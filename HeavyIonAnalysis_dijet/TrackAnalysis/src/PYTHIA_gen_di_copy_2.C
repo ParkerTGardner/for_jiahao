@@ -168,7 +168,7 @@ void MyClass::Loop(int job, std::string fList){
     }
 
     double n_harm = 2.0;
-    double v2 = 0.05;
+    double v2 = 0.20;
 
 
   

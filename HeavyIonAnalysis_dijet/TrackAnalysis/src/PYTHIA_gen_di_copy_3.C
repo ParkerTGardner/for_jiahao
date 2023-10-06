@@ -168,7 +168,7 @@ void MyClass::Loop(int job, std::string fList){
     }
 
     double n_harm = 2.0;
-    double v2 = 0.1;
+    double v2 = 0.30;
 
 
   
@@ -223,6 +223,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
             // weight = (1+2v2*cos(phi*'))
             TRandom3 randGenerator(0); 
             double Psi = randGenerator.Uniform(-TMath::Pi(), TMath::Pi());
+            
             //ENTERING JET LOOP
             for(int kjet=0; kjet < genJetPt->size(); kjet++){
 
@@ -310,7 +311,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(jet_dau_pt  <0.3) continue;
 
                     
-
                     TVector3 EP;
                     EP.SetXYZ(TMath::Cos(Psi),TMath::Sin(Psi),0);
                     TVector3 dau;
@@ -324,6 +324,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     double weight = 1.0+2*v2*TMath::Cos(n_harm*phi_EP);
                     double phi = jet_dau_phi;
+
+                    
 
 
                     
