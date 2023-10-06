@@ -308,7 +308,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                     // if(jet_dau_pt >3.0) continue;
-                    if(jet_dau_pt  <0.3) continue;
+                    if(jet_dau_pt  <0.0) continue;
 
                     
                     TVector3 EP;
