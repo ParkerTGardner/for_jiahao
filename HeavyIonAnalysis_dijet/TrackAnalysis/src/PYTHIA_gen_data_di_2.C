@@ -7,7 +7,7 @@
 //below allows for rotation into jet frame
 #include "include/coordinateTools.h"
 //defines constants
-#include "include/sherpa_constants.h"
+#include "include/sherpa_constants_cumulant.h"
 
 #include <iostream>
 #include <iomanip>
@@ -19,6 +19,8 @@
 #include <fstream>
 #include <algorithm>
 #include <iterator>
+#include <complex>
+#include <cmath>
 
 #include <TStyle.h>
 #include "TH1D.h"
@@ -35,6 +37,7 @@
 #include "TCutG.h"
 #include "TRandom3.h"
 #include "TVector3.h"
+#include "TComplex.h"
 
 using TMath::ATan;
 using TMath::ACos;
@@ -273,8 +276,8 @@ void MyClass::Loop(int job, std::string fList){
             // def random Event plane to calculate v2 for each jet
             // phi*' =  phi* - Psi
             // weight = (1+2v2*cos(phi*'))
-            TRandom3 randGenerator(0); 
-            double Psi = randGenerator.Uniform(-TMath::Pi(), TMath::Pi());
+            // TRandom3 randGenerator(0); 
+            // double Psi = randGenerator.Uniform(-TMath::Pi(), TMath::Pi());
             
             //ENTERING JET LOOP
             for(int kjet=0; kjet < jetPt->size(); kjet++){
@@ -350,10 +353,10 @@ void MyClass::Loop(int job, std::string fList){
                 for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
                 
                     TVector3 dau_A0;
-                    dau_A0.SetPtEtaPhi((double)(*genDau_pt)[ijet][A_trk],(double)(*genDau_eta)[ijet][A_trk],(double)(*genDau_phi)[ijet][A_trk]);
+                    dau_A0.SetPtEtaPhi((double)(*dau_pt)[ijet][A_trk],(double)(*dau_eta)[ijet][A_trk],(double)(*dau_phi)[ijet][A_trk]);
                     // TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
                     
-                    if((*genDau_chg)[ijet][A_trk] == 0) continue;
+                    if((*dau_chg)[ijet][A_trk] == 0) continue;
                     if(fabs(dau_A0.Eta()) > 2.4)        continue;
                     if(fabs(dau_A0.Perp())  < 0.3)      continue;
 
@@ -377,19 +380,8 @@ void MyClass::Loop(int job, std::string fList){
                     // if(jet_dau_pt >3.0) continue;
                     if(jet_dau_pt  <0.0) continue;
 
-                    
-                    TVector3 EP;
-                    EP.SetXYZ(TMath::Cos(Psi),TMath::Sin(Psi),0);
-                    TVector3 dau;
-                    dau.SetXYZ(TMath::Cos(jet_dau_phi),TMath::Sin(jet_dau_phi),0);
-                    TVector3 z;
-                    z.SetXYZ(0.,0.,1.);
-                    double phi_EP0 = TMath::ACos(EP*dau);
-                    double phi_EP;
-                    if((EP.Cross(dau))*z >= 0) phi_EP = phi_EP0;
-                    else phi_EP = -phi_EP0;
-
-                    double weight = 1.0+2*v2*TMath::Cos(n_harm*phi_EP);
+                    double weight = 1.0 / (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
+                        
                     double phi = jet_dau_phi;
 
 
@@ -459,11 +451,11 @@ void MyClass::Loop(int job, std::string fList){
                     if(tkBool[i] == 1){
 
                     
-                    hjet_avg_numerator_two_AT->Fill(i, Q_all_absAT);
-                    hjet_avg_denominat_two_AT->Fill(i,(weight_two_AP));
+                    hjet_avg_numerator_two_AT->Fill(i, jet_HLT_weight*Q_all_absAT);
+                    hjet_avg_denominat_two_AT->Fill(i,(jet_HLT_weight*weight_two_AT));
 
-                    hjet_avg_numerator_two_AP->Fill(i, Q_all_absAP);
-                    hjet_avg_denominat_two_AP->Fill(i,(weight_two_AP));
+                    hjet_avg_numerator_two_AP->Fill(i, jet_HLT_weight*Q_all_absAP);
+                    hjet_avg_denominat_two_AP->Fill(i,(jet_HLT_weight*weight_two_AP));
 
                     }
                 }
@@ -480,8 +472,8 @@ void MyClass::Loop(int job, std::string fList){
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
 
-                    hjet_avg_numerator_four->Fill(i,four_numerator );
-                    hjet_avg_denominat_four->Fill(i,(weight_four));
+                    hjet_avg_numerator_four->Fill(i,jet_HLT_weight*four_numerator );
+                    hjet_avg_denominat_four->Fill(i,(jet_HLT_weight*weight_four));
 
                     }
                 }
