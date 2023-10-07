@@ -398,7 +398,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                     
                     hjet_avg_numerator_two_AT->Fill(i, Q_all_absAT);
-                    hjet_avg_denominat_two_AT->Fill(i,(weight_two_AP));
+                    hjet_avg_denominat_two_AT->Fill(i,(weight_two_AT));
 
                     hjet_avg_numerator_two_AP->Fill(i, Q_all_absAP);
                     hjet_avg_denominat_two_AP->Fill(i,(weight_two_AP));
