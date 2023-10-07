@@ -265,7 +265,6 @@ void MyClass::Loop(int job, std::string fList){
                     int gjN = jetPhi->size();
 
 
-            hEvent_Pass->Fill(1);
 
 
             
@@ -276,8 +275,8 @@ void MyClass::Loop(int job, std::string fList){
             // def random Event plane to calculate v2 for each jet
             // phi*' =  phi* - Psi
             // weight = (1+2v2*cos(phi*'))
-            // TRandom3 randGenerator(0); 
-            // double Psi = randGenerator.Uniform(-TMath::Pi(), TMath::Pi());
+            TRandom3 randGenerator(0); 
+            double Psi = randGenerator.Uniform(-TMath::Pi(), TMath::Pi());
             
             //ENTERING JET LOOP
             for(int kjet=0; kjet < jetPt->size(); kjet++){
@@ -375,7 +374,16 @@ void MyClass::Loop(int job, std::string fList){
 
                     // double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);
 
-
+                    TVector3 EP;
+                    EP.SetXYZ(TMath::Cos(Psi),TMath::Sin(Psi),0);
+                    TVector3 dau;
+                    dau.SetXYZ(TMath::Cos(jet_dau_phi),TMath::Sin(jet_dau_phi),0);
+                    TVector3 z;
+                    z.SetXYZ(0.,0.,1.);
+                    double phi_EP0 = TMath::ACos(EP*dau);
+                    double phi_EP;
+                    if((EP.Cross(dau))*z >= 0) phi_EP = phi_EP0;
+                    else phi_EP = -phi_EP0;
 
                     // if(jet_dau_pt >3.0) continue;
                     if(jet_dau_pt  <0.0) continue;

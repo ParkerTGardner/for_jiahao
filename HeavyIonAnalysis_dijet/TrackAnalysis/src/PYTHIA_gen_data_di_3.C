@@ -263,8 +263,6 @@ void MyClass::Loop(int job, std::string fList){
                     int gjN = jetPhi->size();
 
 
-            hEvent_Pass->Fill(1);
-
 
             
             
@@ -358,21 +356,27 @@ void MyClass::Loop(int job, std::string fList){
                     double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);
 
                     if(jet_dau_pt >3.0) continue;
-                    // if(jet_dau_pt0 <0.3) continue;
-
-                    // TLorentzVector dau_A_4 = BeamBoost(Boost_to_CM,dau_A0_4);
-                    // TVector3       dau_A   = dau_A_4.Vect();
+                    
 
                     double jet_dau_eta   = etaWRTJet(JetA, dau_A0);
                     //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
                     double jet_dau_phi   = phiWRTJet(JetA, dau_A0) ;
 
-                    // double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);
 
 
 
-                    // if(jet_dau_pt >3.0) continue;
                     if(jet_dau_pt  <0.0) continue;
+
+                    TVector3 EP;
+                    EP.SetXYZ(TMath::Cos(Psi),TMath::Sin(Psi),0);
+                    TVector3 dau;
+                    dau.SetXYZ(TMath::Cos(jet_dau_phi),TMath::Sin(jet_dau_phi),0);
+                    TVector3 z;
+                    z.SetXYZ(0.,0.,1.);
+                    double phi_EP0 = TMath::ACos(EP*dau);
+                    double phi_EP;
+                    if((EP.Cross(dau))*z >= 0) phi_EP = phi_EP0;
+                    else phi_EP = -phi_EP0;
 
                     double weight = 1.0 / (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
                         
@@ -406,8 +410,8 @@ void MyClass::Loop(int job, std::string fList){
                     for(int i = 0; i < trackbin; i++){
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
                         if(tkBool[i] == 1){
-                            hEta[i]->Fill(jet_dau_eta);
-                            hPhi_EP[i]->Fill(phi_EP, weight);
+                            hEta[i]->Fill(jet_dau_eta, jet_HLT_weight*weight);
+                            hPhi_EP[i]->Fill(phi_EP, jet_HLT_weight*weight);
                         }
                     }
                         
