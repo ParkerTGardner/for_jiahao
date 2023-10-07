@@ -272,8 +272,8 @@ void MyClass::Loop(int job, std::string fList){
             // def random Event plane to calculate v2 for each jet
             // phi*' =  phi* - Psi
             // weight = (1+2v2*cos(phi*'))
-            // TRandom3 randGenerator(0); 
-            // double Psi = randGenerator.Uniform(-TMath::Pi(), TMath::Pi());
+            TRandom3 randGenerator(0); 
+            double Psi = randGenerator.Uniform(-TMath::Pi(), TMath::Pi());
             
             //ENTERING JET LOOP
             for(int kjet=0; kjet < jetPt->size(); kjet++){
