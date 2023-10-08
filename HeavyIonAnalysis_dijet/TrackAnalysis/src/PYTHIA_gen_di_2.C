@@ -458,6 +458,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
     hjet_avg_denominat_two_AQ ->Write();
     hjet_avg_numerator_two_TP ->Write();
     hjet_avg_denominat_two_TP ->Write();
+    hjet_avg_numerator_four->Write();
+    hjet_avg_denominat_four ->Write();
     
     // hRand_jet_avg_numerator_two ->Write();
     // hRand_jet_avg_denominat_two ->Write();
