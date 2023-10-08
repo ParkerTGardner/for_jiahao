@@ -276,7 +276,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                 std::complex<double> Q_all2A (0, 0);
-                std::complex<double> Q_all4A (0, 0);
+                std::complex<double> Q_all2Q (0, 0);
                 std::complex<double> Q_all2T (0, 0);
                 std::complex<double> Q_all2P (0, 0);
                 // std::complex<double> Q_all4T (0, 0);
@@ -320,8 +320,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
 
-                    // if(jet_dau_pt >3.0) continue;
-                    if(jet_dau_pt  <0.3) continue;
+
+                    if(jet_dau_pt  <0.0) continue;
 
                     
                     TVector3 EP;
@@ -379,13 +379,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     }
                         
 
-                    // for(int i = 0; i < trackbin; i++){
-                    // //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
-                    //     if(tkBool[i] == 1){
-                    //         if (jet_dau_eta>0.86 && jet_dau_eta<2.25) hPhiDrawA[i]->Fill(phi);
-                    //         if (jet_dau_eta>2.25 && jet_dau_eta<5.00) hPhiDrawT[i]->Fill(phi);
-                    //     }
-                    // }
 
                         
                 }
@@ -439,8 +432,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
 
-                    hjet_avg_numerator_four->Fill(i,jet_HLT_weight*four_numerator );
-                    hjet_avg_denominat_four->Fill(i,(jet_HLT_weight*weight_four));
+                    hjet_avg_numerator_four->Fill(i,four_numerator );
+                    hjet_avg_denominat_four->Fill(i,(weight_four));
 
                     }
                 }
