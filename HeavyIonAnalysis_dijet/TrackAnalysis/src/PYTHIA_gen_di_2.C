@@ -415,17 +415,17 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if(tkBool[i] == 1){
 
                     
-                    hjet_avg_numerator_two_AP->Fill(i, jet_HLT_weight*Q_all_absAP);
-                    hjet_avg_denominat_two_AP->Fill(i,(jet_HLT_weight*weight_two_AP));
+                    hjet_avg_numerator_two_AP->Fill(i, Q_all_absAP);
+                    hjet_avg_denominat_two_AP->Fill(i, weight_two_AP);
 
-                    hjet_avg_numerator_two_TQ->Fill(i, jet_HLT_weight*Q_all_absTQ);
-                    hjet_avg_denominat_two_TQ->Fill(i,(jet_HLT_weight*weight_two_TQ));
+                    hjet_avg_numerator_two_TQ->Fill(i, Q_all_absTQ);
+                    hjet_avg_denominat_two_TQ->Fill(i,(weight_two_TQ));
 
-                    hjet_avg_numerator_two_AQ->Fill(i, jet_HLT_weight*Q_all_absAQ);
-                    hjet_avg_denominat_two_AQ->Fill(i,(jet_HLT_weight*weight_two_AQ));
+                    hjet_avg_numerator_two_AQ->Fill(i, Q_all_absAQ);
+                    hjet_avg_denominat_two_AQ->Fill(i,(weight_two_AQ));
 
-                    hjet_avg_numerator_two_TP->Fill(i, jet_HLT_weight*Q_all_absTP);
-                    hjet_avg_denominat_two_TP->Fill(i,(jet_HLT_weight*weight_two_TP));
+                    hjet_avg_numerator_two_TP->Fill(i, Q_all_absTP);
+                    hjet_avg_denominat_two_TP->Fill(i,(weight_two_TP));
 
                     }
                 }
@@ -439,8 +439,8 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
 
-                    hjet_avg_numerator_four->Fill(i,jet_HLT_weight*four_numerator );
-                    hjet_avg_denominat_four->Fill(i,(jet_HLT_weight*weight_four));
+                    hjet_avg_numerator_four->Fill(i,four_numerator );
+                    hjet_avg_denominat_four->Fill(i,(weight_four));
 
                     }
                 }
