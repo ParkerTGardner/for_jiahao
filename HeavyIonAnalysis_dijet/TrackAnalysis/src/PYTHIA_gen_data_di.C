@@ -383,7 +383,7 @@ void MyClass::Loop(int job, std::string fList){
 
 
                     // if(jet_dau_pt >3.0) continue;
-                    if(jet_dau_pt  <0.0) continue;
+                    if(jet_dau_pt  <0.3) continue;
 
                     double weight = 1.0 / (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
                         
