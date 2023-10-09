@@ -342,27 +342,27 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     
                     std::complex<double> Q_part2 (weight*TMath::Cos(n_harm*phi) , weight*TMath::Sin(n_harm*phi));
                     // std::complex<double> Q_part4 (weight*weight*TMath::Cos(2.0*n_harm*phi) , weight*weight*TMath::Sin(2.0*n_harm*phi));
-                    if ((jet_dau_eta>0.86) && (jet_dau_eta<1.55)){
+                    if ((jet_dau_eta>0.86) && (jet_dau_eta<1.45)){
 
                         Q_all2A = Q_all2A + Q_part2;
                         M++;
                         weight_sum_A += weight;
                     }
 
-                    else if ((jet_dau_eta>1.55) && (jet_dau_eta<2.00)){
+                    else if ((jet_dau_eta>1.45) && (jet_dau_eta<1.85)){
 
                         Q_all2T = Q_all2T + Q_part2;
                         N++;
                         weight_sum_T += weight;
                     }
 
-                    else if ((jet_dau_eta>2.00) && (jet_dau_eta<2.60)){
+                    else if ((jet_dau_eta>1.85) && (jet_dau_eta<2.3)){
 
                         Q_all2P = Q_all2P + Q_part2;
                         P++;
                         weight_sum_P += weight;
                     }
-                    else if ((jet_dau_eta>2.60) && (jet_dau_eta<5.00)){
+                    else if ((jet_dau_eta>2.3) && (jet_dau_eta<5.00)){
 
                         Q_all2Q = Q_all2Q + Q_part2;
                         Q++;
