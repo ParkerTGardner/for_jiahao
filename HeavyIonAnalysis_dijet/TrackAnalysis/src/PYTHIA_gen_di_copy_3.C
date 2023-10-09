@@ -385,10 +385,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                 // mult of subevent A, B >3
-                if (M<2) continue;
-                if (N<2) continue;
-                if (P<2) continue;
-                if (Q<2) continue;
+                if (M<1) continue;
+                if (N<1) continue;
+                if (P<1) continue;
+                if (Q<1) continue;
 
                 
                 double Q_all_absAP = std::real(Q_all2A*std::conj(Q_all2P));

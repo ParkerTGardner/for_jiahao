@@ -433,10 +433,10 @@ void MyClass::Loop(int job, std::string fList){
 
 
                 // mult of subevent A, B >3
-                if (M<2) continue;
-                if (N<2) continue;
-                if (P<2) continue;
-                if (Q<2) continue;
+                if (M<1) continue;
+                if (N<1) continue;
+                if (P<1) continue;
+                if (Q<1) continue;
 
                 
                 // double particle_twoAT = Q_all_absAT / (weight_sum_A*weight_sum_T);
