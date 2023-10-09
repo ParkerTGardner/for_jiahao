@@ -1,6 +1,6 @@
 const int   trackbin                    =9 ;
 const int   ktbin = 8;
-const int ptbin = 6;
+const int ptbin = 7;
 const float ptbinbounds_lo[ptbin] = {0.0,0.3,0.7,1.0,1.5,2.0,2.5};
 const float ptbinbounds_hi[ptbin] = {0.3,0.7,1.0,1.5,2.0,2.5,3.0};
 const int mm = 1000;
