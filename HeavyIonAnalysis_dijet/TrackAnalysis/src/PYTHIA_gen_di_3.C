@@ -448,7 +448,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
     
     string subList = fList.substr(fList.size() - 3);
-    TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_2/dijob_%s.root",subList.c_str()), "recreate");
+    TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_3/dijob_%s.root",subList.c_str()), "recreate");
     hjet_avg_numerator_two_AP ->Write();
     hjet_avg_denominat_two_AP ->Write();
     hjet_avg_numerator_two_TQ ->Write();
