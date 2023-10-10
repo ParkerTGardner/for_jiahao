@@ -305,7 +305,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                     // if(jet_dau_pt >3.0) continue;
-                    if(jet_dau_pt  <0.3) continue;
+                    if(jet_dau_pt  <0.7) continue;
                     if(jet_dau_eta > track_eta_lim) continue;
 
                     double phi = jet_dau_phi;
@@ -391,8 +391,6 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 // int M = n_G_ChargeMult_count ;
                 if (Pairs<10) continue;
 
-                // double Q_all_sqr = Q_all_abs * Q_all_abs;
-                // double particle_two = Q_all2 / weight_sum;
 
 
                 for(int i = 0; i < trackbin; i++){
