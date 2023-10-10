@@ -168,7 +168,7 @@ void MyClass::Loop(int job, std::string fList){
     }
 
     double n_harm = 2.0;
-    double v2 = 0.1;
+    double v2 = 0.05;
 
 
   
@@ -308,7 +308,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                     // if(jet_dau_pt >3.0) continue;
-                    if(jet_dau_pt  <0.0) continue;
+                    if(jet_dau_pt  <0.7) continue;
 
                     
                     TVector3 EP;
