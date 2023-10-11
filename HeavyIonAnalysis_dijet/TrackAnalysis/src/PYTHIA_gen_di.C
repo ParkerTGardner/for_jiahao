@@ -166,7 +166,7 @@ void MyClass::Loop(int job, std::string fList){
     }
 
     double n_harm = 2.0;
-    double v2 = 0.00;
+    double v2 = 0.20;
 
 
   
@@ -356,11 +356,11 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         double T_jet_dau_phi   = phiWRTJet(JetA, dau_A0) ;
 
                        
-                        if(T_jet_dau_pt  <0.3) continue;
+                        if(T_jet_dau_pt  <0.7) continue;
                         if(T_jet_dau_eta > track_eta_lim) continue;
                         if(fabs(jet_dau_eta-T_jet_dau_eta)<=2.0) continue;
 
-                        double T_phi = jet_dau_phi;
+                        double T_phi = T_jet_dau_phi;
 
                         TVector3 T_dau;
                         T_dau.SetXYZ(TMath::Cos(T_jet_dau_phi),TMath::Sin(T_jet_dau_phi),0);
