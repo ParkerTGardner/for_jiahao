@@ -370,7 +370,7 @@ void MyClass::Loop(int job, std::string fList){
 
                     
                 n_G_ChargeMult_count = n_G_ChargeMult_count1;
-                hBinDist_gen_single            ->Fill(n_G_ChargeMult_count1);
+                hBinDist_gen_single            ->Fill(n_G_ChargeMult_count1, 1.0* jet_HLT_weight);
 
                 //some useful bools 
                 // We have to do this here because we need to get correct mult first
@@ -387,7 +387,7 @@ void MyClass::Loop(int job, std::string fList){
                     if(n_G_ChargeMult_count >= trackbinbounds[i] && n_G_ChargeMult_count < trackbinboundsUpper[i]){
                         tkBool[i] = 1;
                         hJet_Pass           ->Fill(i);
-                        hBinDist_gen[i]         ->Fill(n_G_ChargeMult_count);
+                        hBinDist_gen[i]         ->Fill(n_G_ChargeMult_count, 1.0* jet_HLT_weight);
                         // hMult_AB_A[i]  -> Fill(n_G_ChargeMult_count1);
                         // hMult_AB_AB[i] -> Fill (n_G_ChargeMult_count1, n_G_ChargeMult_count2); 
                     }
@@ -480,10 +480,10 @@ void MyClass::Loop(int job, std::string fList){
 
                     // double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);/
 
-                    hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1);
-                    hEtaA -> Fill(jet_dau_eta,1);
-                    hPhiA -> Fill(jet_dau_phi,1);
-                    hJtA  -> Fill(jet_dau_pt, 1);
+                    hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1.0* jet_HLT_weight/(Atrk_weight));
+                    hEtaA -> Fill(jet_dau_eta,1.0* jet_HLT_weight/(Atrk_weight));
+                    hPhiA -> Fill(jet_dau_phi,1.0* jet_HLT_weight/(Atrk_weight));
+                    hJtA  -> Fill(jet_dau_pt, 1.0* jet_HLT_weight/(Atrk_weight));
 
 
 
