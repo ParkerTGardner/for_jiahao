@@ -488,7 +488,7 @@ void MyClass::Loop(int job, std::string fList){
 
 
 
-                    double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
+                    // double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
 
                     for(int i = 0; i < trackbin; i++){
                         for(int j = 0; j < ptbin; j++){
