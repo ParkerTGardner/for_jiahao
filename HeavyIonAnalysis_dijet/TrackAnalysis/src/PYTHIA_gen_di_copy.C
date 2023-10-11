@@ -166,7 +166,7 @@ void MyClass::Loop(int job, std::string fList){
     }
 
     double n_harm = 2.0;
-    double v2 = 0.20;
+    double v2 = 0.15;
 
 
   
@@ -353,7 +353,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                         double T_jet_dau_eta   = etaWRTJet(JetA, dau_T0);
                         //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                        double T_jet_dau_phi   = phiWRTJet(JetA, dau_A0) ;
+                        double T_jet_dau_phi   = phiWRTJet(JetA, dau_T0) ;
 
                        
                         if(T_jet_dau_pt  <0.7) continue;
