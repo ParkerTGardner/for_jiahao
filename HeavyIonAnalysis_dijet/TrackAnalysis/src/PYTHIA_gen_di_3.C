@@ -273,11 +273,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                 std::complex<double> Q_all4 (0.0, 0.0);
                 int Pairs = 0;
                 double weight_sum = 0.0;
-
-                std::complex<double> Q_all2 (0.0, 0.0);
-                std::complex<double> Q_all4 (0.0, 0.0);
-                int Pairs = 0;
-                double weight_sum = 0.0;
+                
 
 
                 // calculate the A_ptbool pile up Ntrig in jetA first,
@@ -361,7 +357,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         double T_jet_dau_phi   = phiWRTJet(JetA, dau_A0) ;
 
                        
-                        if(T_jet_dau_pt  <0.3) continue;
+                        if(T_jet_dau_pt  <0.7) continue;
                         if(T_jet_dau_eta > track_eta_lim) continue;
                         if(fabs(jet_dau_eta-T_jet_dau_eta)<=2.0) continue;
 
