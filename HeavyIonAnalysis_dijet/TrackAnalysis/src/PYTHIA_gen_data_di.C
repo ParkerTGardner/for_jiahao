@@ -366,7 +366,7 @@ void MyClass::Loop(int job, std::string fList){
 
 
                     
-                    std::complex<double> Q_part2 (TMath::Cos(n_harm*phi) , TMath::Sin(n_harm*phi));
+                    std::complex<double> Q_part2A (TMath::Cos(n_harm*phi) , TMath::Sin(n_harm*phi));
                     
 
 
@@ -374,7 +374,7 @@ void MyClass::Loop(int job, std::string fList){
                     for(int i = 0; i < trackbin; i++){
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
                         if(tkBool[i] == 1){
-                            hEta[i]->Fill(jet_dau_eta, jet_HLT_weight*weight*jet_dau_eta);
+                            hEta[i]->Fill(jet_dau_eta, jet_HLT_weight*weight_A*jet_dau_eta);
                         }
                     }
 
@@ -452,8 +452,7 @@ void MyClass::Loop(int job, std::string fList){
     TFile* fS_tempA = new TFile(Form("pythia_batch_data_output/root_out/dijob_%s.root",subList.c_str()), "recreate");
     hjet_avg_numerator_two ->Write();
     hjet_avg_denominat_two ->Write();
-    hjet_avg_numerator_four->Write();
-    hjet_avg_denominat_four ->Write();
+
     
     // hRand_jet_avg_numerator_two ->Write();
     // hRand_jet_avg_denominat_two ->Write();
