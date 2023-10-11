@@ -660,12 +660,13 @@ void MyClass::Loop(int job, std::string fList){
 
                         double jet_dau_pt    =  ptWRTJet(JetAA, dau_A);
 
+                        double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][    A_trk] )));
+
                         hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1.0* jet_HLT_weight/Atrk_weight);
                         hEtaA -> Fill(jet_dau_eta,1.0* jet_HLT_weight/Atrk_weight);
                         hPhiA -> Fill(jet_dau_phi,1.0* jet_HLT_weight/Atrk_weight);
                         hJtA  -> Fill(jet_dau_pt, 1.0* jet_HLT_weight/Atrk_weight);
 
-                        double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
 
                         for(int i = 0; i < trackbin; i++){
                             for(int j = 0; j < ptbin; j++){

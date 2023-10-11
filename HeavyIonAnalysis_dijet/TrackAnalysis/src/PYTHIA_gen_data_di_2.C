@@ -479,6 +479,7 @@ void MyClass::Loop(int job, std::string fList){
                     if(jet_dau_eta > track_eta_lim) continue;
 
                     // double jet_dau_pt    =  ptWRTJet(JetA, dau_A0);/
+                    double Atrk_weight = (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][    A_trk] )));
 
                     hEtaPhiA->Fill(jet_dau_eta, jet_dau_phi, 1.0* jet_HLT_weight/(Atrk_weight));
                     hEtaA -> Fill(jet_dau_eta,1.0* jet_HLT_weight/(Atrk_weight));
