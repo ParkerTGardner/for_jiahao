@@ -306,7 +306,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                     // if(jet_dau_pt >3.0) continue;
-                    if(jet_dau_pt  <0.3) continue;
+                    if(jet_dau_pt  <0.0) continue;
                     if(jet_dau_eta > track_eta_lim) continue;
 
                     double phi = jet_dau_phi;
@@ -357,7 +357,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                         double T_jet_dau_phi   = phiWRTJet(JetA, dau_T0) ;
 
                        
-                        if(T_jet_dau_pt  <0.3) continue;
+                        if(T_jet_dau_pt  <0.0) continue;
                         if(T_jet_dau_eta > track_eta_lim) continue;
                         if(fabs(jet_dau_eta-T_jet_dau_eta)<=2.0) continue;
 
