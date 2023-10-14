@@ -145,8 +145,17 @@ void MyClass::Loop(int job, std::string fList){
 
 
 
-    TH1D* hjet_avg_numerator_two = new TH1D("hjet_avg_numerator_two", "hjet_avg_numerator_two" ,trackbin , trackbinEdge);
-    TH1D* hjet_avg_denominat_two = new TH1D("hjet_avg_denominat_two", "hjet_avg_denominat_two" ,trackbin , trackbinEdge);
+    TH1D* hjet_avg_numerator_two_AP = new TH1D("hjet_avg_numerator_two_AP", "hjet_avg_numerator_two_AP" ,trackbin , trackbinEdge);
+    TH1D* hjet_avg_denominat_two_AP = new TH1D("hjet_avg_denominat_two_AP", "hjet_avg_denominat_two_AP" ,trackbin , trackbinEdge);
+    TH1D* hjet_avg_numerator_two_TQ = new TH1D("hjet_avg_numerator_two_TQ", "hjet_avg_numerator_two_TQ" ,trackbin , trackbinEdge);
+    TH1D* hjet_avg_denominat_two_TQ = new TH1D("hjet_avg_denominat_two_TQ", "hjet_avg_denominat_two_TQ" ,trackbin , trackbinEdge);
+
+    TH1D* hjet_avg_numerator_two_AQ = new TH1D("hjet_avg_numerator_two_AQ", "hjet_avg_numerator_two_AQ" ,trackbin , trackbinEdge);
+    TH1D* hjet_avg_denominat_two_AQ = new TH1D("hjet_avg_denominat_two_AQ", "hjet_avg_denominat_two_AQ" ,trackbin , trackbinEdge);
+    TH1D* hjet_avg_numerator_two_TP = new TH1D("hjet_avg_numerator_two_TP", "hjet_avg_numerator_two_TP" ,trackbin , trackbinEdge);
+    TH1D* hjet_avg_denominat_two_TP = new TH1D("hjet_avg_denominat_two_TP", "hjet_avg_denominat_two_TP" ,trackbin , trackbinEdge);
+
+
     TH1D* hjet_avg_numerator_four = new TH1D("hjet_avg_numerator_four", "hjet_avg_numerator_four" ,trackbin , trackbinEdge);
     TH1D* hjet_avg_denominat_four = new TH1D("hjet_avg_denominat_four", "hjet_avg_denominat_four" ,trackbin , trackbinEdge);
 
@@ -155,14 +164,16 @@ void MyClass::Loop(int job, std::string fList){
 
     TH1D* hBinDist_gen[trackbin];
     TH1D* hPhiDrawA[trackbin];
-    // TH1D* hPhiDrawT[trackbin];
+    TH1D* hPhiDrawT[trackbin];
     TH1D* hEta[trackbin];
+    TH1D* hPhi_EP[trackbin];
     for(int wtrk = 1; wtrk<trackbin+1; wtrk++){
         hBinDist_gen[wtrk-1]    = new TH1D(Form("hBinDist_gen_%d",wtrk),Form("hBinDist_gen_%d",wtrk), bin360, bin0, bin120);
         hPhiDrawA[wtrk-1] = new TH1D(Form("hPhiDrawA_%d",wtrk),Form("hPhiDrawA_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
-        // hPhiDrawT[wtrk-1] = new TH1D(Form("hPhiDrawT_%d",wtrk),Form("hPhiDrawT_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
-        
+        hPhiDrawT[wtrk-1] = new TH1D(Form("hPhiDrawT_%d",wtrk),Form("hPhiDrawT_%d",wtrk), 1000, -TMath::Pi(), TMath::Pi());
         hEta[wtrk-1] = new TH1D(Form("hEta_%d",wtrk),Form("hEta_%d",wtrk), 1000, 0, 8);
+        hPhi_EP[wtrk-1] = new TH1D(Form("hPhi_EP_%d",wtrk),Form("hPhi_EP_%d",wtrk), 1000, -2*TMath::Pi(), 2*TMath::Pi());
+        
     }
 
     double n_harm = 2.0;
@@ -215,12 +226,14 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                   }
                   int gjN = genJetPhi->size();
 
+            
+            // def random Event plane to calculate v2 for each jet
+            // phi*' =  phi* - Psi
+            // weight = (1+2v2*cos(phi*'))
             TRandom3 randGenerator(0); 
             double Psi = randGenerator.Uniform(-TMath::Pi(), TMath::Pi());
             
             //ENTERING JET LOOP
-
-            //in this first loop I choose the jetA and count the trks of A 
             for(int kjet=0; kjet < genJetPt->size(); kjet++){
 
                 int ijet = kjet;
@@ -237,22 +250,15 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
                  //    count the trks of A  
                 int n_G_ChargeMult_count  = 0;
-                int n_G_ChargeMult_count1 = 0;
                 
                 
                 for(int  G_trk=0; G_trk < NNtrk1; G_trk++ ){
                     if((*genDau_chg)[Gjet][G_trk] == 0) continue;
                     if(fabs((*genDau_pt)[Gjet][G_trk])  < 0.3)     continue;
                     if(fabs((*genDau_eta)[Gjet][G_trk]) > 2.4)     continue;
-                    n_G_ChargeMult_count1 += 1;
+                    n_G_ChargeMult_count += 1;
                 }
-                // if (n_G_ChargeMult_count1<30) continue;
                 
-                
-                
-                    
-                n_G_ChargeMult_count = n_G_ChargeMult_count1;
-                    // hBinDist_gen_single            ->Fill(n_G_ChargeMult_count1);
 
 
                 int tkBool[trackbin] = {0};
@@ -269,12 +275,21 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
 
-                std::complex<double> Q_all2 (0.0, 0.0);
-                std::complex<double> Q_all4 (0.0, 0.0);
-                int Pairs = 0;
-                double weight_sum = 0.0;
-                
+                std::complex<double> Q_all2A (0, 0);
+                std::complex<double> Q_all2Q (0, 0);
+                std::complex<double> Q_all2T (0, 0);
+                std::complex<double> Q_all2P (0, 0);
+                // std::complex<double> Q_all4T (0, 0);
 
+                int M = 0;
+                int N = 0;
+                int P = 0;
+                int Q = 0;
+                double weight_sum_A = 0.0;
+                double weight_sum_T = 0.0;
+                double weight_sum_P = 0.0;
+                double weight_sum_Q = 0.0;
+                // double weight_sum_T_sqr = 0.0;
 
                 // calculate the A_ptbool pile up Ntrig in jetA first,
                 //and then we do this in jetB so that we can get the complete Ntrig
@@ -305,12 +320,10 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
 
-                    // if(jet_dau_pt >3.0) continue;
-                    if(jet_dau_pt  <0.0) continue;
-                    if(jet_dau_eta > track_eta_lim) continue;
 
-                    double phi = jet_dau_phi;
+                    if(jet_dau_pt  <0.7) continue;
 
+                    
                     TVector3 EP;
                     EP.SetXYZ(TMath::Cos(Psi),TMath::Sin(Psi),0);
                     TVector3 dau;
@@ -322,104 +335,141 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
                     if((EP.Cross(dau))*z >= 0) phi_EP = phi_EP0;
                     else phi_EP = -phi_EP0;
 
-                    double weight_A = 1.0+2*v2*TMath::Cos(n_harm*phi_EP);
-                    
-                    std::complex<double> Q_part2A (TMath::Cos(n_harm*phi) , TMath::Sin(n_harm*phi));
-                    
+                    double weight = 1.0+2*v2*TMath::Cos(n_harm*phi_EP);
+                    double phi = jet_dau_phi;
 
+
+                    
+                    std::complex<double> Q_part2 (weight*TMath::Cos(n_harm*phi) , weight*TMath::Sin(n_harm*phi));
+                    // std::complex<double> Q_part4 (weight*weight*TMath::Cos(2.0*n_harm*phi) , weight*weight*TMath::Sin(2.0*n_harm*phi));
+                    if ((jet_dau_eta>0.86) && (jet_dau_eta<=1.45)){
+
+                        Q_all2P = Q_all2P + Q_part2;
+                        P++;
+                        weight_sum_P += weight;
+                    }
+
+                    else if ((jet_dau_eta>1.45) && (jet_dau_eta<=1.85)){
+
+                        Q_all2A = Q_all2A + Q_part2;
+                        M++;
+                        weight_sum_A += weight;
+                    }
+
+                    else if ((jet_dau_eta>1.85) && (jet_dau_eta<=2.3)){
+
+                        Q_all2T = Q_all2T + Q_part2;
+                        N++;
+                        weight_sum_T += weight;
+                    }
+                    else if ((jet_dau_eta>2.3) && (jet_dau_eta<=5.00)){
+
+                        Q_all2Q = Q_all2Q + Q_part2;
+                        Q++;
+                        weight_sum_Q += weight;
+                    }
+                    else continue;
 
                     for(int i = 0; i < trackbin; i++){
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
                         if(tkBool[i] == 1){
-                            hPhiDrawA[i]->Fill(phi);
                             hEta[i]->Fill(jet_dau_eta);
+                            hPhi_EP[i]->Fill(phi_EP, weight);
                         }
                     }
-
-
-                    for(int  T_trk= A_trk+1; T_trk < NNtrk1; T_trk++ ){
-                
-                        TVector3 dau_T0;
-                        dau_T0.SetPtEtaPhi((double)(*genDau_pt)[ijet][T_trk],(double)(*genDau_eta)[ijet][T_trk],(double)(*genDau_phi)[ijet][T_trk]);
-                        // TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
                         
-                        if((*genDau_chg)[ijet][T_trk] == 0) continue;
-                        if(fabs(dau_T0.Eta()) > 2.4)        continue;
-                        if(fabs(dau_T0.Perp())  < 0.3)      continue;
 
-                        //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                        double T_jet_dau_pt    =  ptWRTJet(JetA, dau_T0);
-
-                        if(T_jet_dau_pt >3.0) continue;
-
-                        double T_jet_dau_eta   = etaWRTJet(JetA, dau_T0);
-                        //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                        double T_jet_dau_phi   = phiWRTJet(JetA, dau_T0) ;
-
-                       
-                        if(T_jet_dau_pt  <0.0) continue;
-                        if(T_jet_dau_eta > track_eta_lim) continue;
-                        if(fabs(jet_dau_eta-T_jet_dau_eta)<=2.0) continue;
-
-                        double T_phi = T_jet_dau_phi;
-
-                        TVector3 T_dau;
-                        T_dau.SetXYZ(TMath::Cos(T_jet_dau_phi),TMath::Sin(T_jet_dau_phi),0);
-
-                        double T_phi_EP0 = TMath::ACos(EP*T_dau);
-                        double T_phi_EP;
-                        if((EP.Cross(dau))*z >= 0) T_phi_EP = T_phi_EP0;
-                        else T_phi_EP = T_phi_EP0;
-
-                        double weight_T = 1.0+2*v2*TMath::Cos(n_harm*T_phi_EP);
-                        
-                        std::complex<double> Q_part2T (TMath::Cos(n_harm*T_phi) , TMath::Sin(n_harm*T_phi));
-
-                        std::complex<double> Q_part4T (TMath::Cos(2.0*n_harm*T_phi) , TMath::Sin(2.0*n_harm*T_phi));
-
-                        Q_all2 = Q_all2 + weight_A * weight_T * Q_part2A * std::conj(Q_part2T);
-
-                        Pairs++;
-                        weight_sum += weight_A * weight_T;
-
-                            
-                    }
 
                         
                 }
 
 
-                // int M = n_G_ChargeMult_count ;
-                if (Pairs<10) continue;
+                // mult of subevent A, B >3
+                if (M<1) continue;
+                if (N<1) continue;
+                if (P<1) continue;
+                if (Q<1) continue;
 
+                
+                double Q_all_absAP = std::real(Q_all2A*std::conj(Q_all2P));
+                double weight_two_AP = (weight_sum_A*weight_sum_P);
+
+                double Q_all_absTQ = std::real(Q_all2T*std::conj(Q_all2Q));
+                double weight_two_TQ = (weight_sum_T*weight_sum_Q);
+
+                double Q_all_absAQ = std::real(Q_all2A*std::conj(Q_all2Q));
+                double weight_two_AQ = (weight_sum_A*weight_sum_Q);
+
+                double Q_all_absTP = std::real(Q_all2T*std::conj(Q_all2P));
+                double weight_two_TP = (weight_sum_T*weight_sum_P);
 
 
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
 
                     
-                    hjet_avg_numerator_two->Fill(i,std::real(Q_all2));
-                    hjet_avg_denominat_two->Fill(i,(weight_sum));
+                    hjet_avg_numerator_two_AP->Fill(i, Q_all_absAP);
+                    hjet_avg_denominat_two_AP->Fill(i, weight_two_AP);
+
+                    hjet_avg_numerator_two_TQ->Fill(i, Q_all_absTQ);
+                    hjet_avg_denominat_two_TQ->Fill(i,(weight_two_TQ));
+
+                    hjet_avg_numerator_two_AQ->Fill(i, Q_all_absAQ);
+                    hjet_avg_denominat_two_AQ->Fill(i,(weight_two_AQ));
+
+                    hjet_avg_numerator_two_TP->Fill(i, Q_all_absTP);
+                    hjet_avg_denominat_two_TP->Fill(i,(weight_two_TP));
 
                     }
-                }             
+                }
+
+               
+
+                double four_numerator = std::real( (Q_all2A*Q_all2T)*std::conj((Q_all2P*Q_all2Q)) );
+                double particle_four = std::real( (Q_all2A*Q_all2T)*std::conj((Q_all2P*Q_all2Q)) ) / (weight_sum_A * weight_sum_T * weight_sum_P * weight_sum_Q);
+                double weight_four = (weight_sum_A * weight_sum_T * weight_sum_P * weight_sum_Q);
+
+                for(int i = 0; i < trackbin; i++){
+                    if(tkBool[i] == 1){
+
+                    hjet_avg_numerator_four->Fill(i,four_numerator );
+                    hjet_avg_denominat_four->Fill(i,(weight_four));
+
+                    }
+                }
+
+
+                
+             
             }//kjet
                     }//Event
                     fFile->Close();
                     }//File
 
-
-
     
     string subList = fList.substr(fList.size() - 3);
     TFile* fS_tempA = new TFile(Form("pythia_batch_output/root_out_copy_3/dijob_%s.root",subList.c_str()), "recreate");
-    hjet_avg_numerator_two ->Write();
-    hjet_avg_denominat_two ->Write();
+    hjet_avg_numerator_two_AP ->Write();
+    hjet_avg_denominat_two_AP ->Write();
+    hjet_avg_numerator_two_TQ ->Write();
+    hjet_avg_denominat_two_TQ ->Write();
+
+    hjet_avg_numerator_two_AQ ->Write();
+    hjet_avg_denominat_two_AQ ->Write();
+    hjet_avg_numerator_two_TP ->Write();
+    hjet_avg_denominat_two_TP ->Write();
+    hjet_avg_numerator_four->Write();
+    hjet_avg_denominat_four ->Write();
     
+    // hRand_jet_avg_numerator_two ->Write();
+    // hRand_jet_avg_denominat_two ->Write();
+    // hRand_jet_avg_numerator_four->Write();
+    // hRand_jet_avg_denominat_four ->Write();
 
     for(int i=0; i<trackbin; i++){
         hBinDist_gen[i]->Write();
         hEta[i] -> Write();
+        hPhi_EP[i] -> Write();
     }
     fS_tempA->Close();
     // fS_2_temp->Close();
