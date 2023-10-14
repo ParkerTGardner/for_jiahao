@@ -383,7 +383,7 @@ void MyClass::Loop(int job, std::string fList){
 
 
                     // if(jet_dau_pt >3.0) continue;
-                    if(jet_dau_pt  <0.7) continue;
+                    if(jet_dau_pt  <0.0) continue;
 
                     double weight = 1.0 / (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
                         
@@ -395,16 +395,16 @@ void MyClass::Loop(int job, std::string fList){
                     std::complex<double> Q_part4 (weight*weight*TMath::Cos(2.0*n_harm*phi) , weight*weight*TMath::Sin(2.0*n_harm*phi));
                     if ((jet_dau_eta>0.86) && (jet_dau_eta<=1.45)){
 
-                        Q_all2A = Q_all2A + Q_part2;
-                        M++;
-                        weight_sum_A += weight;
+                        Q_all2P = Q_all2P + Q_part2;
+                        P++;
+                        weight_sum_P += weight;
                     }
 
                     else if ((jet_dau_eta>1.45) && (jet_dau_eta<=1.85)){
 
-                        Q_all2P = Q_all2P + Q_part2;
-                        P++;
-                        weight_sum_P += weight;
+                        Q_all2A = Q_all2A + Q_part2;
+                        M++;
+                        weight_sum_A += weight;
 
                     }
 
