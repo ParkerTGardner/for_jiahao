@@ -457,7 +457,7 @@ void MyClass::Loop(int job, std::string fList){
 
     
     string subList = fList.substr(fList.size() - 3);
-    TFile* fS_tempA = new TFile(Form("pythia_batch_data_output/root_out/dijob_%s.root",subList.c_str()), "recreate");
+    TFile* fS_tempA = new TFile(Form("pythia_batch_data_output/root_out_copy/dijob_%s.root",subList.c_str()), "recreate");
     hjet_avg_numerator_two ->Write();
     hjet_avg_denominat_two ->Write();
     hjet_avg_numerator_four->Write();
