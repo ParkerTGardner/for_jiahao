@@ -402,8 +402,8 @@ void MyClass::Loop(int job, std::string fList){
 
 
                 // mult of subevent A, B >3
-                if (M<3) continue;
-                if (N<3) continue;
+                if (M<5) continue;
+                // if (N<3) continue;
 
                 
                 // double particle_twoAT = Q_all_absAT / (weight_sum_A*weight_sum_T);
@@ -435,7 +435,7 @@ void MyClass::Loop(int job, std::string fList){
                 double four_numerator = pow(fabs(Q_all2A),4) + pow(fabs(Q_all4A),2) 
                                         - 2 * std::real(Q_all4A * std::conj(Q_all2A*Q_all2A))
                                         + 8 * std::real(Q_all32A * std::conj(Q_all2A))
-                                        - 4 * S12 * pow(fabs(Q_all2A).2) - 6 * S14 - 2 * S22;
+                                        - 4 * S12 * pow(fabs(Q_all2A),2) - 6 * S14 - 2 * S22;
                 double weight_four = S41 - 6 * S12 * S21 + 8 * S13 * S11 + 3 * S22 - 6 * S14;
                 if (weight_four == 0) continue;
                 for(int i = 0; i < trackbin; i++){
