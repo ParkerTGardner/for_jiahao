@@ -328,11 +328,17 @@ void MyClass::Loop(int job, std::string fList){
 
 
 
+                std::complex<double> Q_all2A (0, 0);
+                std::complex<double> Q_all4A (0, 0);
+                std::complex<double> Q_all32A (0, 0);
+                // std::complex<double> Q_all4T (0, 0);
+                // std::complex<double> Q_all4T (0, 0);
 
-                std::complex<double> Q_all2 (0.0, 0.0);
-                std::complex<double> Q_all4 (0.0, 0.0);
-                int Pairs = 0;
-                double weight_sum = 0.0;
+                int M = 0;
+                double weight_sum_A = 0.0;
+                double weight_sum_A_sqr = 0.0;
+                double weight_sum_A_tri = 0.0;
+                double weight_sum_A_quat = 0.0;
 
                 for(int  A_trk=0; A_trk < NNtrk1; A_trk++ ){
                 
@@ -357,66 +363,37 @@ void MyClass::Loop(int job, std::string fList){
 
 
 
-                    if(jet_dau_pt  < 0.0) continue;
-                    if(jet_dau_eta > track_eta_lim) continue;
+                    if(jet_dau_pt  <0.3) continue;
 
-                    double weight_A = 1.0 / (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
+                    double weight = 1.0 / (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][A_trk] , (*dau_eta)[ijet][A_trk] )));
                         
                     double phi = jet_dau_phi;
 
 
                     
-                    std::complex<double> Q_part2A (TMath::Cos(n_harm*phi) , TMath::Sin(n_harm*phi));
+                    std::complex<double> Q_part2 (TMath::Cos(n_harm*phi) , TMath::Sin(n_harm*phi));
+                    std::complex<double> Q_part4 (TMath::Cos(2.0*n_harm*phi) , TMath::Sin(2.0*n_harm*phi));
                     
 
+                    if ((jet_dau_eta>0.86) && (jet_dau_eta<5.00)){
 
+                        Q_all2A += weight * Q_part2;
+                        Q_all4A +=  weight * weight * Q_part4;
+                        Q_all32A +=  weight * weight * weight * Q_part2;
+                        M++;
+                        weight_sum_A += weight;
+                        weight_sum_A_sqr += weight*weight;
+                        weight_sum_A_tri += weight*weight*weight;
+                        weight_sum_A_quat += weight*weight*weight*weight;
+                    }
+
+                    else continue;
 
                     for(int i = 0; i < trackbin; i++){
                     //if((*chargedMultiplicity)[indicesR[kjet]] >= trackbinbounds[i] && (*chargedMultiplicity)[indicesR[kjet]] < trackbinboundsUpper[i]){
                         if(tkBool[i] == 1){
-                            hEta[i]->Fill(jet_dau_eta, jet_HLT_weight*weight_A*jet_dau_eta);
+                            hEta[i]->Fill(jet_dau_eta, jet_HLT_weight*weight);
                         }
-                    }
-
-
-
-
-                    for(int  T_trk= A_trk+1; T_trk < NNtrk1; T_trk++ ){
-                
-                        TVector3 dau_T0;
-                        dau_T0.SetPtEtaPhi((double)(*dau_pt)[ijet][T_trk],(double)(*dau_eta)[ijet][T_trk],(double)(*dau_phi)[ijet][T_trk]);
-                        // TLorentzVector dau_A0_4(dau_A0,dau_A0.Mag());
-                        
-                        if((*dau_chg)[ijet][T_trk] == 0) continue;
-                        if(fabs(dau_T0.Eta()) > 2.4)        continue;
-                        if(fabs(dau_T0.Perp())  < 0.3)      continue;
-
-                        //     daughter pt with respect to the jet axis                 pt With Respect To Jet 
-                        double T_jet_dau_pt    =  ptWRTJet(JetA, dau_T0);
-
-                        if(T_jet_dau_pt >3.0) continue;
-
-                        double T_jet_dau_eta   = etaWRTJet(JetA, dau_T0);
-                        //     daughter phi with respect to the jet axis                 phi With Respect To Jet 
-                        double T_jet_dau_phi   = phiWRTJet(JetA, dau_T0) ;
-
-                       
-                        if(T_jet_dau_pt  <0.0) continue;
-                        if(T_jet_dau_eta > track_eta_lim) continue;
-                        if(fabs(jet_dau_eta-T_jet_dau_eta)<=2.0) continue;
-
-                        double T_phi = T_jet_dau_phi;
-
-                        double weight_T = 1.0 / (hReco2D[thisEffTable]->GetBinContent(hReco2D[thisEffTable]->FindBin( (*dau_pt)[ijet][T_trk] , (*dau_eta)[ijet][T_trk] )));
-                        
-                        std::complex<double> Q_part2T (TMath::Cos(n_harm*T_phi) , TMath::Sin(n_harm*T_phi));
-
-                        Q_all2 = Q_all2 + weight_A * weight_T * Q_part2A * std::conj(Q_part2T);
-
-                        Pairs++;
-                        weight_sum += weight_A * weight_T;
-
-                            
                     }
                         
 
@@ -425,19 +402,50 @@ void MyClass::Loop(int job, std::string fList){
 
 
                 // mult of subevent A, B >3
-                if (Pairs<10) continue;
+                if (M<3) continue;
+                if (N<3) continue;
+
+                
+                // double particle_twoAT = Q_all_absAT / (weight_sum_A*weight_sum_T);
+                double S12 = weight_sum_A_sqr;
+                double S21 = weight_sum_A * weight_sum_A;
+                double Q_all_abs = fabs(Q_all2A)*fabs(Q_all2A) - S12;
+                double weight_two =  S21 -S12;
+
 
 
                 for(int i = 0; i < trackbin; i++){
                     if(tkBool[i] == 1){
 
                     
-                    hjet_avg_numerator_two->Fill(i, jet_HLT_weight*std::real(Q_all2));
-                    hjet_avg_denominat_two->Fill(i,(jet_HLT_weight*weight_sum));
+                    hjet_avg_numerator_two->Fill(i, jet_HLT_weight*Q_all_abs);
+                    hjet_avg_denominat_two->Fill(i,(jet_HLT_weight*weight_two));
 
                     }
                 }
 
+               
+                double S41 = weight_sum_A * weight_sum_A * weight_sum_A * weight_sum_A;
+                double S13 = weight_sum_A_tri;
+                double S11 = weight_sum_A;
+                double S22 = weight_sum_A_sqr * weight_sum_A_sqr;
+                double S14 = weight_sum_A_quat;
+                
+                
+                double four_numerator = pow(fabs(Q_all2A),4) + pow(fabs(Q_all4A),2) 
+                                        - 2 * std::real(Q_all4A * std::conj(Q_all2A*Q_all2A))
+                                        + 8 * std::real(Q_all32A * std::conj(Q_all2A))
+                                        - 4 * S12 * pow(fabs(Q_all2A).2) - 6 * S14 - 2 * S22;
+                double weight_four = S41 - 6 * S12 * S21 + 8 * S13 * S11 + 3 * S22 - 6 * S14;
+                if (weight_four == 0) continue;
+                for(int i = 0; i < trackbin; i++){
+                    if(tkBool[i] == 1){
+
+                    hjet_avg_numerator_four->Fill(i,jet_HLT_weight*four_numerator );
+                    hjet_avg_denominat_four->Fill(i,(jet_HLT_weight*weight_four));
+
+                    }
+                }
 
 
                 
@@ -449,10 +457,11 @@ void MyClass::Loop(int job, std::string fList){
 
     
     string subList = fList.substr(fList.size() - 3);
-    TFile* fS_tempA = new TFile(Form("pythia_batch_data_output/root_out_copy/dijob_%s.root",subList.c_str()), "recreate");
+    TFile* fS_tempA = new TFile(Form("pythia_batch_data_output/root_out/dijob_%s.root",subList.c_str()), "recreate");
     hjet_avg_numerator_two ->Write();
     hjet_avg_denominat_two ->Write();
-
+    hjet_avg_numerator_four->Write();
+    hjet_avg_denominat_four ->Write();
     
     // hRand_jet_avg_numerator_two ->Write();
     // hRand_jet_avg_denominat_two ->Write();
