@@ -526,7 +526,7 @@ void MyClass::Loop(int job, std::string fList){
 
 
                                     if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][ptbin-1] == 3){
-                                            hPairs->Fill(i,j,k);
+                                            hPairs->Fill(i,j,ptbin);
                                             if ((Ntrig[i][j])==0) continue;
                                             
                                             hSignalShifted[i][j][ptbin-1]->Fill(deltaEta, deltaPhi,                 1.0* jet_HLT_weight/(Atrk_weight*Ttrk_weight*Ntrig[i][j]));
@@ -701,8 +701,8 @@ std::cout<< "made 4" << endl;
                             hJt[wtrk-1][wppt-1] ->Write(Form("hJt_%d_to_%d_and_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1])));
                             // for(int wppt2 = wppt; wppt2 <ptbin+1; wppt2++){
 
-                                hSignalShifted             [wtrk-1][wppt-1][ptbin-1]->Write(Form("hSigS_%d_to_%d_pt_%d_to_%d_pt_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),(int)(10*ptbinbounds_lo[wppt2-1]),(int)(10*ptbinbounds_hi[wppt2-1])    ));
-                                hBckrndShifted             [wtrk-1][wppt-1][ptbin-1]->Write(Form("hBckS_%d_to_%d_pt_%d_to_%d_pt_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),(int)(10*ptbinbounds_lo[wppt2-1]),(int)(10*ptbinbounds_hi[wppt2-1])    ));
+                                hSignalShifted             [wtrk-1][wppt-1][ptbin-1]->Write(Form("hSigS_%d_to_%d_pt_%d_to_%d_pt_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),(int)(10*ptbinbounds_lo[ptbin-1]),(int)(10*ptbinbounds_hi[ptbin-1])    ));
+                                hBckrndShifted             [wtrk-1][wppt-1][ptbin-1]->Write(Form("hBckS_%d_to_%d_pt_%d_to_%d_pt_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),(int)(10*ptbinbounds_lo[ptbin-1]),(int)(10*ptbinbounds_hi[ptbin-1])    ));
                                 // hEPDraw                    [wtrk-1][wppt-1][wpPU-1]->Write(Form("hEPD_%d_to_%d_and_%d_to_%d_w_PU_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1] ,(int)(10*ptbinbounds_lo[wppt-1]),(int)(10*ptbinbounds_hi[wppt-1]),wpPU     ));
                                 
                                                     
