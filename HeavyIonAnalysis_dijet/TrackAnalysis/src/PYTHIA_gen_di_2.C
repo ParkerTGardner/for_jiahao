@@ -433,7 +433,7 @@ std::cout << "File is " << fileList.at(f).c_str() << endl;
 
 
                                     if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][ptbin-1] == 3){
-                                            hPairs->Fill(i,j,ptbin);
+                                            hPairs->Fill(i,j,ptbin-1);
                                             if ((Ntrig[i][j])==0) continue;
                                             
                                             hSignalShifted[i][j][ptbin-1]->Fill(deltaEta, deltaPhi,                 ((double)(1.0)/(Ntrig[i][j])));

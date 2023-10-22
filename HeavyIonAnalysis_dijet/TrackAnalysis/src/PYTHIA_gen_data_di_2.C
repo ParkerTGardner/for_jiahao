@@ -526,7 +526,7 @@ void MyClass::Loop(int job, std::string fList){
 
 
                                     if(tkBool[i] + A_ptBool[A_trk][j] + A_ptBool[T_trk][ptbin-1] == 3){
-                                            hPairs->Fill(i,j,ptbin);
+                                            hPairs->Fill(i,j,ptbin-1);
                                             if ((Ntrig[i][j])==0) continue;
                                             
                                             hSignalShifted[i][j][ptbin-1]->Fill(deltaEta, deltaPhi,                 1.0* jet_HLT_weight/(Atrk_weight*Ttrk_weight*Ntrig[i][j]));
@@ -559,42 +559,40 @@ void MyClass::Loop(int job, std::string fList){
 
 std::cout<< "made 4" << endl;
                     for(int wtrk = 1; wtrk < trackbin+1; wtrk++){
-                              std::cout << wtrk << "/" << trackbin << std::endl;
+                        
+                        long int NENT0 =  hPairs->GetBinContent(wtrk, ptbin, ptbin);
+                        long int XENT0 =  ((1+floor(sqrt(1+(4*2*backMult*NENT0))))/2) ;
+                        double A_ETA0[XENT0] = {0};
+                        double A_PHI0[XENT0] = {0};
+                        
+
+                        for(int x = 0; x<XENT0; x++){
+                            gRandom->SetSeed(0);
+                            double WEtaA0, WPhiA0;//making the pseudoparticles
+                            
+                            hEPDrawA[wtrk-1][ptbin-1]->GetRandom2(WEtaA0, WPhiA0);
+                            A_ETA0[x] = WEtaA0;
+                            A_PHI0[x] = WPhiA0; 
+                        //   A_Jt[x]  = WJt1;
+                        }
+                        
+                        for(long int i = 0; i < XENT0; i++){
+                            for(long int j = i+1; j < XENT0; j++){
+
+                                double WdeltaEta = (A_ETA0[i]-A_ETA0[j]);
+                                double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI0[i]-A_PHI0[j])));
 
 
-                               long int NENT0 =  hPairs->GetBinContent(wtrk, ptbin, ptbin);
-                                      long int XENT0 =  ((1+floor(sqrt(1+(4*2*backMult*NENT0))))/2) ;
-                                      double A_ETA0[XENT0] = {0};
-                                      double A_PHI0[XENT0] = {0};
-                                      
-
-                                      for(int x = 0; x<XENT0; x++){
-                                          gRandom->SetSeed(0);
-                                          double WEtaA0, WPhiA0;//making the pseudoparticles
-                                          
-                                          hEPDrawA[wtrk-1][ptbin-1]->GetRandom2(WEtaA0, WPhiA0);
-                                          A_ETA0[x] = WEtaA0;
-                                          A_PHI0[x] = WPhiA0; 
-                                        //   A_Jt[x]  = WJt1;
-                                      }
-                                      
-                                      for(long int i = 0; i < XENT0; i++){
-                                          for(long int j = i+1; j < XENT0; j++){
-
-                                              double WdeltaEta = (A_ETA0[i]-A_ETA0[j]);
-                                              double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI0[i]-A_PHI0[j])));
+                                hBckrndShifted[wtrk-1][ptbin-1][ptbin-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
+                                hBckrndShifted[wtrk-1][ptbin-1][ptbin-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
+                                hBckrndShifted[wtrk-1][ptbin-1][ptbin-1]->Fill(WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                                hBckrndShifted[wtrk-1][ptbin-1][ptbin-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                                hBckrndShifted[wtrk-1][ptbin-1][ptbin-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
+                                hBckrndShifted[wtrk-1][ptbin-1][ptbin-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
 
 
-                                              hBckrndShifted[wtrk-1][ptbin-1][ptbin-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
-                                              hBckrndShifted[wtrk-1][ptbin-1][ptbin-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][ptbin-1][ptbin-1]->Fill(WdeltaEta, -WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][ptbin-1][ptbin-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][ptbin-1][ptbin-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][ptbin-1][ptbin-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
-
-
-                                          }
-                                      }
+                            }
+                        }
 
 
 
@@ -602,84 +600,84 @@ std::cout<< "made 4" << endl;
 
 
 
-                              for(int wppt = 1; wppt < ptbin; wppt++){
+                        for(int wppt = 1; wppt < ptbin; wppt++){
+
+                        
+
+                                
+                                    
+                                    //Nent is the number of pairs in the signal which we will try to 10x
+                                    //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
+                                    //us 10 times as many pairs as we have in the signal histogrm.
+
+
+
+                                    // For the diagonal terms, we need solve n(n-1)/2 = 5 pairs
+                                    // For the off-diagonal terms, we need sqrt(10 pairs)
+                                    // So I fill background respectly
+
+
+
+
+                                    /////////////////////////////////////////////////////////////////
+
+                                    // diagonals
+
+                                    
+                                
+                            
+
+                                //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+                                // off diagonal terms
+
+
+                            long int NENT =  hPairs->GetBinContent(wtrk, wppt, ptbin);
+                            long int XENT =  floor(sqrt(10*NENT));
+                            double A_ETA[XENT] = {0};
+                            double A_PHI[XENT] = {0};
+                            double T_ETA[XENT] = {0};
+                            double T_PHI[XENT] = {0};
+
 
                             
 
-                                  
-                                      
-                                      //Nent is the number of pairs in the signal which we will try to 10x
-                                      //Xent is the number of pseudoparticles requried such that when we build the pairs nCp = Xent CHOOSE 2 will give 
-                                      //us 10 times as many pairs as we have in the signal histogrm.
+
+                            for(int x = 0; x<XENT; x++){
+                                gRandom->SetSeed(0);
+                                double WEtaA, WPhiA;//making the pseudoparticles
+                                
+                                hEPDrawA[wtrk-1][wppt-1]->GetRandom2(WEtaA, WPhiA);
+                                A_ETA[x] = WEtaA;
+                                A_PHI[x] = WPhiA; 
 
 
+                                double WEtaT, WPhiT;  
+                                gRandom->SetSeed(gRandom->GetSeed() + 1);
+                                hEPDrawA[wtrk-1][ptbin-1]->GetRandom2(WEtaT, WPhiT);
+                                T_ETA[x] = WEtaT;
+                                T_PHI[x] = WPhiT;
 
-                                      // For the diagonal terms, we need solve n(n-1)/2 = 5 pairs
-                                      // For the off-diagonal terms, we need sqrt(10 pairs)
-                                      // So I fill background respectly
-
-
-
-
-                                      /////////////////////////////////////////////////////////////////
-
-                                      // diagonals
-
-                                     
-                                  
-                              
-
-                                    //////////////////////////////////////////////////////////////////////////////////////////////
-
-
-                                    // off diagonal terms
-
-
-                                      long int NENT =  hPairs->GetBinContent(wtrk, wppt, ptbin);
-                                      long int XENT =  floor(sqrt(10*NENT));
-                                      double A_ETA[XENT] = {0};
-                                      double A_PHI[XENT] = {0};
-                                      double T_ETA[XENT] = {0};
-                                      double T_PHI[XENT] = {0};
-
-
-                                      
-
-
-                                      for(int x = 0; x<XENT; x++){
-                                          gRandom->SetSeed(0);
-                                          double WEtaA, WPhiA;//making the pseudoparticles
-                                          
-                                          hEPDrawA[wtrk-1][wppt-1]->GetRandom2(WEtaA, WPhiA);
-                                          A_ETA[x] = WEtaA;
-                                          A_PHI[x] = WPhiA; 
-
-
-                                          double WEtaT, WPhiT;  
-                                          gRandom->SetSeed(gRandom->GetSeed() + 1);
-                                          hEPDrawA[wtrk-1][ptbin-1]->GetRandom2(WEtaT, WPhiT);
-                                          T_ETA[x] = WEtaT;
-                                          T_PHI[x] = WPhiT;
-
-                                      }
-                                      
-                                      for(long int i = 0; i < XENT; i++){
-                                          for(long int j = 0; j < XENT; j++){
-
-                                              double WdeltaEta = (A_ETA[i]-T_ETA[j]);
-                                              double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
-
-                                              hBckrndShifted[wtrk-1][wppt-1][ptbin-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][ptbin-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][ptbin-1]->Fill(WdeltaEta, -WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][ptbin-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][ptbin-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
-                                              hBckrndShifted[wtrk-1][wppt-1][ptbin-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
-
-
-                                          }
-                                      }
                             }
+                                    
+                            for(long int i = 0; i < XENT; i++){
+                                for(long int j = 0; j < XENT; j++){
+
+                                    double WdeltaEta = (A_ETA[i]-T_ETA[j]);
+                                    double WdeltaPhi = (TMath::ACos(TMath::Cos(A_PHI[i]-T_PHI[j])));
+
+                                    hBckrndShifted[wtrk-1][wppt-1][ptbin-1]->Fill(WdeltaEta, WdeltaPhi, 1);//./XENT);
+                                    hBckrndShifted[wtrk-1][wppt-1][ptbin-1]->Fill(-WdeltaEta, WdeltaPhi, 1);//../XENT);
+                                    hBckrndShifted[wtrk-1][wppt-1][ptbin-1]->Fill(WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                                    hBckrndShifted[wtrk-1][wppt-1][ptbin-1]->Fill(-WdeltaEta, -WdeltaPhi, 1);//../XENT);
+                                    hBckrndShifted[wtrk-1][wppt-1][ptbin-1]->Fill(WdeltaEta, 2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
+                                    hBckrndShifted[wtrk-1][wppt-1][ptbin-1]->Fill(-WdeltaEta,2*TMath::Pi() - WdeltaPhi, 1);//../XENT);
+
+
+                                }
+                            }
+                        }
                     }
                         
                       //}}}
