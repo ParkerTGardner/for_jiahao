@@ -7,7 +7,7 @@
 //below allows for rotation into jet frame
 #include "include/coordinateTools.h"
 //defines constants
-#include "include/sherpa_constants_2_3.h"
+#include "include/sherpa_constants_2_2.h"
 
 #include <iostream>
 #include <iomanip>
