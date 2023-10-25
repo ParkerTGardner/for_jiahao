@@ -208,7 +208,7 @@ void MyClass::Loop(int job, std::string fList){
     }
 
 
-    Profile *profile_AB = new TProfile("profile_AB", "profile_AB", trackbin, Profile_trackbin);
+    TProfile *profile_AB = new TProfile("profile_AB", "profile_AB", trackbin, Profile_trackbin);
     // Profile *profile_AB_corrected = new TProfile("profile_AB_corrected", "profile_AB_corrected", trackbin, Profile_trackbin);
 
     

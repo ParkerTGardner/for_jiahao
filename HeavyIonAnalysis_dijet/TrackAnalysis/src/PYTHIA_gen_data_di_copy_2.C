@@ -210,8 +210,8 @@ void MyClass::Loop(int job, std::string fList){
         }
     }
 
-    Profile *profile_AB = new TProfile("profile_AB", "profile_AB", trackbin, Profile_trackbin);
-    Profile *profile_AB_corrected = new TProfile("profile_AB_corrected", "profile_AB_corrected", trackbin, Profile_trackbin);
+    TProfile *profile_AB = new TProfile("profile_AB", "profile_AB", trackbin, Profile_trackbin);
+    TProfile *profile_AB_corrected = new TProfile("profile_AB_corrected", "profile_AB_corrected", trackbin, Profile_trackbin);
   
 
     
@@ -406,7 +406,7 @@ void MyClass::Loop(int job, std::string fList){
                     
                     // Calculate the trks in jetB
                     int n_G_ChargeMult_count2 = 0;
-                    double n_G_ChargeMult_count_corrected1 = 0.0;
+                    double n_G_ChargeMult_count_corrected2 = 0.0;
                     for(int G_trk2=0; G_trk2 < NNtrk2; G_trk2++ ){
                         if((*dau_chg)[jjet][G_trk2] == 0) continue;
                         if(fabs((*dau_pt)[jjet][G_trk2])  < 0.3)     continue;
