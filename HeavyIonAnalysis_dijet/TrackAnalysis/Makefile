@@ -8,7 +8,7 @@ endif
 MKDIR_BIN=mkdir -p $(PWD)/bin
 
 # all: mkdirBin bin/PYTHIA_gen_data_di_2.exe  bin/PYTHIA_gen_data_di_3.exe bin/PYTHIA_gen_data_di_copy_2.exe  bin/PYTHIA_gen_data_di_copy_3.exe bin/PYTHIA_gen_di.exe   bin/PYTHIA_gen_di_3.exe bin/PYTHIA_gen_di_2.exe bin/PYTHIA_gen_di_copy.exe bin/PYTHIA_gen_di_copy_2.exe bin/PYTHIA_gen_di_copy_3.exe 
-all: mkdirBin bin/PYTHIA_gen_data_di_copy.exe  bin/PYTHIA_gen_di_copy.exe 
+all: mkdirBin bin/PYTHIA_gen_data_di_copy_2.exe  bin/PYTHIA_gen_di_copy_2.exe 
 # bin/PYTHIA_gen_data_di_2.exe bin/PYTHIA_gen_data_di_3.exe bin/PYTHIA_gen_di.exe bin/PYTHIA_gen_di_3.exe bin/PYTHIA_gen_di_2.exe bin/PYTHIA_gen_di_copy.exe bin/PYTHIA_gen_di_copy_2.exe bin/PYTHIA_gen_di_copy_3.exe 
 #  bin/PYTHIA_gen_di.exe  bin/PYTHIA_gen_di_copy_2.exe bin/PYTHIA_gen_di_copy_3.exe  bin/PYTHIA_gen_di_copy.exe 
 # bin/PYTHIA_gen_data_di_copy.exe bin/PYTHIA_gen_data_di_copy_2.exe  bin/PYTHIA_gen_data_di_copy_3.exe bin/PYTHIA_gen_data_di.exe bin/PYTHIA_gen_data_di_2.exe bin/PYTHIA_gen_data_di_3.exe
