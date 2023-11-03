@@ -25,6 +25,7 @@
 #include "TLatex.h"
 #include "TLine.h"
 #include "TMinuit.h"
+#include "../include/fourier_fit.h"
 void processRootFile() {
    
     // TFile* file = new TFile("newroot/off/off_data_02.root");
@@ -110,75 +111,54 @@ void processRootFile() {
     c1->Update();
 
 
-    
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // This is the main code
+
+
+
+    // The differential jT expression is V(trig, ref)/sqrt(ref,ref)
+    // So I read 2D from (trig, ref) and (ref,ref)
+    // Here wppt:= trig and wppt2:=ref 
+    // The x := the mean of trig
+
 
     std::string folders[] = {"data","MC"};
 
     for (const auto& folder : folders) {
         
-        // TString filename = Form("newroot/off/off_diff_%s_02.root", folder.c_str());
+
         TString filename = Form("newroot/off/off_diff_%s_4.root", folder.c_str());
         TFile* file = new TFile(filename);
+
+
+        // For each trackbin, here is a differential jt curve
     
         for (int wtrk = 1 ; wtrk < trackbin+1; wtrk++ ){
+
 
             int wppt2 = ptbin;
             TGraphErrors* g2 = new TGraphErrors(ptbin-1);
             
 
             int point = 0;
-            // int wtrk = 1;
             
-            
+            // For each trig I find its (trig,ref) pairs and fit
+            // The below one is just about fit
+            // I'll envelop the fit as a function later
 
             for (int wppt = 1 ; wppt < wppt2; wppt++) {
             
                 TH2D* hSig = (TH2D*)file->Get(Form("hSigS_%d_to_%d_pt_%d_to_%d_pt_%d_to_%d", trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt-1]), (int)(10*ptbinbounds_hi[wppt-1]), (int)(10*ptbinbounds_lo[wppt2-1]), (int)(10*ptbinbounds_hi[wppt2-1])));
                 TH2D* hBack = (TH2D*)file->Get(Form("hBckS_%d_to_%d_pt_%d_to_%d_pt_%d_to_%d", trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt-1]), (int)(10*ptbinbounds_hi[wppt-1]), (int)(10*ptbinbounds_lo[wppt2-1]), (int)(10*ptbinbounds_hi[wppt2-1])));
-                // TH1D* hJt_high = (TH1D*)file->Get(Form("hJt_%d_to_%d_and_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt2-1]), (int)(10*ptbinbounds_hi[wppt2-1])));
                 TH1D* hJt_low = (TH1D*)file->Get(Form("hJt_%d_to_%d_and_%d_to_%d",trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt-1]), (int)(10*ptbinbounds_hi[wppt-1])));
                 
                 double xvalue = hJt_low->GetMean();
                 double err_xvalue = hJt_low->GetMeanError();
 
+                TF1* func = fourier_fit(hSig, hBack);
 
-                hSig->SetDefaultSumw2(kTRUE);
-                hBack->SetDefaultSumw2(kTRUE);
-
-                double DelEta_lo = 2.0;
-                // double DelEta_mid = 4.7;
-                double DelEta_hi  =  6.0;
-                TH1D *hSig1D = (TH1D*) hSig->ProjectionY("h1D", hSig->GetXaxis()->FindBin(DelEta_lo), -1)->Clone();
-                TH1D *hBack1D = (TH1D*) hBack->ProjectionY("h1D", hBack->GetXaxis()->FindBin(DelEta_lo), -1)->Clone();
-                hSig1D->SetDefaultSumw2(kTRUE);
-                hBack1D->SetDefaultSumw2(kTRUE);
                 
-                hSig1D->Divide(hBack1D);
-                hSig1D->Scale(hBack1D->GetMaximum());
-                TH1D* h1D = hSig1D;
-                h1D->SetDefaultSumw2(kTRUE);
-                
-                std::string function = "[0]/(TMath::Pi()*2)*(1+2*([1]*TMath::Cos(x)+[2]*TMath::Cos(2*x)+[3]*TMath::Cos(3*x)))";
-                TF1* func = new TF1("func", function.c_str(), -0.5*TMath::Pi(), 1.5*TMath::Pi());
-                
-                
-                func->SetParameter(0, h1D->GetMaximum());
-                func->SetParameter(1, -0.1);
-                
-                func->SetParameter(2, 0.0225);
-                func->SetParameter(3, -0.01);
-                
-                h1D->Fit(func, "q 0");
-                h1D->Fit(func, "q 0");
-                h1D->Fit(func, "m q 0");
-                h1D->Fit(func, "m q 0");
-                h1D->Fit(func, "m q E 0");
-                h1D->Fit(func, "m E q 0");
-
-                // // std::cout<< Form("hSigS_%d_to_%d_pt_%d_to_%d_pt_%d_to_%d", trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt-1]), (int)(10*ptbinbounds_hi[wppt-1]), (int)(10*ptbinbounds_lo[wppt2-1]), (int)(10*ptbinbounds_hi[wppt2-1])) + Form(" v2 = %.3f",func->GetParameter(2))<<std::endl;
-                // std::cout<< std::string(Form("hSigS_%d_to_%d_pt_%d_to_%d_pt_%d_to_%d", trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt-1]), (int)(10*ptbinbounds_hi[wppt-1]), (int)(10*ptbinbounds_lo[wppt2-1]), (int)(10*ptbinbounds_hi[wppt2-1]))) + std::string(Form(" V2 = %.3f",func->GetParameter(2))) << std::endl;
-                // hSigS_0_to_20_pt_3_to_7_pt_3_to_30
-                // hSigS_0_to_20_pt_3_to_7_pt_3_to_30
 
                 //////////////////////////////////////////////////////////////////////////////////
 
@@ -188,50 +168,22 @@ void processRootFile() {
                 TH2D* hSig2 = (TH2D*)file->Get(Form("hSigS_%d_to_%d_pt_%d_to_%d_pt_%d_to_%d", trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt2-1]), (int)(10*ptbinbounds_hi[wppt2-1]), (int)(10*ptbinbounds_lo[wppt2-1]), (int)(10*ptbinbounds_hi[wppt2-1])));
                 TH2D* hBack2 = (TH2D*)file->Get(Form("hBckS_%d_to_%d_pt_%d_to_%d_pt_%d_to_%d", trackbinbounds[wtrk-1],trackbinboundsUpper[wtrk-1], (int)(10*ptbinbounds_lo[wppt2-1]), (int)(10*ptbinbounds_hi[wppt2-1]), (int)(10*ptbinbounds_lo[wppt2-1]), (int)(10*ptbinbounds_hi[wppt2-1])));
                 
-                hSig2->SetDefaultSumw2(kTRUE);
-                hBack2->SetDefaultSumw2(kTRUE);
+                TF1* func_2 = fourier_fit(hSig2, hBack2);
 
                 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-            
-                TH1D *hSig1D_2 = (TH1D*) hSig2->ProjectionY("h1D", hSig2->GetXaxis()->FindBin(DelEta_lo), -1)->Clone();
-                TH1D *hBack1D_2 = (TH1D*) hBack2->ProjectionY("h1D", hBack2->GetXaxis()->FindBin(DelEta_lo), -1)->Clone();
-                hSig1D_2->SetDefaultSumw2(kTRUE);
-                hBack1D_2->SetDefaultSumw2(kTRUE);
-                hSig1D_2->Divide(hBack1D_2);
-                hSig1D_2->Scale(hBack1D_2->GetMaximum());
-                TH1D* h1D_2 = hSig1D_2;
-                h1D_2->SetDefaultSumw2(kTRUE);
-                
-                TF1* func_2 = new TF1("func_2", function.c_str(), -0.5*TMath::Pi(), 1.5*TMath::Pi());
-                
 
-                func_2->SetParameter(0, h1D_2->GetMaximum());
-                func_2->SetParameter(1, -0.1);
-                
-                func_2->SetParameter(2, 0.0225);
-                func_2->SetParameter(3, -0.01);
-                
-                
-                h1D_2->Fit(func_2, "q 0");
-                h1D_2->Fit(func_2, "q 0");
-                h1D_2->Fit(func_2, "m q 0");
-                h1D_2->Fit(func_2, "m q 0");
-                h1D_2->Fit(func_2, "m q E 0");
-                h1D_2->Fit(func_2, "m E q 0");
-
-                
-                
-            
-                double r2 = func->GetParameter(2)/sqrt(func_2->GetParameter(2));
-                double err2 = r2*sqrt(pow((sqrt(2)*func->GetParError(2)/func->GetParameter(2)),2) + 0.25*pow((sqrt(2)*func_2->GetParError(2)/func_2->GetParameter(2)),2) );
+            // The v2 and err
+                double v2 = func->GetParameter(2)/sqrt(func_2->GetParameter(2));
+                double err2 = v2*sqrt(pow((sqrt(2)*func->GetParError(2)/func->GetParameter(2)),2) + 0.25*pow((sqrt(2)*func_2->GetParError(2)/func_2->GetParameter(2)),2) );
 
                                 
-                g2->SetPoint(point, xvalue, r2);
+                g2->SetPoint(point, xvalue, v2);
                 g2->SetPointError(point, err_xvalue, err2);
                 
                 point++;
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
             }
 
@@ -301,16 +253,7 @@ void processRootFile() {
                 g2->Draw("CP same");
             }
 
-            
 
-            
-        
-            // if (wtrk==1){
-            //     TLatex latex;
-            //     latex.SetTextSize(0.15);
-            //     latex.DrawLatexNDC(0.4, 0.2, Form("j_{T}^{a}: %.2f to %.2f GeV/c", ptbinbounds_lo[wppt-1], ptbinbounds_hi[wppt-1]));  // Adjust the coordinates and text as needed
-
-            // }
             
 
             if (!(wtrk%3-1)){
@@ -348,28 +291,8 @@ void processRootFile() {
             line3->SetLineWidth(3);
             line3->Draw("same");
 
-            // TLine* line4 = new TLine(x_min, 0.20, x_max, 0.20);
-            // line4->SetLineColor(kRed);
-            // line4->SetLineStyle(9);
-            // line4->SetLineWidth(2);
-            // line4->Draw("same");
-
-            
-
-
-            // legend->Draw();
             c1->Update();
 
-
-                
-
-                 
-
-                
-                
-
-                
-            // }
 
                         
         }
