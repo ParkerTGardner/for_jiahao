@@ -14,14 +14,14 @@ Error      = pythia_batch_output/err/submit_v0.$(Process).err
 Queue
 '''
 
-with open('../fileLists/test.txt') as fs:
-    line_count = 0
-    for line in fs:
-        line_count += 1
+# with open('../fileLists/test.txt') as fs:
+#     line_count = 0
+#     for line in fs:
+#         line_count += 1
 
-line_count_frac = line_count/20.0 #for all pthatpythia
-file_count = math.ceil(line_count_frac)
-
+# line_count_frac = line_count/20.0 #for all pthatpythia
+# file_count = math.ceil(line_count_frac)
+file_count = 18
 for i in range(1, int(file_count)):
    temp = '''
 Arguments  = %03d
