@@ -1,11 +1,10 @@
 const int   trackbin                    =10 ;
 const int   ktbin = 8;
-const int ptbin =3;
-const float ptbinbounds_lo[ptbin] = {0.0, 0.3, 0.5};
-const float ptbinbounds_hi[ptbin] = {3.0, 3.0, 3.0};
+const int ptbin =5;
+const float ptbinbounds_lo[ptbin] = {0.0, 0.3, 0.5, 0.7, 1.0};
+const float ptbinbounds_hi[ptbin] = {3.0, 3.0, 3.0, 3.0, 3.0};
 const int mm = 1000;
 double  trackbinEdge[trackbin+1]         = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-const float  Profile_trackbin[trackbin] = {0 ,20,30,40,50,60,72,82,95,120};
 const int   trackbinbounds[trackbin]         = {0 ,0 ,20,30,40,50,60,72,82,95};
 const int   trackbinboundsUpper[trackbin]    = {mm,20,30,40,50,60,72,82,95,mm};
 const float ktbinbounds_lo[ktbin] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8};
